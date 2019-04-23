@@ -7,7 +7,7 @@
  * Constants
  */
 #define CRANKING_TIMEOUT          3500   // * CONFIGURABLE * The amount of milliseconds to run the start motor before timing out if the engine has not started.
-#define RUNNING_ODOMETER          10.0   // * CONFIGURABLE * An RPM value which is below the lowest RPM the engine could hit when running but well above the RPM the engine could hit when the start motor is running.
+#define RUNNING_TACHOMETER        10.0   // * CONFIGURABLE * An RPM value which is below the lowest RPM the engine could hit when running but well above the RPM the engine could hit when the start motor is running.
 #define OFF_HOLD_TIME             5000   // * CONFIGURABLE * The length of time the start button should be held to turn the engine off.
 #define DEBOUNCE_DELAY            150    // * CONFIGURABLE * Time between button presses being recorded and being treated as new (the lower the better - increase if flickering occurs or if stop button ceases to work).
 #define FLASH_RATE                120    // * CONFIGURABLE * Times per minute to flash indicators (legally between 60 and 120).
@@ -30,10 +30,10 @@ static int const high_beam_button_pin       = 4;  // High Beam Button - Sticky
 static int const tail_light_button_pin      = 5;  // Tail Light Button - Momentary
 static int const indicator_right_button_pin = 6;  // Right Indicator Button - Sticky
 static int const indicator_left_button_pin  = 7;  // Left Indicator Button - Sticky
-static int const horn_button_pin            = 3;  // Horn Button - Momentary
 static int const start_button_pin           = 2;  // Start Button - Momentary
-static int const odometer_pin               = A0; // Odometer Analogue Input
-static int const speedometer_pin            = A3; // Speedometer Digital Input
+static int const tachometer_pin             = A0; // Tachometer Analogue Input
+static int const speedometer_pin            = 3; // Speedometer Digital Input - Must be a valid interrupt pin (https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/)
+static int const horn_button_pin            = A3;  // Horn Button - Momentary
 static int const speedometer_adjustment_pin = A4;
 
 /*
@@ -72,7 +72,10 @@ static unsigned long stop_bike_last_push_time                           = 0;
 static unsigned long time_last_revoloution                              = 0;
 static unsigned int  previous_speed									                  	= 0;
 static unsigned int  junk_int                                           = 0;
-static unsigned long wheel_circumference_in_kilometers = AVERAGE_WHEEL_CIRCUMFEFRENCE_IN_KILOMETERS; // Set to the default so we can use analogRead in the main loop to calculate the custom value.
+static unsigned long milliseconds_for_revoloution                       = 0;
+static double calibrated_wheel_circumference_in_kilometers       = 0;
+
+static unsigned long time_last_speed_calculation                        = 0;
 
 /*
  * Function Declarations
@@ -84,14 +87,19 @@ static void brake_light_trigger(int *button_state, const int *light_pin);
 static void start_bike(void);
 static void stop_bike(void);
 static int bike_running(void);
-static float read_odometer(const int odometer_pin);
+static float read_tachometer(const int tachometer_pin);
 static int interval_passed(unsigned long start_time, int interval);
-static unsigned int read_speed(const int *sensor_input, unsigned long milliseconds_for_revoloution, unsigned long *time_last_revoloution);
+static unsigned int calculate_speed();
 
 
 void setup()
 {
   Serial.begin(9600); // Setup serial connection for debugging
+
+  /*
+   * Interrupts Setup
+   */
+  attachInterrupt(digitalPinToInterrupt(speedometer_pin), read_speedometer_sensor, RISING);
 
   /*
    * Input Pin Setup
@@ -102,7 +110,9 @@ void setup()
   pinMode(indicator_left_button_pin  ,INPUT);
   pinMode(start_button_pin           ,INPUT);
   pinMode(speedometer_pin            ,INPUT);
-
+  pinMode(tachometer_pin             ,INPUT);
+  pinMode(speedometer_adjustment_pin ,INPUT);
+  
   /*
    * Output Pin Setup
    */
@@ -113,6 +123,8 @@ void setup()
   pinMode(horn_pin                   ,OUTPUT);
   pinMode(starter_motor_pin          ,OUTPUT);
   pinMode(aux_output_pin             ,OUTPUT);
+
+  calibrated_wheel_circumference_in_kilometers = (AVERAGE_WHEEL_CIRCUMFEFRENCE_IN_KILOMETERS * 0.9) + ((analogRead(speedometer_adjustment_pin) * (1.0 / 1023.0)) * (AVERAGE_WHEEL_CIRCUMFEFRENCE_IN_KILOMETERS * 0.2)); // (Calculate the minimum - 90% (0.9) of the average)   (Add a percentage of the difference between the minimum and maximum value - 20% (0.2))
 }
 
 
@@ -120,7 +132,7 @@ void loop()
 { 
   /*
    * Regardless of Running State
-   */
+   */    
   /* Record & Action Button States */
   record_state(high_beam_button_pin, &high_beam_button_state, STICKY);
   digitalWrite(high_beam_light_pin, high_beam_button_state);
@@ -140,10 +152,6 @@ void loop()
   record_state(indicator_left_button_pin, &indicator_left_button_state, STICKY);
   indicator_trigger(indicator_left_button_state,  indicator_left_light_pin,  &indicator_right_button_state, &indicator_trigger_left_indicator_last_flash_time);
 
-  wheel_circumference_in_kilometers = (AVERAGE_WHEEL_CIRCUMFEFRENCE_IN_KILOMETERS * 0.9) + ((analogRead(speedometer_pin) * (1.0 / 1023)) * (AVERAGE_WHEEL_CIRCUMFEFRENCE_IN_KILOMETERS * 0.2));
-                                    // (Calculate the minimum - 90% (0.9) of the average)   (Add a percentage of the difference between the minimum and maximum value - 20% (0.2))
-
-
   /*
    * Bike Running
    */                                  
@@ -153,49 +161,49 @@ void loop()
 
 
     // update display
-    Serial.print("********************\n");
+    // Serial.print("********************\n");
 
-    Serial.print("Bike Status: ");
-    if(bike_running()) {
-      Serial.print("Running\n");
-    }
-    else {
-      Serial.print("Off\n");
-    }
+    // Serial.print("Bike Status: ");
+    // if(bike_running()) {
+    //   Serial.print("Running\n");
+    // }
+    // else {
+    //   Serial.print("Off\n");
+    // }
 
     Serial.print("Speed: ");
-    Serial.print(read_speed(&speedometer_pin, &time_last_revoloution));
+    Serial.print(calculate_speed());
     Serial.print(" km/h\n");
 
-    Serial.print("Odometer: ");
-    Serial.print(read_odometer(odometer_pin));
-    Serial.print(" rpm\n");
+    // Serial.print("tachometer: ");
+    // Serial.print(read_tachometer(tachometer_pin));
+    // Serial.print(" rpm\n");
 
-    Serial.print("\nLeft Indicator: ");
-    if(indicator_left_button_state == HIGH) {
-      Serial.print("On");
-    }
-    else {
-      Serial.print("Off");
-    }
+    // Serial.print("\nLeft Indicator: ");
+    // if(indicator_left_button_state == HIGH) {
+    //   Serial.print("On");
+    // }
+    // else {
+    //   Serial.print("Off");
+    // }
 
-    Serial.print("\nRight Indicator: ");
-    if(indicator_right_button_state == HIGH) {
-      Serial.print("On");
-    }
-    else {
-      Serial.print("Off");
-    }
+    // Serial.print("\nRight Indicator: ");
+    // if(indicator_right_button_state == HIGH) {
+    //   Serial.print("On");
+    // }
+    // else {
+    //   Serial.print("Off");
+    // }
 
-    Serial.print("\nHigh Beam: ");
-    if(high_beam_button_state == HIGH) {
-      Serial.print("On");
-    }
-    else {
-      Serial.print("Off");
-    }
+    // Serial.print("\nHigh Beam: ");
+    // if(high_beam_button_state == HIGH) {
+    //   Serial.print("On");
+    // }
+    // else {
+    //   Serial.print("Off");
+    // }
 
-    Serial.print("\n********************\n\n\n");
+    // Serial.print("\n********************\n\n\n");
 
 
     /* Check Stop Button */
@@ -361,7 +369,7 @@ static void stop_bike(void)
   else {                                                  
     stop_bike_last_push_time = millis();
     /* If it's been longer than OFF_HOLD_TIME since the initial push */
-    if (stop_bike_last_push_time > stop_bike_initial_push + OFF_HOLD_TIME) {
+    if (stop_bike_last_push_time > stop_bike_initial_push + OFF_HOLD_TIME && calculate_speed() <= 3) { // If button held and speed is 3km/h or less.
       /* Turn the engine off */
       points_state == LOW;
     }
@@ -380,24 +388,24 @@ static void stop_bike(void)
  */
 static int bike_running(void)
 {
-  return (read_odometer(odometer_pin) > RUNNING_ODOMETER);  // If the current odometer is greater than the minimum running value (RUNNING_ODOMETER) than the bike is started.
+  return (read_tachometer(tachometer_pin) > RUNNING_TACHOMETER);  // If the current tachometer is greater than the minimum running value (RUNNING_TACHOMETER) than the bike is started.
 }
 
 
 /*
- * Function:  read_odometer 
+ * Function:  read_tachometer 
  * --------------------
- * Returns the current odometer value in RPM (revolutions per minute).
+ * Returns the current tachometer value in RPM (revolutions per minute).
  * 
- * odometer_pin: the analogue pin that the odometer is in.
+ * tachometer_pin: the analogue pin that the tachometer is in.
  *
- * returns: a float value of the current odometer reading in reveloutions per minute (RPM).
+ * returns: a float value of the current tachometer reading in reveloutions per minute (RPM).
  */
-static float read_odometer(const int odometer_pin)
+static float read_tachometer(const int tachometer_pin)
 {
-  int sensor_value = analogRead(odometer_pin); // Read the analog value from the pin specified in odometer_pin.
-  float odometer = sensor_value * (100.0 / 1023.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V).
-  return odometer;
+  int sensor_value = analogRead(tachometer_pin); // Read the analog value from the pin specified in tachometer_pin.
+  float tachometer = sensor_value * (100.0 / 1023.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V).
+  return tachometer;
 }
 
 
@@ -415,6 +423,11 @@ static int interval_passed(unsigned long start_time, int interval) {
   return (((unsigned long) (millis() - start_time)) >= interval);
 }
 
+void read_speedometer_sensor(){
+  milliseconds_for_revoloution = ((unsigned long) (millis() - time_last_revoloution)); // Work out how long that revolution took
+  time_last_revoloution = millis();
+}
+
 /*
  * Function:  read_speed 
  * --------------------
@@ -425,21 +438,21 @@ static int interval_passed(unsigned long start_time, int interval) {
  * 
  * returns: an integer value of the speed in km/h.
  */
-static unsigned int read_speed(const int *sensor_input, unsigned long *time_last_revoloution) {
-  if (digitalRead(*sensor_input) == HIGH) {                                     // If the sensor is HIGH
-    unsigned long milliseconds_for_revoloution = ((unsigned long) (millis() - *time_last_revoloution)); // Work out how long that revolution took
-    *time_last_revoloution = millis();  // Record the current time as when this revoloution was
-
-    int speed = wheel_circumference_in_kilometers * (MILLISECONDS_PER_HOUR / milliseconds_for_revoloution);
-
-    if (speed < previous_speed + (*time_last_revoloution / MILLISECONDS_PER_SECOND) * MAX_KM_ACCELERATION_PER_SECOND) { // If the speed has increased less than the speed would if the bike was accellerating at 50km/s
-      previous_speed = speed;
+static unsigned int calculate_speed() {
+  if (time_last_speed_calculation < time_last_revoloution){
+    if (milliseconds_for_revoloution > 0) {
+      int speed = calibrated_wheel_circumference_in_kilometers * (MILLISECONDS_PER_HOUR / milliseconds_for_revoloution); // Calculate speed in km/h  
+      if (speed < previous_speed + (time_last_revoloution / MILLISECONDS_PER_SECOND) * MAX_KM_ACCELERATION_PER_SECOND) { // If the speed has accelerated faster than MAX_KM_ACCELERATION_PER_SECOND
+        previous_speed = speed; // Update the speed
+        time_last_speed_calculation = millis();
+      }
+    }
+    else {
+      return 0;
     }
   }
-  else {
-    if (interval_passed(*time_last_revoloution, (MILLISECONDS_PER_HOUR / ((previous_speed - 1) / wheel_circumference_in_kilometers))) && previous_speed > 0) {
-      previous_speed = previous_speed - 1;
-    }
+  else if (interval_passed(time_last_revoloution, (MILLISECONDS_PER_HOUR / ((previous_speed - 1) / calibrated_wheel_circumference_in_kilometers))) && previous_speed > 0) {
+    previous_speed = previous_speed - 1;
   }
 
   return previous_speed;
