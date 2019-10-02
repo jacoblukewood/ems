@@ -1,0 +1,28 @@
+#ifndef ENGINE_H
+#define ENGINE_H
+#include <arduino.h>
+#include <HardwareSerial.h>
+
+class Engine {
+private:
+    unsigned int const kPinOutputPoints_;
+    unsigned int const kPinOutputStarterMotor_;
+    unsigned int const kPinInputSensorTachometer_;
+    unsigned int const kTimeoutCranking_;
+    unsigned int const kTachometerRunningMinimum_;
+    unsigned int const kTachometerRedline_;
+    unsigned long start_attempt_time_;
+
+public:
+    Engine(unsigned int const kTimeoutCranking, unsigned int const kTachometerRunningMinimum, unsigned int const kTachometerRedline, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor, unsigned int const kPinInputSensorTachometer);
+
+    bool StartEngine();
+
+    bool StopEngine();
+
+    bool EngineStatus(void) const;
+
+    unsigned int CurrentTachometer(const int kPinInputSensorTachometer) const;
+};
+
+#endif // ENGINE_H

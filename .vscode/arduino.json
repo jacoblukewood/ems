@@ -1,4 +1,6 @@
 {
-    "board": "arduino:avr:uno",
-    "sketch": "ems.ino"
+    "board": "arduino:avr:mega",
+    "sketch": "ems.ino",
+    "configuration": "cpu=atmega2560",
+    "port": "/dev/cu.usbserial-1410"
 }

@@ -1,0 +1,25 @@
+#ifndef INDICATOR_H
+#define INDICATOR_H
+#include <arduino.h>
+#include <HardwareSerial.h>
+
+#include "accessory.h"
+#include "motorcycle.h"
+#include "utility.h"
+
+#define MILLISECONDS_PER_MINUTE 60000
+
+class Indicator: public Accessory {
+    public:
+        Indicator(unsigned int const kPinOutput, unsigned int const kFlashRate, Motorcycle &motorcycle);
+        void Action();
+        unsigned long GetTimestampCycled();
+        void SetTimestampCycled(unsigned long timestamp_cycled);
+
+    private:
+        int kFlashCycle_;
+        Motorcycle motorcycle_;
+        unsigned long timestamp_cycled_;
+};
+
+#endif // INDICATOR_H
