@@ -1,6 +1,6 @@
 #ifndef INDICATOR_H
 #define INDICATOR_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <HardwareSerial.h>
 
 #include "accessory.h"

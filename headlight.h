@@ -1,6 +1,6 @@
 #ifndef HEADLIGHT_H
 #define HEADLIGHT_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <HardwareSerial.h>
 
 #include "accessory.h"

@@ -1,6 +1,6 @@
 #ifndef BUTTON_H
 #define BUTTON_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <HardwareSerial.h>
 
 #include "utility.h"

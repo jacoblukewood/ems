@@ -1,6 +1,6 @@
 #ifndef UTILITY_H
 #define UTILITY_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <HardwareSerial.h>
 
 namespace utility {

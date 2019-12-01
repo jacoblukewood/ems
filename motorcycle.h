@@ -1,10 +1,10 @@
 #ifndef MOTORCYCLE_H
 #define MOTORCYCLE_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <HardwareSerial.h>
 
 #include "engine.h"
-// #include "display.h"
+#include "display.h"
 #include "utility.h"
 
 class Motorcycle {
@@ -15,20 +15,20 @@ private:
     unsigned int const kAutoBrakeDecelerationPercentage_;
     unsigned int const kEmergencyBrakeDecelerationPercentage_;
     unsigned int const kTailLightStrobeInterval_;
-    // Display display_dash_;
+    Display display_dash_;
     
 public:
-    Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationPercentage, unsigned int const kEmergencyBrakeDecelerationPercentage, unsigned int const kTailLightStrobeInterval);
+    Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationPercentage, unsigned int const kEmergencyBrakeDecelerationPercentage, unsigned int const kTailLightStrobeInterval, Display &display_dash);
 
-    int StartMotorcycle();
+    int Start();
 
-    int StopMotorcycle();
+    int Stop();
 
-    // bool GetRunningState();
+    bool GetRunningState();
 
-    // bool GetSensorStandState();
+    bool GetSensorStandState();
 
-    unsigned int CurrentSpeed() const;
+    unsigned int GetSpeed() const;
 
     void AutoBrakeLight();
 

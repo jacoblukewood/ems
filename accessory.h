@@ -1,6 +1,6 @@
 #ifndef ACCESSORY_H
 #define ACCESSORY_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <HardwareSerial.h>
 
 class Accessory {

@@ -1,6 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <HardwareSerial.h>
 
 class Engine {
@@ -16,11 +16,11 @@ private:
 public:
     Engine(unsigned int const kTimeoutCranking, unsigned int const kTachometerRunningMinimum, unsigned int const kTachometerRedline, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor, unsigned int const kPinInputSensorTachometer);
 
-    bool StartEngine();
+    bool Start();
 
-    bool StopEngine();
+    bool Stop();
 
-    bool EngineStatus(void) const;
+    bool State(void) const;
 
     unsigned int CurrentTachometer(const int kPinInputSensorTachometer) const;
 };
