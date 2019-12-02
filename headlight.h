@@ -5,7 +5,8 @@
 
 #include "accessory.h"
 
-class Headlight: public Accessory {
+class Headlight : public Accessory
+{
 public:
     Headlight(unsigned int const kPinOutputHeadlight, unsigned int const kPinOutputHighBeam);
 

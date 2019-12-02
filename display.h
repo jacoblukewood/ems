@@ -13,14 +13,15 @@
 // Define proper RST_PIN if required.
 #define RST_PIN -1
 
-class Display: public SSD1306AsciiWire {
-    public:
+class Display : public SSD1306AsciiWire
+{
+public:
     Display();
     void Setup();
     void PrintHLine(int row);
-    void PrintLnCenter(const char * string, int row);
-    
-    private:
+    void PrintLnCenter(const char *string, int row);
+
+private:
 };
 
 #endif // DISPLAY_H

@@ -7,7 +7,8 @@
 #include "display.h"
 #include "utility.h"
 
-class Motorcycle {
+class Motorcycle
+{
 private:
     Engine engine_;
     unsigned int const kPinInputSensorSpeed_;
@@ -16,7 +17,7 @@ private:
     unsigned int const kEmergencyBrakeDecelerationPercentage_;
     unsigned int const kTailLightStrobeInterval_;
     Display display_dash_;
-    
+
 public:
     Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationPercentage, unsigned int const kEmergencyBrakeDecelerationPercentage, unsigned int const kTailLightStrobeInterval, Display &display_dash);
 
