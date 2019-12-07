@@ -1,44 +1,30 @@
 #include "motorcycle.h"
 
-Motorcycle::Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationPercentage, unsigned int const kEmergencyBrakeDecelerationPercentage, unsigned int const kTailLightStrobeInterval, Display &display_dash) : engine_(engine), kPinInputSensorSpeed_(kPinInputSensorSpeed), kPinInputAdjustmentSpeed_(kPinInputAdjustmentSpeed), kAutoBrakeDecelerationPercentage_(kAutoBrakeDecelerationPercentage), kEmergencyBrakeDecelerationPercentage_(kEmergencyBrakeDecelerationPercentage), kTailLightStrobeInterval_(kTailLightStrobeInterval), display_dash_(display_dash)
+Motorcycle::Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationPercentage, unsigned int const kEmergencyBrakeDecelerationPercentage, unsigned int const kTailLightStrobeInterval, Display &display_dash, unsigned int const kPinOutputPower) : engine_(engine), kPinInputSensorSpeed_(kPinInputSensorSpeed), kPinInputAdjustmentSpeed_(kPinInputAdjustmentSpeed), kAutoBrakeDecelerationPercentage_(kAutoBrakeDecelerationPercentage), kEmergencyBrakeDecelerationPercentage_(kEmergencyBrakeDecelerationPercentage), kTailLightStrobeInterval_(kTailLightStrobeInterval), display_dash_(display_dash), kPinOutputPower_(kPinOutputPower)
 {
 }
 
-int Motorcycle::Start()
+int Motorcycle::On()
 {
-
-    if (engine_.Start() == EXIT_FAILURE)
-    {
-        // Motorcycle::display_dash_.PrintBottom("Unable to Start", Display::Alignment::kCenter);
-        return EXIT_FAILURE;
-    }
-    else
-    {
-        return EXIT_SUCCESS;
-    }
+    // Switch on permenant power.
+    digitalWrite(Motorcycle::kPinOutputPower_, HIGH);
+    engine_stop_time_ = millis();
 }
 
-int Motorcycle::Stop()
+int Motorcycle::Off()
 {
-    // Ensure the bike is going less than 5 km/h
-    if (GetSpeed() <= 5)
-    {
-        return Motorcycle::engine_.Engine();
-    }
-    else
-    {
-        return EXIT_FAILURE;
-    }
-}
-
-bool Motorcycle::GetRunningState()
-{
-    return false;
+    Motorcycle::engine_.Stop();
+    digitalWrite(Motorcycle::kPinOutputPower_, LOW);
 }
 
 bool Motorcycle::GetSensorStandState()
 {
     return false;
+}
+
+bool Motorcycle::GetSafetyState()
+{
+    return (GetSensorStandState());
 }
 
 unsigned int Motorcycle::GetSpeed() const
@@ -49,7 +35,7 @@ unsigned int Motorcycle::GetSpeed() const
 
 void Motorcycle::AutoBrakeLight()
 {
-    // if (Motorcycle::GetSpeed() < 2 || (Motorcycle::GetSpeed() < Motorcycle::previous_speed * (1 - (Motorcycle::kAutoBrakeDecelerationPercentage_ * (Motorcycle::milliseconds_passed/1000)))) {
+    // if (Motorcycle::GetSpeed() < 1 || (Motorcycle::GetSpeed() < Motorcycle::previous_speed * (1 - (Motorcycle::kAutoBrakeDecelerationPercentage_ * (Motorcycle::milliseconds_passed/1000)))) {
     //     Motorcycle::brake.SetState(HIGH);
     // } else {
     //     brake.SetState(LOW);
@@ -63,4 +49,9 @@ void Motorcycle::EmergencyBrakeStrobe()
     //       Motorcycle::brake.SetState(!Motorcycle::brake.GetState());
     //     }
     //   }
+}
+
+void Motorcycle::PowerButton()
+{
+    Motorcycle::engine_.Start();
 }

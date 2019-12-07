@@ -5,7 +5,7 @@ Engine::Engine(unsigned int const kTimeoutCranking, unsigned int const kTachomet
 {
 }
 
-bool Engine::Start(void) const
+bool Engine::Start(void)
 {
     if (!GetState())
     {
@@ -37,8 +37,16 @@ bool Engine::Start(void) const
 
 bool Engine::Stop(void) const
 {
-    digitalWrite(Engine::kPinOutputPoints_, LOW);
-    return EXIT_SUCCESS;
+    // Ensure the bike is going less than 5 km/h
+    if (motorcycle_.GetSpeed() <= 5)
+    {
+        digitalWrite(Engine::kPinOutputPoints_, LOW);
+        return EXIT_SUCCESS;
+    }
+    else
+    {
+        return EXIT_FAILURE;
+    }
 }
 
 bool Engine::GetState(void) const

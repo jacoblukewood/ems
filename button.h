@@ -21,7 +21,7 @@ public:
     void SetState(bool state);
 
 private:
-    int kPinInput_;
+    unsigned int const kPinInput_;
     Accessory *output_;
     ButtonTypes type_;
     unsigned long timestamp_modified_;
