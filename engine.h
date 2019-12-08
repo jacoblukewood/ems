@@ -19,7 +19,7 @@ class Engine
 
         bool Start(void);
 
-        bool Stop(void) const;
+        void Stop(void) const;
 
         bool GetState(void) const;
 

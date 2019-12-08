@@ -13,9 +13,11 @@ public:
     enum ButtonTypes
     {
         kToggle,
-        kMomentary
+        kMomentary,
+        kPower
     };
     Button(int kPinInput, Accessory *output, enum Button::ButtonTypes kButtonType);
+    Button(int kPinInput, Motorcycle *output, enum Button::ButtonTypes kButtonType);
     void RefreshState();
     bool GetState();
     void SetState(bool state);
@@ -23,6 +25,7 @@ public:
 private:
     unsigned int const kPinInput_;
     Accessory *output_;
+    Motorcycle *motorcycle_;
     ButtonTypes type_;
     unsigned long timestamp_modified_;
     bool state_;

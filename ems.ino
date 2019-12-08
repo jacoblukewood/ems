@@ -23,6 +23,7 @@ static unsigned int const kFlashRate = 120; // * CONFIGURABLE * Times per minute
 static unsigned int const kTailLightBrightness = 20; // * CONFIGURABLE * A brightness value between 0 and 255 to be used for the  tail light brightness when the break light is off.
 static unsigned int const kTachometerRedline = 8000; // * CONFIGURABLE *
 static unsigned int const kTailLightStrobeInterval = 100; // * CONFIGURABLE * Milliseconds between on/off strobe.
+static unsigned int const kKey = 123;
 
 // Pins
 // Outputs
@@ -79,8 +80,8 @@ Button button_indicator_right(kPinInputButtonIndicatorRight, &indicator_right, B
 Button button_horn(kPinInputButtonHorn, &horn, Button::ButtonTypes::kMomentary);
 Button button_highbeam(kPinInputButtonHighBeam, &headlight, Button::ButtonTypes::kToggle);
 Button button_brake(kPinInputButtonBrake, &tail_light, Button::ButtonTypes::kMomentary);
-ButtonPower button_power(kPinInputButtonPower, &motorcycle, Button::ButtonTypes::kMomentary);
-RFID rfid();
+Button button_power(kPinInputButtonPower, &motorcycle, Button::ButtonTypes::kPower);
+RFID rfid(kKey);
 
 void setup()
 {
@@ -97,7 +98,7 @@ void loop()
   if (engine.GetState())
   {
     // If engine is running.
-    if (button_power.Pressed() || !motorcycle.GetSafetyState()) {
+    if (button_power.GetState() || !motorcycle.GetSafetyState()) {
       engine.Stop();
       motorcycle.engine_stop_time_ = millis();
     }
@@ -105,7 +106,7 @@ void loop()
   else
   {
     // If engine is not running.
-    if (button_power.Pressed() || motorcycle.GetSafetyState()) {
+    if (button_power.GetState() || motorcycle.GetSafetyState()) {
       engine.Start();
     }
   }

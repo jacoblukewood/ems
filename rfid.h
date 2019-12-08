@@ -6,8 +6,11 @@
 class RFID
 {
 private:
+    unsigned int key_;
+
 public:
-    RFID();
+    RFID(unsigned int key);
+    bool Verify();
 };
 
 #endif // RFID_H

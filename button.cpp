@@ -4,6 +4,11 @@ Button::Button(int kPinInput, Accessory *output, enum Button::ButtonTypes kButto
   pinMode(Button::kPinInput_, INPUT_PULLUP);
 }
 
+Button::Button(int kPinInput, Motorcycle *motorcycle, enum Button::ButtonTypes kButtonType) : kPinInput_(kPinInput), motorcycle_(motorcycle), type_(kButtonType)
+{
+  pinMode(Button::kPinInput_, INPUT_PULLUP);
+}
+
 void Button::RefreshState()
 {
   switch (type_)
@@ -16,6 +21,10 @@ void Button::RefreshState()
     break;
 
   case Button::ButtonTypes::kMomentary:
+    SetState(!digitalRead(kPinInput_));
+    break;
+
+  case Button::ButtonTypes::kPower:
     SetState(!digitalRead(kPinInput_));
     break;
   }

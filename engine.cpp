@@ -35,18 +35,9 @@ bool Engine::Start(void)
     }
 }
 
-bool Engine::Stop(void) const
+void Engine::Stop(void) const
 {
-    // Ensure the bike is going less than 5 km/h
-    if (motorcycle_.GetSpeed() <= 5)
-    {
-        digitalWrite(Engine::kPinOutputPoints_, LOW);
-        return EXIT_SUCCESS;
-    }
-    else
-    {
-        return EXIT_FAILURE;
-    }
+    digitalWrite(Engine::kPinOutputPoints_, LOW);
 }
 
 bool Engine::GetState(void) const
