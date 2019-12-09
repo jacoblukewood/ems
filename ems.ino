@@ -24,6 +24,7 @@ static unsigned int const kTailLightBrightness = 20; // * CONFIGURABLE * A brigh
 static unsigned int const kTachometerRedline = 8000; // * CONFIGURABLE *
 static unsigned int const kTailLightStrobeInterval = 100; // * CONFIGURABLE * Milliseconds between on/off strobe.
 static unsigned int const kKey = 123;
+static unsigned int const kTimeAutoOff = 10000;
 
 // Pins
 // Outputs
@@ -85,39 +86,57 @@ RFID rfid(kKey);
 
 void setup()
 {
+  display_dash.Setup();
+
+  // Wait for valid key. The reed switch will keep the power on for this time, turning off if a key is removed.
   while(!rfid.Verify()) {
     display_dash.PrintLnCenter("Invalid Key", 0);
   }
 
-  motorcycle.On();
-  display_dash.Setup();
+  // Permanently Power on EMU. Accessory mode.
+  motorcycle.PowerOn();
+  display_dash.PrintLnCenter("Ready", 0);
 }
 
 void loop()
 {
+  // If engine is running.
   if (engine.GetState())
   {
-    // If engine is running.
-    if (button_power.GetState() || !motorcycle.GetSafetyState()) {
+    // If power button is pressed or it is unsafe.
+    if (button_power.GetState()) {
       engine.Stop();
-      motorcycle.engine_stop_time_ = millis();
+      motorcycle.time_enter_acc_ = millis();
     }
-  }
-  else
-  {
-    // If engine is not running.
-    if (button_power.GetState() || motorcycle.GetSafetyState()) {
-      engine.Start();
+    if (!motorcycle.GetSafetyState()) {
+      engine.Stop();
+      motorcycle.time_enter_acc_ = millis();
+      // TODO: Display safety error message.
     }
   }
 
-  // Motorcycle off after non-engine running timeout
-  if (utility::IntervalPassed(motorcycle.engine_stop_time_, 10000)) {
-    motorcycle.Off();
+  // If engine is not running.
+  else {
+    // If power button is pressed.
+    if (button_power.GetState()) {
+      // If it is safe.
+      if (motorcycle.GetSafetyState()){
+        engine.Start();
+      // If it is unsafe.
+      } else {
+        // TODO: Unsafe message.
+      }
+    }
+
+    // If in accessory for longer than the auto-off period.
+    if (utility::IntervalPassed(motorcycle.time_enter_acc_, kTimeAutoOff)) {
+      motorcycle.PowerOff();
+    }
   }
 
+
+  // Regardless of running state
   motorcycle.AutoBrakeLight();
-
   motorcycle.EmergencyBrakeStrobe();
 
   // Check and Action Buttons

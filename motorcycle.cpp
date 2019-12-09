@@ -4,17 +4,34 @@ Motorcycle::Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, 
 {
 }
 
-int Motorcycle::On()
+int Motorcycle::PowerOn()
 {
     // Switch on permenant power.
     digitalWrite(Motorcycle::kPinOutputPower_, HIGH);
-    engine_stop_time_ = millis();
+    time_enter_acc_ = millis();
 }
 
-int Motorcycle::Off()
+int Motorcycle::PowerOff()
 {
-    Motorcycle::engine_.Stop();
+    // TODO: Clear display and return speedo.
     digitalWrite(Motorcycle::kPinOutputPower_, LOW);
+}
+
+int Motorcycle::Start()
+{
+    Motorcycle::engine_.Start();
+}
+
+int Motorcycle::Stop()
+{
+    if(Motorcycle::GetSpeed() < 5.0) {
+        Motorcycle::engine_.Stop();
+        return EXIT_SUCCESS;
+    } else
+    {
+        return EXIT_FAILURE;
+    }
+    
 }
 
 bool Motorcycle::GetSensorStandState()
@@ -35,10 +52,10 @@ unsigned int Motorcycle::GetSpeed() const
 
 void Motorcycle::AutoBrakeLight()
 {
-    // if (Motorcycle::GetSpeed() < 1 || (Motorcycle::GetSpeed() < Motorcycle::previous_speed * (1 - (Motorcycle::kAutoBrakeDecelerationPercentage_ * (Motorcycle::milliseconds_passed/1000)))) {
-    //     Motorcycle::brake.SetState(HIGH);
-    // } else {
-    //     brake.SetState(LOW);
+//     if (Motorcycle::GetSpeed() < 1 || (Motorcycle::GetSpeed() < Motorcycle::previous_speed * (1 - (Motorcycle::kAutoBrakeDecelerationPercentage_ * (Motorcycle::milliseconds_passed/1000)))) {
+//         Motorcycle::brake.SetState(HIGH);
+//     } else {
+//         brake.SetState(LOW);
     // }
 }
 

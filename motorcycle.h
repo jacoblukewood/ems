@@ -10,21 +10,26 @@
 class Motorcycle
 {
 private:
-    Engine engine_;
     unsigned int const kPinInputSensorSpeed_;
     unsigned int const kPinInputAdjustmentSpeed_;
     unsigned int const kAutoBrakeDecelerationPercentage_;
     unsigned int const kEmergencyBrakeDecelerationPercentage_;
     unsigned int const kTailLightStrobeInterval_;
-    Display display_dash_;
     unsigned int const kPinOutputPower_;
+
+    Engine engine_;
+    Display display_dash_;
 
 public:
     Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationPercentage, unsigned int const kEmergencyBrakeDecelerationPercentage, unsigned int const kTailLightStrobeInterval, Display &display_dash, unsigned int const kPinOutputPower);
 
-    int On();
+    int PowerOn();
 
-    int Off();
+    int PowerOff();
+
+    int Start();
+
+    int Stop();
 
     bool GetSensorStandState();
 
@@ -38,7 +43,7 @@ public:
 
     void PowerButton();
 
-    unsigned int engine_stop_time_;
+    unsigned int time_enter_acc_;
 };
 
 #endif // MOTORCYCLE_H
