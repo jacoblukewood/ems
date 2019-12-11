@@ -27,21 +27,17 @@ public:
 
     int PowerOff();
 
-    int Start();
-
-    int Stop();
-
     bool GetSensorStandState();
 
     bool GetSafetyState();
 
     unsigned int GetSpeed() const;
+    
+    unsigned int SpeedComparison();
 
     void AutoBrakeLight();
 
     void EmergencyBrakeStrobe();
-
-    void PowerButton();
 
     unsigned int time_enter_acc_;
 };

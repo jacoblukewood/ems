@@ -103,11 +103,12 @@ void loop()
   // If engine is running.
   if (engine.GetState())
   {
-    // If power button is pressed or it is unsafe.
+    // If power button is pressed.
     if (button_power.GetState()) {
       engine.Stop();
       motorcycle.time_enter_acc_ = millis();
     }
+    // If it is unsafe.
     if (!motorcycle.GetSafetyState()) {
       engine.Stop();
       motorcycle.time_enter_acc_ = millis();
@@ -128,7 +129,7 @@ void loop()
       }
     }
 
-    // If in accessory for longer than the auto-off period.
+    // If in accessory mode for longer than the auto-off period.
     if (utility::IntervalPassed(motorcycle.time_enter_acc_, kTimeAutoOff)) {
       motorcycle.PowerOff();
     }

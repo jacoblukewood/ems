@@ -7,5 +7,12 @@ RFID::RFID(unsigned int key)
 
 bool RFID::Verify()
 {
-    
+    // TODO: Implement RFID firmware.
+    // while (RFID::Read() == NULL) {
+    //     if (RFID::Read() == key_) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 }

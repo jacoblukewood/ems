@@ -17,23 +17,6 @@ int Motorcycle::PowerOff()
     digitalWrite(Motorcycle::kPinOutputPower_, LOW);
 }
 
-int Motorcycle::Start()
-{
-    Motorcycle::engine_.Start();
-}
-
-int Motorcycle::Stop()
-{
-    if(Motorcycle::GetSpeed() < 5.0) {
-        Motorcycle::engine_.Stop();
-        return EXIT_SUCCESS;
-    } else
-    {
-        return EXIT_FAILURE;
-    }
-    
-}
-
 bool Motorcycle::GetSensorStandState()
 {
     return false;
@@ -50,25 +33,30 @@ unsigned int Motorcycle::GetSpeed() const
     // TODO: Add adjustment settings.
 }
 
+unsigned int Motorcycle::SpeedComparison()
+{
+    static unsigned int speed_last_recorded_;
+    static unsigned int time_last_recorded_;
+
+    if (utility::IntervalPassed(time_last_recorded_, 1000)) {
+        return ((Motorcycle::GetSpeed() / speed_last_recorded_) * ((time_last_recorded_ - millis()) / 1000));
+    }
+}
+
 void Motorcycle::AutoBrakeLight()
 {
-//     if (Motorcycle::GetSpeed() < 1 || (Motorcycle::GetSpeed() < Motorcycle::previous_speed * (1 - (Motorcycle::kAutoBrakeDecelerationPercentage_ * (Motorcycle::milliseconds_passed/1000)))) {
-//         Motorcycle::brake.SetState(HIGH);
-//     } else {
-//         brake.SetState(LOW);
+    // if (Motorcycle::GetSpeed() < 1 || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationPercentage_) {
+    //     Motorcycle::brake.SetState(HIGH);
     // }
 }
 
 void Motorcycle::EmergencyBrakeStrobe()
 {
-    //   if (Motorcycle::GetSpeed < (Motorcycle::previous_speed * (1 - (Motorcycle::kEmergencyBrakeDecelerationPercentage_ * (utility::TimePassed(Motorcycle::timestamp_previous_speed)/1000))))) {
-    //     if(utility::IntervalPassed(Motorcycle::brake.GetTimestampModified(), Motorcycle::kTailLightStrobeInterval_)) {
-    //       Motorcycle::brake.SetState(!Motorcycle::brake.GetState());
-    //     }
-    //   }
-}
+    // static unsigned int time_last_cycled_;
 
-void Motorcycle::PowerButton()
-{
-    Motorcycle::engine_.Start();
+    // if (Motorcycle::GetSpeed() < 1 || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationPercentage_) {
+    //     if (time_last_cycled_ > kTailLightStrobeInterval_){
+    //         Motorcycle::brake.SetState(!break.GetState());
+    //     }
+    // }
 }
