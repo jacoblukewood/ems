@@ -1,6 +1,6 @@
-#include "utility.h"
+#include "helper.h"
 
-namespace utility
+namespace helper
 {
 bool IntervalPassed(unsigned long start_time, unsigned int interval)
 {
@@ -11,4 +11,4 @@ unsigned long TimePassed(unsigned long start_time)
 {
     return ((unsigned long)(millis() - start_time));
 }
-} // namespace utility
+} // namespace helper

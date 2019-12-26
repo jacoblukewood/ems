@@ -7,12 +7,12 @@ Indicator::Indicator(unsigned int const kPinOutput, unsigned int const kFlashRat
 
 void Indicator::Action()
 {
-  if (motorcycle_.GetSpeed() > 15 && utility::IntervalPassed(Accessory::GetTimestampModified(), 10000))
+  if (motorcycle_.GetSpeed() > 15 && helper::IntervalPassed(Accessory::GetTimestampModified(), 10000))
   {
     Cancel();
     // TODO: this whole if needs fixing beause this check wont run unless the button has been pushed making it useless
   }
-  else if (utility::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))
+  else if (helper::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))
   {
     digitalWrite(Indicator::GetPinOutput(), !digitalRead(Indicator::GetPinOutput()));
     Indicator::SetTimestampCycled(millis());

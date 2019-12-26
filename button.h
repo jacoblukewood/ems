@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <HardwareSerial.h>
 
-#include "utility.h"
+#include "helper.h"
 #include "accessory.h"
 #include "indicator.h"
 

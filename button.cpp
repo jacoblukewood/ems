@@ -14,7 +14,7 @@ void Button::RefreshState()
   switch (type_)
   {
   case Button::ButtonTypes::kToggle:
-    if (!digitalRead(kPinInput_) && utility::IntervalPassed(timestamp_modified_, kDebounce_))
+    if (!digitalRead(kPinInput_) && helper::IntervalPassed(timestamp_modified_, kDebounce_))
     {
       SetState(!GetState());
     }

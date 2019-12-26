@@ -2,6 +2,7 @@
 // Written 2019 by Jacob Wood.
 
 #include <Arduino.h>
+#include <EEPROM.h>
 #include <HardwareSerial.h>
 #include "motorcycle.h"
 #include "engine.h"
@@ -9,7 +10,7 @@
 #include "indicator.h"
 #include "display.h"
 #include "light.h"
-#include "utility.h"
+#include "helper.h"
 #include "button.h"
 #include "rfid.h"
 
@@ -25,6 +26,10 @@ static unsigned int const kTachometerRedline = 8000; // * CONFIGURABLE *
 static unsigned int const kTailLightStrobeInterval = 100; // * CONFIGURABLE * Milliseconds between on/off strobe.
 static unsigned int const kKey = 123;
 static unsigned int const kTimeAutoOff = 10000;
+static unsigned long const kOdometerStart;
+
+// Variables
+static unsigned long OdometerTrip = 0;
 
 // Pins
 // Outputs
@@ -130,7 +135,7 @@ void loop()
     }
 
     // If in accessory mode for longer than the auto-off period.
-    if (utility::IntervalPassed(motorcycle.time_enter_acc_, kTimeAutoOff)) {
+    if (helper::IntervalPassed(motorcycle.time_enter_acc_, kTimeAutoOff)) {
       motorcycle.PowerOff();
     }
   }

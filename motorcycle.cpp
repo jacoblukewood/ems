@@ -38,7 +38,7 @@ unsigned int Motorcycle::SpeedComparison()
     static unsigned int speed_last_recorded_;
     static unsigned int time_last_recorded_;
 
-    if (utility::IntervalPassed(time_last_recorded_, 1000)) {
+    if (helper::IntervalPassed(time_last_recorded_, 1000)) {
         return ((Motorcycle::GetSpeed() / speed_last_recorded_) * ((time_last_recorded_ - millis()) / 1000));
     }
 }

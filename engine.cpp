@@ -1,5 +1,5 @@
 #include "engine.h"
-#include "utility.h"
+#include "helper.h"
 
 Engine::Engine(unsigned int const kTimeoutCranking, unsigned int const kTachometerRunningMinimum, unsigned int const kTachometerRedline, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor, unsigned int const kPinInputSensorTachometer) : kPinOutputPoints_(kPinOutputPoints), kPinOutputStarterMotor_(kPinOutputStarterMotor), kPinInputSensorTachometer_(kPinInputSensorTachometer), kTimeoutCranking_(kTimeoutCranking), kTachometerRunningMinimum_(kTachometerRunningMinimum), kTachometerRedline_(kTachometerRedline)
 {
@@ -21,7 +21,7 @@ bool Engine::Start(void)
             digitalWrite(Engine::kPinOutputStarterMotor_, LOW);
             return EXIT_SUCCESS;
         }
-        else if (utility::IntervalPassed(Engine::start_attempt_time_, Engine::kTimeoutCranking_))
+        else if (helper::IntervalPassed(Engine::start_attempt_time_, Engine::kTimeoutCranking_))
         {
             // Craking timeout exceeded, give up.
             digitalWrite(Engine::kPinOutputPoints_, LOW);

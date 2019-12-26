@@ -1,9 +1,9 @@
-#ifndef UTILITY_H
-#define UTILITY_H
+#ifndef HELPER_H
+#define HELPER_H
 #include <Arduino.h>
 #include <HardwareSerial.h>
 
-namespace utility
+namespace helper
 {
 /*
     * Function:  IntervalPassed
@@ -17,6 +17,6 @@ namespace utility
     */
 bool IntervalPassed(unsigned long start_time, unsigned int interval);
 unsigned long TimePassed(unsigned long start_time);
-} // namespace utility
+} // namespace helper
 
-#endif // UTILITY_H
+#endif // HELPER_H
