@@ -15,21 +15,23 @@
 #include "rfid.h"
 
 // Constants
-static float const kTachometerRunningMinimum = 10.0; // * CONFIGURABLE * An RPM value which is below the lowest RPM the engine could hit when running but well above the RPM the engine could hit when the start motor is running.
-static float const kAutoBrakeDecelerationRate = 0.04; // * CONFIGURABLE *
-static float const kEmergencyBrakeDecelerationRate = 6.0; // * CONFIGURABLE * Deceleration ate in m/s that the emergency brake lights are activated. (5.2.23.1. The signal shall not be activated when the vehicle deceleration is below 6 m/s² but it may be generated at any deceleration at or above this value, the actual value being defined by the vehicle manufacturer. - Vehicle Standard (Australian Design Rule 31/04 – Brake Systems for Passenger Cars) 2017).
-static unsigned int const kTimeoutCranking = 2000; // * CONFIGURABLE * The amount of milliseconds to run the start motor before timing out if the engine has not started.
-static unsigned int const kOffHoldTime = 5000; // * CONFIGURABLE * The length of time in milliseconds the start button should be held to turn the engine off.
+static float const kTachometerRunningMinimum = 700.0; // * CONFIGURABLE * RPM value at which the engine is determined to have started.
+static float const kAutoOffIndicatorOffMinSpeed = 25.0; // * CONFIGURABLE * Speed that the bike must be above for > kAutoOffIndicatorOffTimeout for the indicators to be turned off automatically.
+static float const kAutoOffIndicatorOffTimeout = 10.0; // * CONFIGURABLE * Time in seconds the indicators must be left on while the bike is travling above kAutoOffIndicatorOffMinSpeed to be automatically turned off.
+static float const kAutoBrakeDecelerationRate = 0.04; // * CONFIGURABLE * Decelleration rate in m/s2 that auto brake is activated at/above.
+static float const kEmergencyBrakeDecelerationRate = 6.0; // * CONFIGURABLE * Deceleration rate in m/s2 that the emergency brake lights are activated at/above. (5.2.23.1. The signal shall not be activated when the vehicle deceleration is below 6 m/s² but it may be generated at any deceleration at or above this value, the actual value being defined by the vehicle manufacturer. - Vehicle Standard (Australian Design Rule 31/04 – Brake Systems for Passenger Cars) 2017).
+static unsigned int const kTimeoutCranking = 2000; // * CONFIGURABLE * Timeout in milliseconds for auto start.
+static unsigned int const kOffHoldTime = 5000; // * CONFIGURABLE * Time in milliseconds to hold the power button to trigger it.
 static unsigned int const kFlashRate = 120; // * CONFIGURABLE * Times per minute to flash indicators. (6.3.11.1.1. the light flashing frequency shall be 90 ± 30 times per minute; - Vehicle Standard (Australian Design Rule 19/00 – Installation of Lighting and Light-Signalling Devices on L-Group Vehicles) 2006).
-static unsigned int const kTailLightBrightness = 20; // * CONFIGURABLE * A brightness value between 0 and 255 to be used for the  tail light brightness when the break light is off.
-static unsigned int const kTachometerRedline = 8000; // * CONFIGURABLE *
-static unsigned int const kTailLightStrobeInterval = 100; // * CONFIGURABLE * Milliseconds between on/off strobe.
-static unsigned int const kKey = 123;
-static unsigned int const kTimeAutoOff = 10000;
-static unsigned long const kOdometerStart;
+static unsigned int const kTailLightBrightness = 20; // * CONFIGURABLE * Tail light (when not activated as a brake light) brightness. Value between 0 (off) - 255 (high, avoid as this is the break light brightness).
+static unsigned int const kTachometerRedline = 8000; // * CONFIGURABLE * RPM value at which the motorcycle meets redline.
+static unsigned int const kTailLightStrobeInterval = 100; // * CONFIGURABLE * Time in milliseconds between on/off strobe.
+static unsigned int const kKey = 123; // * CONFIGURABLE * RFID UID of valid key. 
+static unsigned int const kTimeAutoOff = 10000; // * CONFIGURABLE * Timeeout in milliseconds to leave accessory mode and power off.
+static unsigned long const kOdometerStart; // Odometer reading from EEPROM at motorcycle startup.
 
 // Variables
-static unsigned long OdometerTrip = 0;
+static unsigned long OdometerTrip = 0; // Odometer value for the trip, to be added to kOdometerStart and written after > 1 hour and at power down.
 
 // Pins
 // Outputs
@@ -52,21 +54,18 @@ static unsigned int const kPinOutputDisplaySCL = 21;
 
 // Inputs
 // Buttons
-static unsigned int const kPinInputButtonIndicatorLeft = 2;  // Right Indicator Button - TOGGLE
-static unsigned int const kPinInputButtonIndicatorRight = 3; // Left Indicator Button - TOGGLE
-static unsigned int const kPinInputButtonPower = 4;          // Start Button - MOMENTARY
-static unsigned int const kPinInputButtonHorn = 5;           // Horn Button - MOMENTARY
-static unsigned int const kPinInputButtonHighBeam = 6;       // High Beam Button - TOGGLE
-static unsigned int const kPinInputButtonBrake = 7;          // Brake Light Button - MOMENTARY
+static unsigned int const kPinInputButtonIndicatorLeft = 2; 
+static unsigned int const kPinInputButtonIndicatorRight = 3;
+static unsigned int const kPinInputButtonPower = 4;
+static unsigned int const kPinInputButtonHorn = 5;
+static unsigned int const kPinInputButtonHighBeam = 6;
+static unsigned int const kPinInputButtonBrake = 7;
 
 // Sensors
-static unsigned int const kPinInputSensorTachometer = A0; // Tachometer Analogue Input
-static unsigned int const kPinInputSensorSpeed = A1;      // Speedometer Digital Input - Must be a valid interrupt pin (https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/)
-static unsigned int const kPinInputSensorNeutral = A2;
-static unsigned int const kPinInputSensorSideStand = A3;
-
-// Adjustments
-static unsigned int const kPinInputAdjustmentSpeed = A5;
+static unsigned int const kPinInputSensorTachometer = A0; // Required to be analog.
+static unsigned int const kPinInputSensorSpeed = A1; // Required to be analog.
+static unsigned int const kPinInputSensorNeutral = A2; // Required to be analog.
+static unsigned int const kPinInputSensorSideStand = A3; // Required to be analog.
 
 // Objects
 // Outputs
