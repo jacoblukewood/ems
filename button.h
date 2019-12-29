@@ -18,8 +18,8 @@ public:
     };
     Button(int kPinInput, Accessory *output, enum Button::ButtonTypes kButtonType);
     Button(int kPinInput, Motorcycle *output, enum Button::ButtonTypes kButtonType);
-    void RefreshState();
-    bool GetState();
+    void RefreshState(void);
+    bool GetState(void) const;
     void SetState(bool state);
 
 private:

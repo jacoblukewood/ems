@@ -13,8 +13,8 @@ class Indicator : public Accessory
 {
 public:
     Indicator(unsigned int const kPinOutput, unsigned int const kFlashRate, Motorcycle &motorcycle);
-    void Action();
-    unsigned long GetTimestampCycled();
+    void Action(bool state);
+    unsigned long GetTimestampCycled(void) const;
     void SetTimestampCycled(unsigned long timestamp_cycled);
 
 private:

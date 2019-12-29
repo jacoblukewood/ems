@@ -1,11 +1,11 @@
 #include "display.h"
 #define I2C_ADDRESS 0x3C
 
-Display::Display()
+Display::Display(void)
 {
 }
 
-void Display::Setup()
+void Display::Setup(void)
 {
   Wire.begin();
   Wire.setClock(400000L);

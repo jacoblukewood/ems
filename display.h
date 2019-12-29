@@ -16,8 +16,8 @@
 class Display : public SSD1306AsciiWire
 {
 public:
-    Display();
-    void Setup();
+    Display(void);
+    void Setup(void);
     void PrintHLine(int row);
     void PrintLnCenter(const char *string, int row);
 

@@ -2,24 +2,24 @@
 
 Indicator::Indicator(unsigned int const kPinOutput, unsigned int const kFlashRate, Motorcycle &motorcycle) : Accessory(kPinOutput), motorcycle_(motorcycle)
 {
-  kFlashCycle_ = 60000 / (kFlashRate * 2);
+  kFlashCycle_ = MILLISECONDS_PER_MINUTE / (kFlashRate * 2);
 }
 
-void Indicator::Action()
+void Indicator::Action(bool state)
 {
   if (motorcycle_.GetSpeed() > 15 && helper::IntervalPassed(Accessory::GetTimestampModified(), 10000))
   {
-    Cancel();
+    Accessory::Action(state);
     // TODO: this whole if needs fixing beause this check wont run unless the button has been pushed making it useless
   }
   else if (helper::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))
   {
-    digitalWrite(Indicator::GetPinOutput(), !digitalRead(Indicator::GetPinOutput()));
+    digitalWrite(Indicator::GetPinOutput(), helper::GetInputState(Indicator::GetPinOutput()));
     Indicator::SetTimestampCycled(millis());
   }
 }
 
-unsigned long Indicator::GetTimestampCycled()
+unsigned long Indicator::GetTimestampCycled(void) const
 {
   return timestamp_cycled_;
 }

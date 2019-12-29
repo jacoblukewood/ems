@@ -7,11 +7,10 @@ class Accessory
 {
 public:
     Accessory(unsigned int const kPinOutput);
-    virtual void Action();
-    void Cancel();
-    unsigned long GetTimestampModified() const;
+    virtual void Action(bool state);
+    unsigned long GetTimestampModified(void) const;
     void SetTimestampModified(unsigned long timestamp_modified);
-    int GetPinOutput() const;
+    int GetPinOutput(void) const;
 
 private:
     unsigned int const kPinOutput_;

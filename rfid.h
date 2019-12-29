@@ -10,7 +10,7 @@ private:
 
 public:
     RFID(unsigned int key);
-    bool Verify();
+    bool Verify(void) const;
 };
 
 #endif // RFID_H

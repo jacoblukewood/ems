@@ -12,32 +12,35 @@ class Motorcycle
 private:
     unsigned int const kPinInputSensorSpeed_;
     unsigned int const kPinInputAdjustmentSpeed_;
-    unsigned int const kAutoBrakeDecelerationPercentage_;
-    unsigned int const kEmergencyBrakeDecelerationPercentage_;
+    unsigned int const kAutoBrakeDecelerationRate_;
+    unsigned int const kEmergencyBrakeDecelerationRate_;
     unsigned int const kTailLightStrobeInterval_;
     unsigned int const kPinOutputPower_;
+    unsigned int const kPinInputSensorSideStand_;
 
     Engine engine_;
     Display display_dash_;
 
 public:
-    Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationPercentage, unsigned int const kEmergencyBrakeDecelerationPercentage, unsigned int const kTailLightStrobeInterval, Display &display_dash, unsigned int const kPinOutputPower);
+    Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display &display_dash, unsigned int const kPinOutputPower, unsigned int const kPinInputSensorSideStand_);
 
-    int PowerOn();
+    bool PowerOn(void);
 
-    int PowerOff();
+    bool PowerOff(void);
 
-    bool GetSensorStandState();
+    bool GetStateSensorSideStand(void) const;
 
-    bool GetSafetyState();
+    bool GetStateSafety(void) const;
 
-    unsigned int GetSpeed() const;
+    unsigned int GetSpeed(void) const;
+
+    unsigned int GetOdometer(void) const;
     
-    unsigned int SpeedComparison();
+    unsigned int SpeedComparison(void) const;
 
-    void AutoBrakeLight();
+    void AutoBrakeLight(void);
 
-    void EmergencyBrakeStrobe();
+    void EmergencyBrakeStrobe(void);
 
     unsigned int time_enter_acc_;
 };

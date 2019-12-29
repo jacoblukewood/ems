@@ -9,37 +9,30 @@ Button::Button(int kPinInput, Motorcycle *motorcycle, enum Button::ButtonTypes k
   pinMode(Button::kPinInput_, INPUT_PULLUP);
 }
 
-void Button::RefreshState()
+void Button::RefreshState(void)
 {
   switch (type_)
   {
-  case Button::ButtonTypes::kToggle:
-    if (!digitalRead(kPinInput_) && helper::IntervalPassed(timestamp_modified_, kDebounce_))
-    {
-      SetState(!GetState());
-    }
-    break;
+    case Button::ButtonTypes::kToggle:
+      if (helper::GetInputState(kPinInput_) && helper::IntervalPassed(timestamp_modified_, kDebounce_))
+      {
+        SetState(!GetState());
+      }
+      break;
 
-  case Button::ButtonTypes::kMomentary:
-    SetState(!digitalRead(kPinInput_));
-    break;
+    case Button::ButtonTypes::kMomentary:
+      SetState(helper::GetInputState(kPinInput_));
+      break;
 
-  case Button::ButtonTypes::kPower:
-    SetState(!digitalRead(kPinInput_));
-    break;
+    case Button::ButtonTypes::kPower:
+      SetState(helper::GetInputState(kPinInput_));
+      break;
   }
 
-  if (GetState())
-  {
-    output_->Action();
-  }
-  else
-  {
-    output_->Cancel();
-  }
+  output_->Action(GetState());
 }
 
-bool Button::GetState()
+bool Button::GetState(void) const
 {
   return state_;
 }

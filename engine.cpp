@@ -19,18 +19,18 @@ bool Engine::Start(void)
         {
             // If engine has started.
             digitalWrite(Engine::kPinOutputStarterMotor_, LOW);
-            return EXIT_SUCCESS;
+            return true;
         }
         else if (helper::IntervalPassed(Engine::start_attempt_time_, Engine::kTimeoutCranking_))
         {
             // Craking timeout exceeded, give up.
             digitalWrite(Engine::kPinOutputPoints_, LOW);
             digitalWrite(Engine::kPinOutputStarterMotor_, LOW);
-            return EXIT_FAILURE;
+            return false;
         }
         else
         {
-            return EXIT_FAILURE; // TODO: check this, added to remove non-void return warning
+            return false; // TODO: check this, added to remove non-void return warning
         }
     }
 }
