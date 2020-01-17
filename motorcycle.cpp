@@ -1,6 +1,6 @@
 #include "motorcycle.h"
 
-Motorcycle::Motorcycle(Engine &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kPinInputAdjustmentSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display &display_dash, unsigned int const kPinOutputPower, unsigned int const kPinInputSensorSideStand) : engine_(engine), kPinInputSensorSpeed_(kPinInputSensorSpeed), kPinInputAdjustmentSpeed_(kPinInputAdjustmentSpeed), kAutoBrakeDecelerationRate_(kAutoBrakeDecelerationRate), kEmergencyBrakeDecelerationRate_(kEmergencyBrakeDecelerationRate), kTailLightStrobeInterval_(kTailLightStrobeInterval), display_dash_(display_dash), kPinOutputPower_(kPinOutputPower), kPinInputSensorSideStand_(kPinInputSensorSideStand)
+Motorcycle::Motorcycle(Engine const &engine, unsigned int const kPinInputSensorSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display const &display_dash, unsigned int const kPinOutputPower, unsigned int const kPinInputSensorSideStand) : engine_(engine), kPinInputSensorSpeed_(kPinInputSensorSpeed), kAutoBrakeDecelerationRate_(kAutoBrakeDecelerationRate), kEmergencyBrakeDecelerationRate_(kEmergencyBrakeDecelerationRate), kTailLightStrobeInterval_(kTailLightStrobeInterval), display_dash_(display_dash), kPinOutputPower_(kPinOutputPower), kPinInputSensorSideStand_(kPinInputSensorSideStand)
 {
 }
 
@@ -20,6 +20,11 @@ bool Motorcycle::PowerOff(void)
     // TODO: Clear display, return speedo, and save odometer.
     digitalWrite(Motorcycle::kPinOutputPower_, LOW);
     return true;
+}
+
+bool Motorcycle::GetStatePower(void) const
+{
+    return digitalRead(Motorcycle::kPinOutputPower_);
 }
 
 // Returns the state (boolean) of the side stand.
@@ -58,7 +63,8 @@ unsigned int Motorcycle::SpeedComparison(void) const
     static unsigned int speed_last_recorded_;
     static unsigned int time_last_recorded_;
 
-    if (helper::IntervalPassed(time_last_recorded_, 1000)) {
+    if (helper::IntervalPassed(time_last_recorded_, 1000))
+    {
         return ((Motorcycle::GetSpeed() / speed_last_recorded_) * ((time_last_recorded_ - millis()) / 1000));
     }
 }
@@ -66,9 +72,10 @@ unsigned int Motorcycle::SpeedComparison(void) const
 // Checks if the motorcycle is slowing and activates the brake lights accordingly.
 void Motorcycle::AutoBrakeLight(void)
 {
-    if ((Motorcycle::GetSpeed() < 1) || Motorcycle::GetSpeed() > kAutoBrakeDecelerationRate_) {
+    if ((Motorcycle::GetSpeed() < 1) || Motorcycle::GetSpeed() > kAutoBrakeDecelerationRate_)
+    {
         // Speed less than 2 km compared to 1 second before
-        Motorcycle::brake.SetState(HIGH);
+        // Motorcycle::brake.SetState(HIGH);
     }
 }
 
@@ -79,9 +86,11 @@ void Motorcycle::EmergencyBrakeStrobe(void)
     // more than 15/km drop in 1 second
     // static unsigned int time_last_cycled_;
 
-    if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate_) {
-        if (time_last_cycled_ > kTailLightStrobeInterval_){
-            Motorcycle::brake.SetState(!break.GetState());
-        }
+    if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate_)
+    {
+        // if (time_last_cycled_ > kTailLightStrobeInterval_)
+        // {
+        //     // Motorcycle::brake.SetState(!break.GetState());
+        // }
     }
 }

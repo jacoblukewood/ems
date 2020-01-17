@@ -42,12 +42,12 @@ void Engine::Stop(void) const
 
 bool Engine::GetState(void) const
 {
-    return (Engine::GetTachometer(Engine::kPinInputSensorTachometer_) > Engine::kTachometerRunningMinimum_); // If the current tachometer is greater than the minimum running value (RUNNING_TACHOMETER) than the bike is started.
+    return (Engine::GetTachometer() > Engine::kTachometerRunningMinimum_); // If the current tachometer is greater than the minimum running value (RUNNING_TACHOMETER) than the bike is started.
 }
 
 // Convert the analog reading (which goes from 0 - 1023) RPM based on redline
-unsigned int Engine::GetTachometer(const int kPinInputSensorTachometer) const
+unsigned int Engine::GetTachometer(void) const
 {
-    float tachometer_ = analogRead(kPinInputSensorTachometer) * (Engine::kTachometerRedline_ / 1023.0);
+    float tachometer_ = analogRead(kPinInputSensorTachometer_) * (Engine::kTachometerRedline_ / 1023.0);
     return tachometer_;
 }

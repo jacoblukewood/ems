@@ -23,7 +23,7 @@ void Display::PrintHLine(int row)
   setLetterSpacing(default_spacing);
 }
 
-void Display::PrintLnCenter(const char *string, int row)
+void Display::PrintLnCenter(char const *string, int row)
 {
   setRow(row);
   setCol((displayWidth() - strWidth(string)) / 2);

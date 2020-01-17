@@ -1,5 +1,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
+
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <Wire.h>
@@ -19,7 +20,7 @@ public:
     Display(void);
     void Setup(void);
     void PrintHLine(int row);
-    void PrintLnCenter(const char *string, int row);
+    void PrintLnCenter(char const *string, int row);
 
 private:
 };

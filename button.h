@@ -1,8 +1,8 @@
 #ifndef BUTTON_H
 #define BUTTON_H
+
 #include <Arduino.h>
 #include <HardwareSerial.h>
-
 #include "helper.h"
 #include "accessory.h"
 #include "indicator.h"
@@ -16,8 +16,8 @@ public:
         kMomentary,
         kPower
     };
-    Button(int kPinInput, Accessory *output, enum Button::ButtonTypes kButtonType);
-    Button(int kPinInput, Motorcycle *output, enum Button::ButtonTypes kButtonType);
+    Button(int const kPinInput, Accessory *output, enum Button::ButtonTypes const kButtonType);
+    Button(int const kPinInput, Motorcycle *output, enum Button::ButtonTypes const kButtonType);
     void RefreshState(void);
     bool GetState(void) const;
     void SetState(bool state);
