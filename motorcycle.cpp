@@ -74,6 +74,7 @@ void Motorcycle::AutoBrakeLight(void)
 {
     if ((Motorcycle::GetSpeed() < 1) || Motorcycle::GetSpeed() > kAutoBrakeDecelerationRate_)
     {
+        // TODO:
         // Speed less than 2 km compared to 1 second before
         // Motorcycle::brake.SetState(HIGH);
     }
@@ -88,6 +89,7 @@ void Motorcycle::EmergencyBrakeStrobe(void)
 
     if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate_)
     {
+        // TODO:
         // if (time_last_cycled_ > kTailLightStrobeInterval_)
         // {
         //     // Motorcycle::brake.SetState(!break.GetState());

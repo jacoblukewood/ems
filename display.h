@@ -18,11 +18,21 @@ class Display : public SSD1306AsciiWire
 {
 public:
     Display(void);
-    void Setup(void);
-    void PrintHLine(int row);
-    void PrintLnCenter(char const *string, int row);
+    enum Symbol {
+        WARNING,
+        ERROR,
+        SUCCESS
+    };
 
-private:
+    enum Alignment {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT,
+        CENTER
+    };
+    void Setup(void);
+    void PrintLine(Display::Symbol symbol, String text, Display::Alignment position_vertical, Display::Alignment position_horizontal);
 };
 
 #endif // DISPLAY_H

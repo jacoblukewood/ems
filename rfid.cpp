@@ -14,7 +14,7 @@ bool RFID::Verify(byte const kRFIDKeyList[][4])
 
     // Verify if the NUID has been read
     if (rfid_protocol.PICC_ReadCardSerial()) {
-        for (int i = 0; i < sizeof(kRFIDKeyList) / sizeof(kRFIDKeyList[0]); i++) {
+        for (int i = 0; i < (sizeof &kRFIDKeyList / sizeof kRFIDKeyList[0]); i++) {
             if (rfid_protocol.uid.uidByte[0] == kRFIDKeyList[i][0] &&
                 rfid_protocol.uid.uidByte[1] == kRFIDKeyList[i][1] &&
                 rfid_protocol.uid.uidByte[2] == kRFIDKeyList[i][3] &&

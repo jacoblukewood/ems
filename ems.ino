@@ -14,6 +14,7 @@
 #include "button.h"
 #include "rfid.h"
 
+
 // Constants
 // Configurable
 static float const kTachometerRunningMinimum = 700.0; // RPM value at which the engine is determined to have started.
@@ -31,7 +32,7 @@ static unsigned int const kBrightnessHighbeam = 255;
 static unsigned int const kTachometerRedline = 8000;  // RPM value at which the motorcycle meets redline.
 static unsigned int const kTailLightStrobeInterval = 100; // Time in milliseconds between on/off strobe.
 static unsigned int const kTimeAutoOff = 10000; // Timeeout in milliseconds to leave accessory mode and power off.
-static byte const kRFIDKeyList[][4] = {
+static byte const kRFIDKeyList[][4] = { // List of RFID key UIDs in hex.
   {0xF9,0xAC,0x41,0xC2}, 
   {0xF9,0xAC,0x41,0xC2}
 };
@@ -39,8 +40,10 @@ static byte const kRFIDKeyList[][4] = {
 // Non-Configurable
 // static unsigned long const kOdometerStart; // Odometer reading from EEPROM at motorcycle startup. TODO: Fix.
 
+
 // Variables
 static unsigned long OdometerTrip = 0; // Odometer value for the trip, to be added to kOdometerStart and written after > 1 hour and at power down.
+
 
 // Pins
 // Outputs
@@ -52,9 +55,11 @@ static unsigned int const kPinOutputHorn = 11;
 static unsigned int const kPinOutputHeadlight = 12;
 static unsigned int const kPinOutputHighBeam = 13;
 static unsigned int const kPinOutputTailLight = A6;
+
 // Engine
 static unsigned int const kPinOutputPoints = 14;
 static unsigned int const kPinOutputStarterMotor = 15;
+
 // Display
 static unsigned int const kPinOutputDisplaySDA = 20;
 static unsigned int const kPinOutputDisplaySCL = 21;
@@ -67,20 +72,24 @@ static unsigned int const kPinInputButtonPower = 4;
 static unsigned int const kPinInputButtonHorn = 5;
 static unsigned int const kPinInputButtonHighBeam = 6;
 static unsigned int const kPinInputButtonBrake = 7;
+
 // Analog Sensors
 static unsigned int const kPinInputSensorTachometer = A0;
 static unsigned int const kPinInputSensorSpeed = A1;
 static unsigned int const kPinInputSensorNeutral = A2;
 static unsigned int const kPinInputSensorSideStand = A3;
+
 // RFID
 static unsigned int const kPinInputPinSS = 53;
 static unsigned int const kPinInputRST = 5;
+
 
 // Objects
 // Outputs
 Engine engine(kTimeoutCranking, kTachometerRunningMinimum, kTachometerRedline, kPinOutputPoints, kPinOutputStarterMotor, kPinInputSensorTachometer);
 Display display_dash;
 Motorcycle motorcycle(engine, kPinInputSensorSpeed, kAutoBrakeDecelerationRate, kEmergencyBrakeDecelerationRate, kTailLightStrobeInterval, display_dash, kPinOutputPower, kPinInputSensorSideStand);
+
 // Accessories
 Indicator indicator_left(kPinOutputIndicatorLeft, kFlashRate, motorcycle);
 Indicator indicator_right(kPinOutputIndicatorRight, kFlashRate, motorcycle);
@@ -102,12 +111,12 @@ void setup()
   // Wait for valid key. The reed switch will keep the power on for this time, turning off if a key is removed.
   while (!rfid.Verify(kRFIDKeyList))
   {
-    display_dash.PrintLnCenter("Invalid Key", 0);
+    display_dash.PrintLine(Display::Symbol::ERROR, "Invalid Key", Display::Alignment::CENTER, Display::Alignment::CENTER);
   }
 
   // Permanently Power on EMU. Accessory mode.
   motorcycle.PowerOn();
-  display_dash.PrintLnCenter("Ready", 0);
+  display_dash.PrintLine(Display::Symbol::SUCCESS, "Ready", Display::Alignment::CENTER, Display::Alignment::CENTER);
 }
 
 void loop()
@@ -126,7 +135,7 @@ void loop()
     {
       engine.Stop();
       motorcycle.time_enter_acc_ = millis();
-      // TODO: Display safety error message.
+      display_dash.PrintLine(Display::Symbol::WARNING, "Stand Engaged", Display::Alignment::CENTER, Display::Alignment::CENTER);
     }
   }
 
@@ -140,12 +149,12 @@ void loop()
         if (!engine.Start())
         {
           motorcycle.time_enter_acc_ = millis();
-          // TODO: Display error message.
+          display_dash.PrintLine(Display::Symbol::ERROR, "Failed to Start", Display::Alignment::CENTER, Display::Alignment::CENTER);
         }
       }
       else
       {
-        // TODO: Display safety error message.
+        display_dash.PrintLine(Display::Symbol::WARNING, "Stand is Engaged", Display::Alignment::CENTER, Display::Alignment::CENTER);
       }
     }
 

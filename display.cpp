@@ -13,21 +13,21 @@ void Display::Setup(void)
   clear();
 }
 
-void Display::PrintHLine(int row)
+void Display::PrintLine(Display::Symbol symbol, String text, Display::Alignment position_vertical, Display::Alignment position_horizontal)
 {
-  int default_spacing = letterSpacing();
-  setRow(row);
-  setLetterSpacing(0);
-  println("---------------------------------------------------------------");
-  setRow(0);
-  setLetterSpacing(default_spacing);
+  // int default_spacing = letterSpacing();
+  // setRow(1);
+  // setLetterSpacing(0);
+  // println("---------------------------------------------------------------");
+  // setRow(0);
+  // setLetterSpacing(default_spacing);
 }
 
-void Display::PrintLnCenter(char const *string, int row)
-{
-  setRow(row);
-  setCol((displayWidth() - strWidth(string)) / 2);
-  println(string);
-  setCol(0);
-  setRow(0);
-}
+// void Display::PrintLnCenter(char const *string, int row)
+// {
+//   setRow(row);
+//   setCol((displayWidth() - strWidth(string)) / 2);
+//   println(string);
+//   setCol(0);
+//   setRow(0);
+// }
