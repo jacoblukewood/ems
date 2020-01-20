@@ -8,13 +8,17 @@ class Accessory
 {
 public:
     Accessory(unsigned int const kPinOutput);
-    virtual void Action(bool state);
+    bool GetState(void) const;
+    virtual void SetState(bool const state);
     unsigned long GetTimestampModified(void) const;
-    void SetTimestampModified(unsigned long timestamp_modified);
+    void SetTimestampModified(unsigned long const timestamp_modified);
     int GetPinOutput(void) const;
+    bool GetOverride(void) const;
+    void SetOverride(bool const state);
 
 private:
     unsigned int const kPinOutput_;
+    bool override_;
     unsigned long timestamp_modified_;
 };
 

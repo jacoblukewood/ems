@@ -3,8 +3,8 @@
 RFID::RFID(unsigned int const kPinSS, unsigned int const kPinRST)
 {
     MFRC522 rfid_protocol(kPinSS, kPinRST); // Instance of the class
-    SPI.begin();     // Init SPI bus
-    rfid_protocol.PCD_Init(); // Init MFRC522
+    SPI.begin();                            // Init SPI bus
+    rfid_protocol.PCD_Init();               // Init MFRC522
 }
 
 bool RFID::Verify(byte const kRFIDKeyList[][4])
@@ -13,8 +13,10 @@ bool RFID::Verify(byte const kRFIDKeyList[][4])
     rfid_protocol.PICC_IsNewCardPresent();
 
     // Verify if the NUID has been read
-    if (rfid_protocol.PICC_ReadCardSerial()) {
-        for (int i = 0; i < (sizeof &kRFIDKeyList / sizeof kRFIDKeyList[0]); i++) {
+    if (rfid_protocol.PICC_ReadCardSerial())
+    {
+        for (int i = 0; i < (sizeof &kRFIDKeyList / sizeof kRFIDKeyList[0]); i++)
+        {
             if (rfid_protocol.uid.uidByte[0] == kRFIDKeyList[i][0] &&
                 rfid_protocol.uid.uidByte[1] == kRFIDKeyList[i][1] &&
                 rfid_protocol.uid.uidByte[2] == kRFIDKeyList[i][3] &&

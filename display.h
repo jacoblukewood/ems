@@ -18,13 +18,16 @@ class Display : public SSD1306AsciiWire
 {
 public:
     Display(void);
-    enum Symbol {
+    enum Symbol
+    {
         WARNING,
         ERROR,
-        SUCCESS
+        SUCCESS,
+        NONE
     };
 
-    enum Alignment {
+    enum Alignment
+    {
         TOP,
         BOTTOM,
         LEFT,
@@ -32,7 +35,7 @@ public:
         CENTER
     };
     void Setup(void);
-    void PrintLine(Display::Symbol symbol, String text, Display::Alignment position_vertical, Display::Alignment position_horizontal);
+    void PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal);
 };
 
 #endif // DISPLAY_H

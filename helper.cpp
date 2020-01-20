@@ -2,12 +2,12 @@
 
 namespace helper
 {
-bool IntervalPassed(unsigned long start_time, unsigned int interval)
+bool IntervalPassed(unsigned long const start_time, unsigned int const interval)
 {
     return (((unsigned long)(millis() - start_time)) >= interval); // TODO: Probably could be cleaned up. Need to test to clean.
 }
 
-unsigned long TimePassed(unsigned long start_time)
+unsigned long TimePassed(unsigned long const start_time)
 {
     return ((unsigned long)(millis() - start_time));
 }

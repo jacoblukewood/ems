@@ -2,17 +2,17 @@
 
 Light::Light(unsigned int const kPinOutput, unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh) : Accessory(kPinOutput), kBrightnessLow_(kBrightnessLow), kBrightnessHigh_(kBrightnessHigh)
 {
-
 }
 
-Light::Light(unsigned int const kPinOutput) : Accessory(kPinOutput)
+Light::Light(unsigned int const kPinOutput) : Accessory(kPinOutput), kBrightnessLow_(0), kBrightnessHigh_(255)
 {
-    kBrightnessLow_ = 0;
-    kBrightnessHigh_ = 255;
 }
 
-void Light::Action(bool state)
+void Light::SetState(bool const state)
 {
-    analogWrite(GetPinOutput(), state ? kBrightnessHigh_ : kBrightnessLow_);
-    SetTimestampModified(millis());
+    if (!GetOverride())
+    {
+        analogWrite(GetPinOutput(), state ? kBrightnessHigh_ : kBrightnessLow_);
+        SetTimestampModified(millis());
+    }
 }

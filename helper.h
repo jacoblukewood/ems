@@ -16,8 +16,8 @@ namespace helper
         * 
         * returns: a boolean value as an integer - 1 (TRUE) if the interval has passed and 0 (FALSE) if it has not.
         */
-bool IntervalPassed(unsigned long start_time, unsigned int interval);
-unsigned long TimePassed(unsigned long start_time);
+bool IntervalPassed(unsigned long const start_time, unsigned int const interval);
+unsigned long TimePassed(unsigned long const start_time);
 int PinMode(uint8_t pin);
 bool GetInputState(uint8_t pin);
 } // namespace helper

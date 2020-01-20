@@ -1,13 +1,18 @@
 #include "button.h"
 
-Button::Button(int const kPinInput, Accessory *output, enum Button::ButtonTypes const kButtonType) : kPinInput_(kPinInput), output_(output), type_(kButtonType)
+Button::Button(int const kPinInput, Accessory const &output, enum Button::ButtonTypes const kButtonType) : kPinInput_(kPinInput), output_(output), type_(kButtonType)
 {
   pinMode(Button::kPinInput_, INPUT_PULLUP);
 }
 
-Button::Button(int const kPinInput, Motorcycle *motorcycle, enum Button::ButtonTypes const kButtonType) : kPinInput_(kPinInput), motorcycle_(motorcycle), type_(kButtonType)
+// Button::Button(int const kPinInput, Motorcycle const &motorcycle, enum Button::ButtonTypes const kButtonType) : kPinInput_(kPinInput), motorcycle_(motorcycle), type_(kButtonType)
+// {
+//   pinMode(Button::kPinInput_, INPUT_PULLUP);
+// }
+
+bool Button::GetState(void) const
 {
-  pinMode(Button::kPinInput_, INPUT_PULLUP);
+  helper::GetInputState(kPinInput_);
 }
 
 void Button::RefreshState(void)
@@ -15,43 +20,30 @@ void Button::RefreshState(void)
   switch (type_)
   {
   case Button::ButtonTypes::kToggle:
-    if (helper::GetInputState(kPinInput_) && helper::IntervalPassed(timestamp_modified_, kDebounce_))
+    if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce_))
     {
-      SetState(!GetState());
+      output_.SetState(!output_.GetState());
     }
     break;
 
   case Button::ButtonTypes::kMomentary:
-    SetState(helper::GetInputState(kPinInput_));
+    output_.SetState(Button::GetState());
     break;
 
   case Button::ButtonTypes::kPower:
-    if (helper::GetInputState(kPinInput_) && helper::IntervalPassed(timestamp_modified_, kDebounce_))
-    {
-      // TODO: Complete section.
-      if (motorcycle_->engine_.GetState() && motorcycle_->GetStatePower())
-      {
-        // Test if held for 5 seconds.
-        // Off
-      }
-      else
-      {
-        motorcycle_->engine_.Start();
-      }
-    }
+    // if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce_))
+    // {
+    //   // TODO: Complete section.
+    //   if (motorcycle_.engine_.GetState() && motorcycle_.GetStatePower())
+    //   {
+    //     // Test if held for 5 seconds.
+    //     // Off
+    //   }
+    //   else
+    //   {
+    //     motorcycle_.engine_.Start();
+    //   }
+    // }
     break;
   }
-
-  output_->Action(GetState());
-}
-
-bool Button::GetState(void) const
-{
-  return state_;
-}
-
-void Button::SetState(bool state)
-{
-  state_ = state;
-  timestamp_modified_ = millis();
 }
