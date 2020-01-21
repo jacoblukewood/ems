@@ -12,7 +12,7 @@
 class Motorcycle
 {
 public:
-    Motorcycle(Engine const &engine, Accessory const &tail_light, unsigned int const kPinInputSensorSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display const &display_dash, unsigned int const kPinOutputPower, Sensor const &sensor_side_stand);
+    Motorcycle(Engine const &engine, Accessory const &light_tail, unsigned int const kPinInputSensorSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display const &display_dash, unsigned int const kPinOutputPower, Sensor const &sensor_side_stand);
 
     bool PowerOn(void);
     bool PowerOff(void) const;
@@ -37,7 +37,7 @@ private:
 
     Display display_dash_;
     Engine engine_;
-    Accessory tail_light_;
+    Accessory light_tail_;
 };
 
 #endif // MOTORCYCLE_H

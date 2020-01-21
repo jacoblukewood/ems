@@ -1,6 +1,6 @@
 #include "motorcycle.h"
 
-Motorcycle::Motorcycle(Engine const &engine, Accessory const &tail_light, unsigned int const kPinInputSensorSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display const &display_dash, unsigned int const kPinOutputPower, Sensor const &sensor_side_stand) : engine_(engine), tail_light_(tail_light), kPinInputSensorSpeed_(kPinInputSensorSpeed), kAutoBrakeDecelerationRate_(kAutoBrakeDecelerationRate), kEmergencyBrakeDecelerationRate_(kEmergencyBrakeDecelerationRate), kTailLightStrobeInterval_(kTailLightStrobeInterval), display_dash_(display_dash), kPinOutputPower_(kPinOutputPower), sensor_side_stand_(sensor_side_stand)
+Motorcycle::Motorcycle(Engine const &engine, Accessory const &light_tail, unsigned int const kPinInputSensorSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display const &display_dash, unsigned int const kPinOutputPower, Sensor const &sensor_side_stand) : engine_(engine), light_tail_(light_tail), kPinInputSensorSpeed_(kPinInputSensorSpeed), kAutoBrakeDecelerationRate_(kAutoBrakeDecelerationRate), kEmergencyBrakeDecelerationRate_(kEmergencyBrakeDecelerationRate), kTailLightStrobeInterval_(kTailLightStrobeInterval), display_dash_(display_dash), kPinOutputPower_(kPinOutputPower), sensor_side_stand_(sensor_side_stand)
 {
 }
 
@@ -81,13 +81,13 @@ void Motorcycle::AutoBrakeLight(void)
 {
     if ((Motorcycle::GetSpeed() < 2) || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationRate_)
     {
-        Motorcycle::tail_light_.SetOverride(false); // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
-        Motorcycle::tail_light_.SetState(HIGH);
-        Motorcycle::tail_light_.SetOverride(true);
+        Motorcycle::light_tail_.SetOverride(false); // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
+        Motorcycle::light_tail_.SetState(HIGH);
+        Motorcycle::light_tail_.SetOverride(true);
     }
     else
     {
-        Motorcycle::tail_light_.SetOverride(false);
+        Motorcycle::light_tail_.SetOverride(false);
     }
 }
 
@@ -101,13 +101,13 @@ void Motorcycle::EmergencyBrakeStrobe(void)
     {
         if (helper::IntervalPassed(time_last_cycled_, kTailLightStrobeInterval_))
         {
-            Motorcycle::tail_light_.SetOverride(false);
-            Motorcycle::tail_light_.SetState(!tail_light_.GetState());
-            Motorcycle::tail_light_.SetOverride(true); // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
+            Motorcycle::light_tail_.SetOverride(false);
+            Motorcycle::light_tail_.SetState(!light_tail_.GetState());
+            Motorcycle::light_tail_.SetOverride(true); // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
         }
     }
     else
     {
-        Motorcycle::tail_light_.SetOverride(false);
+        Motorcycle::light_tail_.SetOverride(false);
     }
 }

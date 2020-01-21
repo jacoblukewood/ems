@@ -86,32 +86,34 @@ static unsigned int const kPinInputRST = 5;
 // Sensors
 Sensor sensor_neutral(kPinInputSensorNeutral);
 Sensor sensor_side_stand(kPinInputSensorSideStand);
+Sensor sensor_tachometer(kPinInputSensorTachometer); // TODO: Add analog reading to sensor class and then change the tachometer inputs below in the parameters.
+Sensor sensor_speed(kPinInputSensorSpeed);
 
 // Outputs
 Display display_dash;
-Light tail_light(kPinOutputTailLight, kBrightnessTailLight, kBrightnessBrakeLight);                                                                  // TODO: Figure out how to move this down below, but it is needed in the Motorcycle object below. Maybe move these to header file?
+Light light_tail(kPinOutputTailLight, kBrightnessTailLight, kBrightnessBrakeLight);                                                                  // TODO: Figure out how to move this down below, but it is needed in the Motorcycle object below. Maybe move these to header file?
 Engine engine(kTimeoutCranking, kTachometerRunningMinimum, kTachometerRedline, kPinOutputPoints, kPinOutputStarterMotor, kPinInputSensorTachometer); // TODO: Same with this.
-Motorcycle motorcycle(engine, tail_light, kPinInputSensorSpeed, kAutoBrakeDecelerationRate, kEmergencyBrakeDecelerationRate, kTailLightStrobeInterval, display_dash, kPinOutputPower, sensor_side_stand);
+Motorcycle motorcycle(engine, light_tail, kPinInputSensorSpeed, kAutoBrakeDecelerationRate, kEmergencyBrakeDecelerationRate, kTailLightStrobeInterval, display_dash, kPinOutputPower, sensor_side_stand);
 
 // Accessories
 Indicator indicator_left(kPinOutputIndicatorLeft, kFlashRate, motorcycle);
 Indicator indicator_right(kPinOutputIndicatorRight, kFlashRate, motorcycle);
 Accessory horn(kPinOutputHorn);
-Light headlight(kPinOutputHeadlight, kBrightnessHeadlight, kBrightnessHighbeam);
+Light light_headlight(kPinOutputHeadlight, kBrightnessHeadlight, kBrightnessHighbeam);
 Button button_indicator_left(kPinInputButtonIndicatorLeft, indicator_left, Button::ButtonTypes::kToggle);
 Button button_indicator_right(kPinInputButtonIndicatorRight, indicator_right, Button::ButtonTypes::kToggle);
 Button button_horn(kPinInputButtonHorn, horn, Button::ButtonTypes::kMomentary);
-Button button_highbeam(kPinInputButtonHighBeam, headlight, Button::ButtonTypes::kToggle);
-Button button_brake(kPinInputButtonBrake, tail_light, Button::ButtonTypes::kMomentary);
+Button button_highbeam(kPinInputButtonHighBeam, light_headlight, Button::ButtonTypes::kToggle);
+Button button_brake(kPinInputButtonBrake, light_tail, Button::ButtonTypes::kMomentary);
 // Button button_power(kPinInputButtonPower, motorcycle, Button::ButtonTypes::kPower);
-RFID rfid(kPinInputPinSS, kPinInputRST);
+RFID rfid_seat(kPinInputPinSS, kPinInputRST);
 
 void setup()
 {
   display_dash.Setup();
 
   // Wait for valid key. The reed switch will keep the power on for this time, turning off if a key is removed.
-  while (!rfid.Verify(kRFIDKeyList))
+  while (!rfid_seat.Verify(kRFIDKeyList))
   {
     display_dash.PrintLine(Display::Symbol::ERROR, "Invalid Key", Display::Alignment::CENTER, Display::Alignment::CENTER);
   }
