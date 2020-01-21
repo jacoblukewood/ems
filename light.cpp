@@ -10,7 +10,7 @@ Light::Light(unsigned int const kPinOutput) : Accessory(kPinOutput), kBrightness
 
 void Light::SetState(bool const state)
 {
-    if (!GetOverride())
+    if (!GetLock())
     {
         analogWrite(GetPinOutput(), state ? kBrightnessHigh_ : kBrightnessLow_);
         SetTimestampModified(millis());

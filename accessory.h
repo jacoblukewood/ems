@@ -13,12 +13,12 @@ public:
     unsigned long GetTimestampModified(void) const;
     void SetTimestampModified(unsigned long const timestamp_modified);
     int GetPinOutput(void) const;
-    bool GetOverride(void) const;
-    void SetOverride(bool const state);
+    bool GetLock(void) const;
+    void SetLock(bool const state);
 
 private:
     unsigned int const kPinOutput_;
-    bool override_;
+    bool lock_;
     unsigned long timestamp_modified_;
 };
 

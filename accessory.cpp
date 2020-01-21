@@ -12,7 +12,7 @@ bool Accessory::GetState(void) const
 
 void Accessory::SetState(bool const state)
 {
-    if(!GetOverride()) {
+    if(!GetLock()) {
         digitalWrite(GetPinOutput(), state);
         SetTimestampModified(millis());
     }
@@ -33,12 +33,12 @@ int Accessory::GetPinOutput(void) const
     return kPinOutput_;
 }
 
-bool Accessory::GetOverride(void) const
+bool Accessory::GetLock(void) const
 {
-    return override_;
+    return lock_;
 }
 
-void Accessory::SetOverride(bool const state)
+void Accessory::SetLock(bool const state)
 {
-    override_ = state;
+    lock_ = state;
 }

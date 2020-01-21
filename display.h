@@ -36,6 +36,11 @@ public:
     };
     void Setup(void);
     void PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal);
+    bool GetLock(void) const;
+    void SetLock(bool state);
+
+private:
+    bool lock_;
 };
 
 #endif // DISPLAY_H

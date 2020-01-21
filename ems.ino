@@ -33,7 +33,7 @@ static unsigned int const kTachometerRedline = 8000;      // RPM value at which 
 static unsigned int const kTailLightStrobeInterval = 100; // Time in milliseconds between on/off strobe.
 static unsigned int const kTimeAutoOff = 10000;           // Timeeout in milliseconds to leave accessory mode and power off.
 static unsigned int const kEEPROMOdometerAddress = 0;
-static byte const kRFIDKeyList[][4] = {                   // List of RFID key UIDs in hex.
+static byte const kRFIDKeyList[][4] = { // List of RFID key UIDs in hex.
     {0xF9, 0xAC, 0x41, 0xC2},
     {0xF9, 0xAC, 0x41, 0xC2}};
 
@@ -125,6 +125,16 @@ void loop()
   // If engine is running.
   if (engine.GetState())
   {
+    if(engine.GetTachometer() > kTachometerRedline) {
+      display_dash.SetLock(false);
+      display_dash.PrintLine(Display::Symbol::WARNING, "RPM Limit Exceeded", Display::Alignment::CENTER, Display::Alignment::CENTER);
+      display_dash.SetLock(true);
+    } else {
+      display_dash.SetLock(false);
+    }
+
+    display_dash.PrintLine(Display::Symbol::NONE, String(odometer.GetOdometer()), Display::Alignment::CENTER, Display::Alignment::CENTER);
+
     // If power button is pressed.
     //   if (button_power.GetState())
     //   {
