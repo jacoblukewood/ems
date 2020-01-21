@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:mega",
-    "sketch": "ems.ino",
+    "sketch": "sketch.ino",
     "configuration": "cpu=atmega2560",
     "port": "/dev/cu.usbserial-1430",
     "programmer": "AVR ISP"

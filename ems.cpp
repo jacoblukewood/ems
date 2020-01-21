@@ -1,4 +1,4 @@
-// ems.ino - BMW R80 electronics management system.
+// ems - BMW R80 electronics management system.
 // Written 2019 by Jacob Wood.
 
 #include <Arduino.h>
