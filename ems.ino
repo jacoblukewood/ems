@@ -2,10 +2,10 @@
 // Written 2019 by Jacob Wood.
 
 #include <Arduino.h>
-#include <EEPROM.h>
 #include <HardwareSerial.h>
 #include "motorcycle.h"
 #include "engine.h"
+#include "odometer.h"
 #include "accessory.h"
 #include "indicator.h"
 #include "display.h"
@@ -32,15 +32,10 @@ static unsigned int const kBrightnessHighbeam = 255;
 static unsigned int const kTachometerRedline = 8000;      // RPM value at which the motorcycle meets redline.
 static unsigned int const kTailLightStrobeInterval = 100; // Time in milliseconds between on/off strobe.
 static unsigned int const kTimeAutoOff = 10000;           // Timeeout in milliseconds to leave accessory mode and power off.
+static unsigned int const kEEPROMOdometerAddress = 0;
 static byte const kRFIDKeyList[][4] = {                   // List of RFID key UIDs in hex.
     {0xF9, 0xAC, 0x41, 0xC2},
     {0xF9, 0xAC, 0x41, 0xC2}};
-
-// Non-Configurable
-// static unsigned long const kOdometerStart; // Odometer reading from EEPROM at motorcycle startup. TODO: Fix.
-
-// Variables
-static unsigned long OdometerTrip = 0; // Odometer value for the trip, to be added to kOdometerStart and written after > 1 hour and at power down.
 
 // Pins
 // Outputs
@@ -83,6 +78,8 @@ static unsigned int const kPinInputPinSS = 53;
 static unsigned int const kPinInputRST = 5;
 
 // Objects
+Odometer odometer(kEEPROMOdometerAddress);
+
 // Sensors
 Sensor sensor_neutral(kPinInputSensorNeutral);
 Sensor sensor_side_stand(kPinInputSensorSideStand);
