@@ -1,11 +1,7 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef EMS_BUTTON_SRC_H_
+#define EMS_BUTTON_SRC_H_
 
-#include <Arduino.h>
-#include <HardwareSerial.h>
-#include "helper.h"
 #include "accessory.h"
-#include "indicator.h"
 #include "engine.h"
 
 class Button
@@ -31,4 +27,4 @@ private:
     unsigned long timestamp_last_pressed_;
 };
 
-#endif // BUTTON_H
+#endif // EMS_BUTTON_SRC_H_

@@ -1,9 +1,5 @@
-#ifndef ODOMETER_H
-#define ODOMETER_H
-
-#include <Arduino.h>
-#include <HardwareSerial.h>
-#include <EEPROM.h>
+#ifndef EMS_ODOMETER_SRC_H_
+#define EMS_ODOMETER_SRC_H_
 
 class Odometer
 {
@@ -19,4 +15,4 @@ private:
     unsigned int kEEPROMOdometerAddress_;
 };
 
-#endif // ODOMETER_H
+#endif // EMS_ODOMETER_SRC_H_

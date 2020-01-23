@@ -2,8 +2,9 @@
 // Written 2019 by Jacob Wood.
 
 #include <Arduino.h>
-#include <HardwareSerial.h>
+
 #include "motorcycle.h"
+#include "helper.h"
 
 Motorcycle motorcycle;
 

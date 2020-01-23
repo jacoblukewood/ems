@@ -1,9 +1,5 @@
-#ifndef SENSOR_H
-#define SENSOR_H
-
-#include <Arduino.h>
-#include <HardwareSerial.h>
-#include "helper.h"
+#ifndef EMC_SENSOR_SRC_H_
+#define EMC_SENSOR_SRC_H_
 
 class Sensor
 {
@@ -15,4 +11,4 @@ private:
     int const kPinInput_;
 };
 
-#endif // SENSOR_H
+#endif // EMC_SENSOR_SRC_H_

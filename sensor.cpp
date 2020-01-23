@@ -1,5 +1,9 @@
 #include "sensor.h"
 
+#include <Arduino.h>
+
+#include "helper.h"
+
 Sensor::Sensor(int const kPinInput) : kPinInput_(kPinInput)
 {
 }

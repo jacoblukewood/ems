@@ -1,5 +1,9 @@
 #include "motorcycle.h"
 
+#include <Arduino.h>
+
+#include "helper.h"
+
 Motorcycle::Motorcycle() : engine_(kTimeoutCranking_, kTachometerRunningMinimum_, kTachometerRedline_, kPinOutputPoints_, kPinOutputStarterMotor_, kPinInputSensorTachometer_),
                            odometer_(kEEPROMOdometerAddress_),
                            indicator_left_(kPinOutputIndicatorLeft_, kFlashRate_),

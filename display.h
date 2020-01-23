@@ -1,12 +1,7 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef EMS_DISPLAY_SRC_H_
+#define EMS_DISPLAY_SRC_H_
 
-#include <Arduino.h>
-#include <HardwareSerial.h>
-#include <Wire.h>
-#include "SSD1306Ascii.h"
 #include "SSD1306AsciiWire.h"
-#include "helper.h"
 
 // 0X3C+SA0 - 0x3C or 0x3D
 #define I2C_ADDRESS 0x3C
@@ -43,4 +38,4 @@ private:
     bool lock_;
 };
 
-#endif // DISPLAY_H
+#endif // EMS_DISPLAY_SRC_H_

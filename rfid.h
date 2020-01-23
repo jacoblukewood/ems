@@ -1,9 +1,6 @@
-#ifndef RFID_H
-#define RFID_H
+#ifndef EMS_RFID_SRC_H_
+#define EMS_RFID_SRC_H_
 
-#include <Arduino.h>
-#include <HardwareSerial.h>
-#include <SPI.h>
 #include "MFRC522.h"
 
 class RFID
@@ -16,4 +13,4 @@ private:
     MFRC522 rfid_protocol;
 };
 
-#endif // RFID_H
+#endif // EMS_RFID_SRC_H_

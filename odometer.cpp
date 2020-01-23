@@ -1,5 +1,8 @@
 #include "odometer.h"
 
+#include <Arduino.h>
+#include <EEPROM.h>
+
 Odometer::Odometer(unsigned int kEEPROMOdometerAddress) : kEEPROMOdometerAddress_(kEEPROMOdometerAddress), kOdometerStart(EEPROM.get(kEEPROMOdometerAddress_, odometer_trip_))
 {
     // Stored in meters

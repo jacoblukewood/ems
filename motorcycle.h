@@ -1,18 +1,14 @@
-#ifndef MOTORCYCLE_H
-#define MOTORCYCLE_H
+#ifndef EMS_MOTORCYCLE_SRC_H_
+#define EMS_MOTORCYCLE_SRC_H_
 
-#include <Arduino.h>
-#include <HardwareSerial.h>
-#include "engine.h"
-#include "odometer.h"
-#include "accessory.h"
-#include "indicator.h"
-#include "display.h"
-#include "light.h"
-#include "sensor.h"
-#include "helper.h"
 #include "button.h"
+#include "display.h"
+#include "engine.h"
+#include "indicator.h"
+#include "light.h"
+#include "odometer.h"
 #include "rfid.h"
+#include "sensor.h"
 
 class Motorcycle
 {
@@ -125,4 +121,4 @@ private:
     unsigned int const kPinInputSensorSideStand_ = 15;
 };
 
-#endif // MOTORCYCLE_H
+#endif // EMS_MOTORCYCLE_SRC_H_

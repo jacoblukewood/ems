@@ -1,9 +1,5 @@
-#ifndef ENGINE_H
-#define ENGINE_H
-
-#include <Arduino.h>
-#include <HardwareSerial.h>
-#include "helper.h"
+#ifndef EMS_ENGINE_SRC_H_
+#define EMS_ENGINE_SRC_H_
 
 class Engine
 {
@@ -30,4 +26,4 @@ public:
     bool GetRedlineState(void) const;
 };
 
-#endif // ENGINE_H
+#endif // EMS_ENGINE_SRC_H_

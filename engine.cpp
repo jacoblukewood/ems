@@ -1,5 +1,9 @@
 #include "engine.h"
 
+#include <Arduino.h>
+
+#include "helper.h"
+
 Engine::Engine(unsigned int const kTimeoutCranking, unsigned int const kTachometerRunningMinimum, unsigned int const kTachometerRedline, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor, unsigned int const kPinInputSensorTachometer) : kPinOutputPoints_(kPinOutputPoints), kPinOutputStarterMotor_(kPinOutputStarterMotor), kPinInputSensorTachometer_(kPinInputSensorTachometer), kTimeoutCranking_(kTimeoutCranking), kTachometerRunningMinimum_(kTachometerRunningMinimum), kTachometerRedline_(kTachometerRedline)
 {
 }

@@ -1,8 +1,7 @@
-#ifndef HELPER_H
-#define HELPER_H
+#ifndef EMS_HELPER_SRC_H_
+#define EMS_HELPER_SRC_H_
 
 #include <Arduino.h>
-#include <HardwareSerial.h>
 
 namespace helper
 {
@@ -22,4 +21,4 @@ int PinMode(uint8_t pin);
 bool GetInputState(uint8_t pin);
 } // namespace helper
 
-#endif // HELPER_H
+#endif // EMS_HELPER_SRC_H_

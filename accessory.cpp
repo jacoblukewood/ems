@@ -1,5 +1,7 @@
 #include "accessory.h"
 
+#include <Arduino.h>
+
 Accessory::Accessory(unsigned int const kPinOutput) : kPinOutput_(kPinOutput)
 {
     pinMode(kPinOutput_, OUTPUT);

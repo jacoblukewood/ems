@@ -1,5 +1,13 @@
-#include "display.h"
 #define I2C_ADDRESS 0x3C
+
+#include "display.h"
+
+#include <Arduino.h>
+#include <Wire.h>
+
+#include "SSD1306Ascii.h"
+
+#include "helper.h"
 
 Display::Display(void)
 {

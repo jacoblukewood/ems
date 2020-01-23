@@ -1,8 +1,5 @@
-#ifndef ACCESSORY_H
-#define ACCESSORY_H
-
-#include <Arduino.h>
-#include <HardwareSerial.h>
+#ifndef EMS_ACCESSORY_SRC_H_
+#define EMS_ACCESSORY_SRC_H_
 
 class Accessory
 {
@@ -22,4 +19,4 @@ private:
     unsigned long timestamp_modified_;
 };
 
-#endif // ACCESSORY_H
+#endif // EMS_ACCESSORY_SRC_H_

@@ -1,12 +1,9 @@
-#ifndef INDICATOR_H
-#define INDICATOR_H
+#ifndef EMS_INDICATOR_SRC_H_
+#define EMS_INDICATOR_SRC_H_
 
 #define MILLISECONDS_PER_MINUTE 60000
 
-#include <Arduino.h>
-#include <HardwareSerial.h>
 #include "accessory.h"
-#include "helper.h"
 
 class Indicator : public Accessory
 {
@@ -22,4 +19,4 @@ private:
     unsigned long timestamp_cycled_;
 };
 
-#endif // INDICATOR_H
+#endif // EMS_INDICATOR_SRC_H_

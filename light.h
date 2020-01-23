@@ -1,8 +1,6 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef EMS_LIGHT_SRC_H_
+#define EMS_LIGHT_SRC_H_
 
-#include <Arduino.h>
-#include <HardwareSerial.h>
 #include "accessory.h"
 
 class Light : public Accessory
@@ -17,4 +15,4 @@ private:
     unsigned int const kBrightnessHigh_;
 };
 
-#endif // LIGHT_H
+#endif // EMS_LIGHT_SRC_H_

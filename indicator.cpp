@@ -1,5 +1,9 @@
 #include "indicator.h"
 
+#include <Arduino.h>
+
+#include "helper.h"
+
 Indicator::Indicator(unsigned int const kPinOutput, unsigned int const kFlashRate) : Accessory(kPinOutput), kFlashCycle_(MILLISECONDS_PER_MINUTE / (kFlashRate * 2))
 {
 }

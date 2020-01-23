@@ -1,5 +1,7 @@
 #include "light.h"
 
+#include <Arduino.h>
+
 Light::Light(unsigned int const kPinOutput, unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh) : Accessory(kPinOutput), kBrightnessLow_(kBrightnessLow), kBrightnessHigh_(kBrightnessHigh)
 {
 }

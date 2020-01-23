@@ -1,5 +1,8 @@
 #include "rfid.h"
 
+#include <Arduino.h>
+#include <SPI.h>
+
 RFID::RFID(unsigned int const kPinSS, unsigned int const kPinRST)
 {
     MFRC522 rfid_protocol(kPinSS, kPinRST); // Instance of the class

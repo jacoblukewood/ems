@@ -1,5 +1,9 @@
 #include "button.h"
 
+#include <Arduino.h>
+
+#include "helper.h"
+
 Button::Button(int const kPinInput, Accessory *output, enum Button::ButtonTypes const kButtonType) : kPinInput_(kPinInput), output_(output), type_(kButtonType)
 {
   pinMode(Button::kPinInput_, INPUT_PULLUP);
