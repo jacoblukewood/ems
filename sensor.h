@@ -1,15 +1,16 @@
-#ifndef EMC_SENSOR_SRC_H_
-#define EMC_SENSOR_SRC_H_
+// Copyright 2020 Jacob Wood
 
-class Sensor
-{
-public:
-    Sensor(int const kPinInput);
-    
+#ifndef SENSOR_H_
+#define SENSOR_H_
+
+class Sensor {
+ public:
+    explicit Sensor(int const kPinInput);
+
     bool GetState(void) const;
 
-private:
+ private:
     int const kPinInput;
 };
 
-#endif // EMC_SENSOR_SRC_H_
+#endif  // SENSOR_H_

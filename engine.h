@@ -1,9 +1,10 @@
-#ifndef EMS_ENGINE_SRC_H_
-#define EMS_ENGINE_SRC_H_
+// Copyright 2020 Jacob Wood
 
-class Engine
-{
-public:
+#ifndef ENGINE_H_
+#define ENGINE_H_
+
+class Engine  {
+ public:
     Engine(unsigned int const kTachometerRedline, unsigned int const kTachometerRunningMinimum, unsigned int const kTimeoutCranking, unsigned int const kPinInputSensorTachometer, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor);
 
     bool GetRedlineState(void) const;
@@ -12,7 +13,7 @@ public:
     bool Start(void);
     void Stop(void) const;
 
-private:
+ private:
     unsigned int const kPinInputSensorTachometer;
     unsigned int const kPinOutputPoints;
     unsigned int const kPinOutputStarterMotor;
@@ -23,4 +24,4 @@ private:
     unsigned long start_attempt_time_;
 };
 
-#endif // EMS_ENGINE_SRC_H_
+#endif  // ENGINE_H_

@@ -1,5 +1,7 @@
-#ifndef EMS_DISPLAY_SRC_H_
-#define EMS_DISPLAY_SRC_H_
+// Copyright 2020 Jacob Wood
+
+#ifndef DISPLAY_H_
+#define DISPLAY_H_
 
 #include "SSD1306AsciiWire.h"
 
@@ -9,18 +11,15 @@
 // Define proper RST_PIN if required.
 #define RST_PIN -1
 
-class Display : public SSD1306AsciiWire
-{
-public:
-    enum Symbol
-    {
+class Display : public SSD1306AsciiWire {
+ public:
+    enum Symbol {
         WARNING,
         ERROR,
         SUCCESS,
         NONE
     };
-    enum Alignment
-    {
+    enum Alignment {
         TOP,
         BOTTOM,
         LEFT,
@@ -35,8 +34,8 @@ public:
     void Setup(void);
     void SetLock(bool state);
 
-private:
+ private:
     bool lock_;
 };
 
-#endif // EMS_DISPLAY_SRC_H_
+#endif  // DISPLAY_H_

@@ -1,14 +1,14 @@
+// Copyright 2020 Jacob Wood
+
 #include "sensor.h"
 
 #include <Arduino.h>
 
 #include "helper.h"
 
-Sensor::Sensor(int const kPinInput) : kPinInput(kPinInput)
-{
+Sensor::Sensor(int const kPinInput) : kPinInput(kPinInput) {
 }
 
-bool Sensor::GetState(void) const
-{
+bool Sensor::GetState(void) const {
     return helper::GetInputState(kPinInput);
 }

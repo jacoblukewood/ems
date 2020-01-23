@@ -1,15 +1,15 @@
+// Copyright 2020 Jacob Wood
+
 #include "indicator.h"
 
 #include <Arduino.h>
 
 #include "helper.h"
 
-Indicator::Indicator(unsigned int const kFlashRate, unsigned int const kPinOutput) : kFlashCycle_(MILLISECONDS_PER_MINUTE / (kFlashRate * 2)), Accessory(kPinOutput)
-{
+Indicator::Indicator(unsigned int const kFlashRate, unsigned int const kPinOutput) : kFlashCycle_(MILLISECONDS_PER_MINUTE / (kFlashRate * 2)), Accessory(kPinOutput) {
 }
 
-void Indicator::SetState(bool const state)
-{
+void Indicator::SetState(bool const state) {
   // if (motorcycle_.GetSpeed() > 15 && helper::IntervalPassed(Accessory::GetTimestampModified(), 10000))
   // {
   //   Accessory::SetState(state);
@@ -22,12 +22,10 @@ void Indicator::SetState(bool const state)
   // }
 }
 
-unsigned long Indicator::GetTimestampCycled(void) const
-{
+unsigned long Indicator::GetTimestampCycled(void) const {
   return timestamp_cycled_;
 }
 
-void Indicator::SetTimestampCycled(unsigned long const timestamp_cycled)
-{
+void Indicator::SetTimestampCycled(unsigned long const timestamp_cycled) {
   timestamp_cycled_ = timestamp_cycled;
 }

@@ -1,3 +1,5 @@
+// Copyright 2020 Jacob Wood
+
 #define I2C_ADDRESS 0x3C
 
 #include "display.h"
@@ -9,25 +11,20 @@
 
 #include "helper.h"
 
-Display::Display(void)
-{
+Display::Display(void) {
 }
 
-void Display::Setup(void)
-{
+void Display::Setup(void) {
   Wire.begin();
   Wire.setClock(400000L);
   begin(&Adafruit128x64, I2C_ADDRESS);
   clear();
 }
 
-void Display::PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal)
-{
-  if (!Display::GetLock())
-  {
+void Display::PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal) {
+  if (!Display::GetLock()) {
     // TODO: Clear display - work out how this should be implemented. Should clearing be explicit or automatic and should everything be cleared?
-    switch (position_vertical)
-    {
+    switch (position_vertical) {
     case TOP:
       setRow(0);
       break;
@@ -41,8 +38,7 @@ void Display::PrintLine(Display::Symbol const symbol, String const text, Display
       break;
     }
 
-    switch (position_horizontal)
-    {
+    switch (position_horizontal) {
     case LEFT:
       break;
 
@@ -53,8 +49,7 @@ void Display::PrintLine(Display::Symbol const symbol, String const text, Display
       break;
     }
 
-    switch (symbol)
-    {
+    switch (symbol) {
     case WARNING:
       break;
 
@@ -70,12 +65,10 @@ void Display::PrintLine(Display::Symbol const symbol, String const text, Display
   }
 }
 
-bool Display::GetLock(void) const
-{
+bool Display::GetLock(void) const {
   return lock_;
 }
 
-void Display::SetLock(bool const state)
-{
+void Display::SetLock(bool const state) {
   lock_ = state;
 }
