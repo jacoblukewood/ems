@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
+#include "helper.h"
 
 class Engine
 {
@@ -13,7 +14,6 @@ private:
     unsigned int const kTimeoutCranking_;
     unsigned int const kTachometerRunningMinimum_;
     unsigned int const kTachometerRedline_;
-
     unsigned long start_attempt_time_;
 
 public:
@@ -26,6 +26,8 @@ public:
     bool GetState(void) const;
 
     unsigned int GetTachometer(void) const;
+
+    bool GetRedlineState(void) const;
 };
 
 #endif // ENGINE_H

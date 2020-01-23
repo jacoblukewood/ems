@@ -1,22 +1,22 @@
 #include "odometer.h"
 
-Odometer::Odometer(unsigned int kEEPROMOdometerAddress) : kEEPROMOdometerAddress_(kEEPROMOdometerAddress), OdometerStart(EEPROM.get(kEEPROMOdometerAddress_, OdometerStart))
+Odometer::Odometer(unsigned int kEEPROMOdometerAddress) : kEEPROMOdometerAddress_(kEEPROMOdometerAddress), kOdometerStart(EEPROM.get(kEEPROMOdometerAddress_, odometer_trip_))
 {
     // Stored in meters
-    OdometerTrip = 0;
+    odometer_trip_ = 0;
 }
 
 void Odometer::SaveOdometer()
 {
-    EEPROM.put(kEEPROMOdometerAddress_, OdometerStart + OdometerTrip);
+    EEPROM.put(kEEPROMOdometerAddress_, (kOdometerStart + odometer_trip_));
 }
 
 void Odometer::AddOdometer(int value)
 {
-    OdometerTrip += value;
+    odometer_trip_ += value;
 }
 
 float Odometer::GetOdometer(void)
 {
-    return (OdometerStart + OdometerTrip) / 1000; // Returns the odometer in km
+    return (kOdometerStart + odometer_trip_) / 1000; // Returns the odometer in km
 }

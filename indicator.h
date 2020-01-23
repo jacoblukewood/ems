@@ -6,13 +6,12 @@
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include "accessory.h"
-#include "motorcycle.h"
 #include "helper.h"
 
 class Indicator : public Accessory
 {
 public:
-    Indicator(unsigned int const kPinOutput, unsigned int const kFlashRate, Motorcycle &motorcycle);
+    Indicator(unsigned int const kPinOutput, unsigned int const kFlashRate);
 
     void SetState(bool const state);
     unsigned long GetTimestampCycled(void) const;
@@ -20,7 +19,6 @@ public:
 
 private:
     int const kFlashCycle_;
-    Motorcycle motorcycle_;
     unsigned long timestamp_cycled_;
 };
 

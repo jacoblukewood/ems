@@ -1,25 +1,44 @@
 #include "motorcycle.h"
 
-Motorcycle::Motorcycle(Engine const &engine, Accessory const &light_tail, unsigned int const kPinInputSensorSpeed, unsigned int const kAutoBrakeDecelerationRate, unsigned int const kEmergencyBrakeDecelerationRate, unsigned int const kTailLightStrobeInterval, Display const &display_dash, unsigned int const kPinOutputPower, Sensor const &sensor_side_stand) : engine_(engine), light_tail_(light_tail), kPinInputSensorSpeed_(kPinInputSensorSpeed), kAutoBrakeDecelerationRate_(kAutoBrakeDecelerationRate), kEmergencyBrakeDecelerationRate_(kEmergencyBrakeDecelerationRate), kTailLightStrobeInterval_(kTailLightStrobeInterval), display_dash_(display_dash), kPinOutputPower_(kPinOutputPower), sensor_side_stand_(sensor_side_stand)
+Motorcycle::Motorcycle() : engine_(kTimeoutCranking_, kTachometerRunningMinimum_, kTachometerRedline_, kPinOutputPoints_, kPinOutputStarterMotor_, kPinInputSensorTachometer_),
+                           odometer_(kEEPROMOdometerAddress_),
+                           indicator_left_(kPinOutputIndicatorLeft_, kFlashRate_),
+                           indicator_right_(kPinOutputIndicatorRight_, kFlashRate_),
+                           light_tail_(kPinOutputTailLight_, kBrightnessTailLight_, kBrightnessBrakeLight_),
+                           light_headlight_(kPinOutputHeadlight_, kBrightnessHeadlight_, kBrightnessHighbeam_),
+                           horn_(kPinOutputHorn_),
+
+                           rfid_seat_(kPinInputPinSS_, kPinInputRST_), 
+                           
+                           sensor_neutral_(kPinInputSensorNeutral_),
+                           sensor_side_stand_(kPinInputSensorSideStand_),
+                           sensor_tachometer_(kPinInputSensorTachometer_),
+                           sensor_speed_(kPinInputSensorSpeed_),
+
+                           button_indicator_left_(kPinInputButtonIndicatorLeft_, &indicator_left_, Button::ButtonTypes::kToggle),
+                           button_indicator_right_(kPinInputButtonIndicatorRight_, &indicator_right_, Button::ButtonTypes::kToggle),
+                           button_horn_(kPinInputButtonHorn_, &horn_, Button::ButtonTypes::kMomentary),
+                           button_highbeam_(kPinInputButtonHighBeam_, &light_headlight_, Button::ButtonTypes::kToggle),
+                           button_brake_(kPinInputButtonBrake_, &light_tail_, Button::ButtonTypes::kMomentary),
+                           button_power_(kPinInputButtonPower_, &engine_, Button::ButtonTypes::kPower)
 {
+    display_dash_.Setup();
 }
 
 // Switches on permenant power and records start time.
 // Equivalent to entering the accessory power mode in a car from off.
-bool Motorcycle::PowerOn(void)
+void Motorcycle::PowerOn(void)
 {
     digitalWrite(Motorcycle::kPinOutputPower_, HIGH);
-    time_enter_acc_ = millis();
-    return true;
+    UpdateTimeEnterAccessory();
 }
 
 // Switches off permenant power, resets components, and saves the odometer.
 // Equivalent to entering the off power mode in a car.
-bool Motorcycle::PowerOff(void) const
+void Motorcycle::PowerOff(void)
 {
-    // TODO: Clear display, return speedo, and save odometer.
+    odometer_.SaveOdometer();
     digitalWrite(Motorcycle::kPinOutputPower_, LOW);
-    return true;
 }
 
 bool Motorcycle::GetStatePower(void) const
@@ -55,6 +74,16 @@ unsigned int Motorcycle::GetOdometer(void) const
 {
     // TODO: Implement
     return 0;
+}
+
+unsigned int Motorcycle::GetTimeEnterAccessory(void) const
+{
+    return time_enter_accessory_;
+}
+
+void Motorcycle::UpdateTimeEnterAccessory(void)
+{
+    time_enter_accessory_ = millis();
 }
 
 // Returns the difference that the motorcycle has changed in speed in a period > 1 second.

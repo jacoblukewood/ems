@@ -1,5 +1,4 @@
 #include "engine.h"
-#include "helper.h"
 
 Engine::Engine(unsigned int const kTimeoutCranking, unsigned int const kTachometerRunningMinimum, unsigned int const kTachometerRedline, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor, unsigned int const kPinInputSensorTachometer) : kPinOutputPoints_(kPinOutputPoints), kPinOutputStarterMotor_(kPinOutputStarterMotor), kPinInputSensorTachometer_(kPinInputSensorTachometer), kTimeoutCranking_(kTimeoutCranking), kTachometerRunningMinimum_(kTachometerRunningMinimum), kTachometerRedline_(kTachometerRedline)
 {
@@ -50,4 +49,9 @@ unsigned int Engine::GetTachometer(void) const
 {
     float tachometer_ = analogRead(kPinInputSensorTachometer_) * (Engine::kTachometerRedline_ / 1023.0);
     return tachometer_;
+}
+
+bool Engine::GetRedlineState(void) const
+{
+    return (GetTachometer() >= kTachometerRedline_);
 }
