@@ -12,7 +12,6 @@
 class Display : public SSD1306AsciiWire
 {
 public:
-    Display(void);
     enum Symbol
     {
         WARNING,
@@ -20,7 +19,6 @@ public:
         SUCCESS,
         NONE
     };
-
     enum Alignment
     {
         TOP,
@@ -29,9 +27,12 @@ public:
         RIGHT,
         CENTER
     };
-    void Setup(void);
-    void PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal);
+
+    Display(void);
+
     bool GetLock(void) const;
+    void PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal);
+    void Setup(void);
     void SetLock(bool state);
 
 private:

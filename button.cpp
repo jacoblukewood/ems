@@ -4,19 +4,19 @@
 
 #include "helper.h"
 
-Button::Button(int const kPinInput, Accessory *output, enum Button::ButtonTypes const kButtonType) : kPinInput_(kPinInput), output_(output), type_(kButtonType)
+Button::Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, Accessory *output) : kPinInput(kPinInput), type_(kButtonType), output_(output)
 {
-  pinMode(Button::kPinInput_, INPUT_PULLUP);
+  pinMode(Button::kPinInput, INPUT_PULLUP);
 }
 
-Button::Button(int const kPinInput, Engine *engine, enum Button::ButtonTypes const kButtonType) : kPinInput_(kPinInput), engine_(engine), type_(kButtonType)
+Button::Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, Engine *engine) : kPinInput(kPinInput), type_(kButtonType), engine_(engine)
 {
-  pinMode(Button::kPinInput_, INPUT_PULLUP);
+  pinMode(Button::kPinInput, INPUT_PULLUP);
 }
 
 bool Button::GetState(void) const
 {
-  helper::GetInputState(kPinInput_);
+  helper::GetInputState(kPinInput);
 }
 
 void Button::RefreshState(void)
@@ -24,7 +24,7 @@ void Button::RefreshState(void)
   switch (type_)
   {
   case Button::ButtonTypes::kToggle:
-    if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce_))
+    if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce))
     {
       output_->SetState(!output_->GetState());
     }
@@ -35,7 +35,7 @@ void Button::RefreshState(void)
     break;
 
   case Button::ButtonTypes::kPower:
-    if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce_))
+    if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce))
     {
       if (!engine_->GetState())
       {

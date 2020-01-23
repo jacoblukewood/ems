@@ -4,11 +4,11 @@
 
 #include "helper.h"
 
-Sensor::Sensor(int const kPinInput) : kPinInput_(kPinInput)
+Sensor::Sensor(int const kPinInput) : kPinInput(kPinInput)
 {
 }
 
 bool Sensor::GetState(void) const
 {
-    return helper::GetInputState(kPinInput_);
+    return helper::GetInputState(kPinInput);
 }

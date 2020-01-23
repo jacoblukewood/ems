@@ -13,17 +13,21 @@ public:
         kMomentary,
         kPower
     };
-    Button(int const kPinInput, Accessory* output, enum Button::ButtonTypes const kButtonType);
-    Button(int const kPinInput, Engine* engine, enum Button::ButtonTypes const kButtonType);
-    void RefreshState(void);
+
+    Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, Accessory* output);
+    Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, Engine* engine);
+
     bool GetState(void) const;
+    void RefreshState(void);
 
 private:
-    unsigned int const kPinInput_;
+    static unsigned int const kDebounce = 300; // * CONFIGURABLE * Time between button presses being recorded and being treated as new (the lower the better - increase if flickering occurs or if stop button ceases to work).
+    unsigned int const kPinInput;
+
     Accessory* output_;
     Engine* engine_;
     ButtonTypes type_;
-    static unsigned int const kDebounce_ = 300; // * CONFIGURABLE * Time between button presses being recorded and being treated as new (the lower the better - increase if flickering occurs or if stop button ceases to work).
+
     unsigned long timestamp_last_pressed_;
 };
 

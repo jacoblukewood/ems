@@ -11,7 +11,7 @@ Motorcycle motorcycle;
 static unsigned int const kTimeAutoOff = 10000; // Timeeout in milliseconds to leave accessory mode and power off.
 static unsigned int const kOffHoldTime = 5000;  // Time in milliseconds to hold the power button to trigger it. // TODO: Should this be in the button class?
 
-static byte const kRFIDKeyList[][4] = { // List of RFID key UIDs in hex.
+byte const kRFIDKeyList[][4] = { // List of RFID key UIDs in hex.
     {0xF9, 0xAC, 0x41, 0xC2},
     {0xF9, 0xAC, 0x41, 0xC2}};
 

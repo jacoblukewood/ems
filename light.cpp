@@ -2,11 +2,11 @@
 
 #include <Arduino.h>
 
-Light::Light(unsigned int const kPinOutput, unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh) : Accessory(kPinOutput), kBrightnessLow_(kBrightnessLow), kBrightnessHigh_(kBrightnessHigh)
+Light::Light(unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh, unsigned int const kPinOutput) : kBrightnessLow(kBrightnessLow), kBrightnessHigh(kBrightnessHigh), Accessory(kPinOutput)
 {
 }
 
-Light::Light(unsigned int const kPinOutput) : Accessory(kPinOutput), kBrightnessLow_(0), kBrightnessHigh_(255)
+Light::Light(unsigned int const kPinOutput) : Accessory(kPinOutput), kBrightnessLow(0), kBrightnessHigh(255)
 {
 }
 
@@ -14,7 +14,7 @@ void Light::SetState(bool const state)
 {
     if (!GetLock())
     {
-        analogWrite(GetPinOutput(), state ? kBrightnessHigh_ : kBrightnessLow_);
+        analogWrite(GetPinOutput(), state ? kBrightnessHigh : kBrightnessLow);
         SetTimestampModified(millis());
     }
 }

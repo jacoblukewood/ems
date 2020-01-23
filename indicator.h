@@ -8,14 +8,15 @@
 class Indicator : public Accessory
 {
 public:
-    Indicator(unsigned int const kPinOutput, unsigned int const kFlashRate);
+    Indicator(unsigned int const kFlashRate, unsigned int const kPinOutput);
 
-    void SetState(bool const state);
     unsigned long GetTimestampCycled(void) const;
+    void SetState(bool const state);
     void SetTimestampCycled(unsigned long const timestamp_cycled);
 
 private:
     int const kFlashCycle_;
+
     unsigned long timestamp_cycled_;
 };
 

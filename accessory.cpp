@@ -2,9 +2,9 @@
 
 #include <Arduino.h>
 
-Accessory::Accessory(unsigned int const kPinOutput) : kPinOutput_(kPinOutput)
+Accessory::Accessory(unsigned int const kPinOutput) : kPinOutput(kPinOutput)
 {
-    pinMode(kPinOutput_, OUTPUT);
+    pinMode(kPinOutput, OUTPUT);
 }
 
 bool Accessory::GetState(void) const
@@ -32,7 +32,7 @@ unsigned long Accessory::GetTimestampModified(void) const
 
 int Accessory::GetPinOutput(void) const
 {
-    return kPinOutput_;
+    return kPinOutput;
 }
 
 bool Accessory::GetLock(void) const

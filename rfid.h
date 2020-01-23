@@ -7,6 +7,7 @@ class RFID
 {
 public:
     RFID(unsigned int const kPinSS, unsigned int const kPinRST);
+    
     bool Verify(byte const kRFIDKeyList[][4]);
 
 private:

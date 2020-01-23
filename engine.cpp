@@ -4,7 +4,7 @@
 
 #include "helper.h"
 
-Engine::Engine(unsigned int const kTimeoutCranking, unsigned int const kTachometerRunningMinimum, unsigned int const kTachometerRedline, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor, unsigned int const kPinInputSensorTachometer) : kPinOutputPoints_(kPinOutputPoints), kPinOutputStarterMotor_(kPinOutputStarterMotor), kPinInputSensorTachometer_(kPinInputSensorTachometer), kTimeoutCranking_(kTimeoutCranking), kTachometerRunningMinimum_(kTachometerRunningMinimum), kTachometerRedline_(kTachometerRedline)
+Engine::Engine(unsigned int const kTachometerRedline, unsigned int const kTachometerRunningMinimum, unsigned int const kTimeoutCranking, unsigned int const kPinInputSensorTachometer, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor) : kTachometerRedline(kTachometerRedline), kTachometerRunningMinimum(kTachometerRunningMinimum), kTimeoutCranking(kTimeoutCranking), kPinInputSensorTachometer(kPinInputSensorTachometer), kPinOutputPoints(kPinOutputPoints), kPinOutputStarterMotor(kPinOutputStarterMotor)
 {
 }
 
@@ -15,20 +15,20 @@ bool Engine::Start(void)
         // If engine is not running
         start_attempt_time_ = millis();
 
-        digitalWrite(Engine::kPinOutputPoints_, HIGH);
-        digitalWrite(Engine::kPinOutputStarterMotor_, HIGH);
+        digitalWrite(Engine::kPinOutputPoints, HIGH);
+        digitalWrite(Engine::kPinOutputStarterMotor, HIGH);
 
         if (GetState())
         {
             // If engine has started.
-            digitalWrite(Engine::kPinOutputStarterMotor_, LOW);
+            digitalWrite(Engine::kPinOutputStarterMotor, LOW);
             return true;
         }
-        else if (helper::IntervalPassed(Engine::start_attempt_time_, Engine::kTimeoutCranking_))
+        else if (helper::IntervalPassed(Engine::start_attempt_time_, Engine::kTimeoutCranking))
         {
             // Craking timeout exceeded, give up.
-            digitalWrite(Engine::kPinOutputPoints_, LOW);
-            digitalWrite(Engine::kPinOutputStarterMotor_, LOW);
+            digitalWrite(Engine::kPinOutputPoints, LOW);
+            digitalWrite(Engine::kPinOutputStarterMotor, LOW);
             return false;
         }
         else
@@ -40,22 +40,22 @@ bool Engine::Start(void)
 
 void Engine::Stop(void) const
 {
-    digitalWrite(Engine::kPinOutputPoints_, LOW);
+    digitalWrite(Engine::kPinOutputPoints, LOW);
 }
 
 bool Engine::GetState(void) const
 {
-    return (Engine::GetTachometer() > Engine::kTachometerRunningMinimum_); // If the current tachometer is greater than the minimum running value (RUNNING_TACHOMETER) than the bike is started.
+    return (Engine::GetTachometer() > Engine::kTachometerRunningMinimum); // If the current tachometer is greater than the minimum running value (RUNNING_TACHOMETER) than the bike is started.
 }
 
 // Convert the analog reading (which goes from 0 - 1023) RPM based on redline
 unsigned int Engine::GetTachometer(void) const
 {
-    float tachometer_ = analogRead(kPinInputSensorTachometer_) * (Engine::kTachometerRedline_ / 1023.0);
+    float tachometer_ = analogRead(kPinInputSensorTachometer) * (Engine::kTachometerRedline / 1023.0);
     return tachometer_;
 }
 
 bool Engine::GetRedlineState(void) const
 {
-    return (GetTachometer() >= kTachometerRedline_);
+    return (GetTachometer() >= kTachometerRedline);
 }

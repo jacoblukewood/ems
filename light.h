@@ -6,13 +6,14 @@
 class Light : public Accessory
 {
 public:
-    Light(unsigned int const kPinOutput, unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh);
+    Light(unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh, unsigned int const kPinOutput);
     Light(unsigned int const kPinOutput);
+
     void SetState(bool const state);
 
 private:
-    unsigned int const kBrightnessLow_;
-    unsigned int const kBrightnessHigh_;
+    unsigned int const kBrightnessLow;
+    unsigned int const kBrightnessHigh;
 };
 
 #endif // EMS_LIGHT_SRC_H_

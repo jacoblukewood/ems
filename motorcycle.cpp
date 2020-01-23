@@ -4,27 +4,29 @@
 
 #include "helper.h"
 
-Motorcycle::Motorcycle() : engine_(kTimeoutCranking_, kTachometerRunningMinimum_, kTachometerRedline_, kPinOutputPoints_, kPinOutputStarterMotor_, kPinInputSensorTachometer_),
-                           odometer_(kEEPROMOdometerAddress_),
-                           indicator_left_(kPinOutputIndicatorLeft_, kFlashRate_),
-                           indicator_right_(kPinOutputIndicatorRight_, kFlashRate_),
-                           light_tail_(kPinOutputTailLight_, kBrightnessTailLight_, kBrightnessBrakeLight_),
-                           light_headlight_(kPinOutputHeadlight_, kBrightnessHeadlight_, kBrightnessHighbeam_),
-                           horn_(kPinOutputHorn_),
-
-                           rfid_seat_(kPinInputPinSS_, kPinInputRST_), 
+Motorcycle::Motorcycle() : button_brake_(kPinInputButtonBrake, Button::ButtonTypes::kMomentary, &light_tail_),
+                           button_highbeam_(kPinInputButtonHighBeam, Button::ButtonTypes::kToggle, &light_headlight_),
+                           button_horn_(kPinInputButtonHorn, Button::ButtonTypes::kMomentary, &horn_),
+                           button_indicator_left_(kPinInputButtonIndicatorLeft, Button::ButtonTypes::kToggle, &indicator_left_),
+                           button_indicator_right_(kPinInputButtonIndicatorRight, Button::ButtonTypes::kToggle, &indicator_right_),
+                           button_power_(kPinInputButtonPower, Button::ButtonTypes::kPower, &engine_)engine_(kTachometerRedline, kTachometerRunningMinimum, kTimeoutCranking, kPinInputSensorTachometer, kPinOutputPoints, kPinOutputStarterMotor),
                            
-                           sensor_neutral_(kPinInputSensorNeutral_),
-                           sensor_side_stand_(kPinInputSensorSideStand_),
-                           sensor_tachometer_(kPinInputSensorTachometer_),
-                           sensor_speed_(kPinInputSensorSpeed_),
+                           horn_(kPinOutputHorn),
 
-                           button_indicator_left_(kPinInputButtonIndicatorLeft_, &indicator_left_, Button::ButtonTypes::kToggle),
-                           button_indicator_right_(kPinInputButtonIndicatorRight_, &indicator_right_, Button::ButtonTypes::kToggle),
-                           button_horn_(kPinInputButtonHorn_, &horn_, Button::ButtonTypes::kMomentary),
-                           button_highbeam_(kPinInputButtonHighBeam_, &light_headlight_, Button::ButtonTypes::kToggle),
-                           button_brake_(kPinInputButtonBrake_, &light_tail_, Button::ButtonTypes::kMomentary),
-                           button_power_(kPinInputButtonPower_, &engine_, Button::ButtonTypes::kPower)
+                           indicator_left_(kFlashRate, kPinOutputIndicatorLeft),
+                           indicator_right_(kFlashRate, kPinOutputIndicatorRight),
+                           
+                           light_tail_(kBrightnessTailLight, kBrightnessBrakeLight, kPinOutputTailLight),
+                           light_headlight_(kBrightnessHeadlight, kBrightnessHighbeam, kPinOutputHeadlight),
+
+                           odometer_(kEEPROMOdometerAddress),
+
+                           rfid_seat_(kPinInputPinSS, kPinInputRST), 
+                           
+                           sensor_neutral_(kPinInputSensorNeutral),
+                           sensor_side_stand_(kPinInputSensorSideStand),
+                           sensor_tachometer_(kPinInputSensorTachometer),
+                           sensor_speed_(kPinInputSensorSpeed),
 {
     display_dash_.Setup();
 }
@@ -33,7 +35,7 @@ Motorcycle::Motorcycle() : engine_(kTimeoutCranking_, kTachometerRunningMinimum_
 // Equivalent to entering the accessory power mode in a car from off.
 void Motorcycle::PowerOn(void)
 {
-    digitalWrite(Motorcycle::kPinOutputPower_, HIGH);
+    digitalWrite(Motorcycle::kPinOutputPower, HIGH);
     UpdateTimeEnterAccessory();
 }
 
@@ -42,12 +44,12 @@ void Motorcycle::PowerOn(void)
 void Motorcycle::PowerOff(void)
 {
     odometer_.SaveOdometer();
-    digitalWrite(Motorcycle::kPinOutputPower_, LOW);
+    digitalWrite(Motorcycle::kPinOutputPower, LOW);
 }
 
 bool Motorcycle::GetStatePower(void) const
 {
-    return digitalRead(Motorcycle::kPinOutputPower_);
+    return digitalRead(Motorcycle::kPinOutputPower);
 }
 
 // Returns the state (boolean) of the side stand.
@@ -70,7 +72,7 @@ bool Motorcycle::GetStateSafety(void) const
 unsigned int Motorcycle::GetSpeed(void) const
 {
     // TODO: Add adjustment settings.
-    return helper::GetInputState(Motorcycle::kPinInputSensorSpeed_);
+    return helper::GetInputState(Motorcycle::kPinInputSensorSpeed);
 }
 
 // Returns the current distance of the motorcycles odometer in km.
@@ -91,7 +93,7 @@ void Motorcycle::UpdateTimeEnterAccessory(void)
 }
 
 // Returns the difference that the motorcycle has changed in speed in a period > 1 second.
-unsigned int Motorcycle::SpeedComparison(void) const
+static unsigned int Motorcycle::SpeedComparison(void) const
 {
     static unsigned int speed_last_recorded_;
     static unsigned int time_last_recorded_;
@@ -112,7 +114,7 @@ unsigned int Motorcycle::SpeedComparison(void) const
 // Checks if the motorcycle is slowing and activates the brake lights accordingly.
 void Motorcycle::AutoBrakeLight(void)
 {
-    if ((Motorcycle::GetSpeed() < 2) || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationRate_)
+    if ((Motorcycle::GetSpeed() < 2) || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationRate)
     {
         Motorcycle::light_tail_.SetLock(false); // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
         Motorcycle::light_tail_.SetState(HIGH);
@@ -130,9 +132,9 @@ void Motorcycle::EmergencyBrakeStrobe(void)
     // more than 15/km drop in 1 second
     static unsigned int time_last_cycled_;
 
-    if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate_)
+    if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate)
     {
-        if (helper::IntervalPassed(time_last_cycled_, kTailLightStrobeInterval_))
+        if (helper::IntervalPassed(time_last_cycled_, kTailLightStrobeInterval))
         {
             Motorcycle::light_tail_.SetLock(false);
             Motorcycle::light_tail_.SetState(!light_tail_.GetState());
