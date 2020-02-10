@@ -1,4 +1,4 @@
-// ems - BMW R80 electronics management system.
+// ems - BMW Airhead & K Bike electronics management system.
 // Copyright 2020 Jacob Wood
 
 #include <Arduino.h>
