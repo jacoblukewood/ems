@@ -6,20 +6,33 @@
 
 #include "helper.h"
 
-Indicator::Indicator(unsigned int const kFlashRate, unsigned int const kPinOutput) : kFlashCycle_(MILLISECONDS_PER_MINUTE / (kFlashRate * 2)), Accessory(kPinOutput) {
+Indicator::Indicator(unsigned int const kFlashRate, unsigned int const kPinOutput, Indicator* siblingIndicator) : kFlashCycle_(MILLISECONDS_PER_MINUTE / (kFlashRate * 2)), Accessory(kPinOutput), siblingIndicator_(siblingIndicator) {
 }
 
-void Indicator::SetState(bool const state) {
-  // if (motorcycle_.GetSpeed() > 15 && helper::IntervalPassed(Accessory::GetTimestampModified(), 10000))
-  // {
-  //   Accessory::SetState(state);
-  //   // TODO: this whole if needs fixing beause this check wont run unless the button has been pushed making it useless
-  // }
-  // else if (helper::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))
-  // {
-  //   digitalWrite(Indicator::GetPinOutput(), helper::GetInputState(Indicator::GetPinOutput()));
-  //   Indicator::SetTimestampCycled(millis());
-  // }
+void Indicator::SetState(State const state) {
+  switch(state) {
+    case ON:
+      siblingIndicator_->state = OFF;
+      this->state = ON;
+      break;
+
+    case OFF:
+      this->state = OFF;
+      break;
+  }
+}
+
+void Indicator::RefreshState(void) {
+  if (motorcycle_.GetSpeed() > kIndicatorAutoOffSpeed && helper::IntervalPassed(Accessory::GetTimestampModified(), 10000))
+  {
+    Accessory::SetState(state);
+    // TODO: this whole if needs fixing beause this check wont run unless the button has been pushed making it useless
+  }
+  else if (helper::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))
+  {
+    digitalWrite(Indicator::GetPinOutput(), helper::GetInputState(Indicator::GetPinOutput()));
+    Indicator::SetTimestampCycled(millis());
+  }
 }
 
 unsigned long Indicator::GetTimestampCycled(void) const {

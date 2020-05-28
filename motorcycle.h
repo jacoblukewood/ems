@@ -11,6 +11,7 @@
 #include "odometer.h"
 #include "rfid.h"
 #include "sensor.h"
+#include "gauge.h"
 
 class Motorcycle {
  public:
