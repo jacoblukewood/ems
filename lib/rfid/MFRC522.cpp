@@ -1034,7 +1034,7 @@ MFRC522::StatusCode MFRC522::MIFARE_Ultralight_Write(	byte page, 		///< The page
 MFRC522::StatusCode MFRC522::MIFARE_Decrement(	byte blockAddr, ///< The block (0-0xff) number.
 												int32_t delta		///< This number is subtracted from the value of block blockAddr.
 											) {
-	return MIFARE_TwoStepHelper(PICC_CMD_MF_DECREMENT, blockAddr, delta);
+	return MIFARE_TwoSteputility(PICC_CMD_MF_DECREMENT, blockAddr, delta);
 } // End MIFARE_Decrement()
 
 /**
@@ -1048,7 +1048,7 @@ MFRC522::StatusCode MFRC522::MIFARE_Decrement(	byte blockAddr, ///< The block (0
 MFRC522::StatusCode MFRC522::MIFARE_Increment(	byte blockAddr, ///< The block (0-0xff) number.
 												int32_t delta		///< This number is added to the value of block blockAddr.
 											) {
-	return MIFARE_TwoStepHelper(PICC_CMD_MF_INCREMENT, blockAddr, delta);
+	return MIFARE_TwoSteputility(PICC_CMD_MF_INCREMENT, blockAddr, delta);
 } // End MIFARE_Increment()
 
 /**
@@ -1063,15 +1063,15 @@ MFRC522::StatusCode MFRC522::MIFARE_Restore(	byte blockAddr ///< The block (0-0x
 											) {
 	// The datasheet describes Restore as a two step operation, but does not explain what data to transfer in step 2.
 	// Doing only a single step does not work, so I chose to transfer 0L in step two.
-	return MIFARE_TwoStepHelper(PICC_CMD_MF_RESTORE, blockAddr, 0L);
+	return MIFARE_TwoSteputility(PICC_CMD_MF_RESTORE, blockAddr, 0L);
 } // End MIFARE_Restore()
 
 /**
- * Helper function for the two-step MIFARE Classic protocol operations Decrement, Increment and Restore.
+ * utility function for the two-step MIFARE Classic protocol operations Decrement, Increment and Restore.
  * 
  * @return STATUS_OK on success, STATUS_??? otherwise.
  */
-MFRC522::StatusCode MFRC522::MIFARE_TwoStepHelper(	byte command,	///< The command to use
+MFRC522::StatusCode MFRC522::MIFARE_TwoSteputility(	byte command,	///< The command to use
 													byte blockAddr,	///< The block (0-0xff) number.
 													int32_t data		///< The data to transfer in step 2
 													) {
@@ -1093,7 +1093,7 @@ MFRC522::StatusCode MFRC522::MIFARE_TwoStepHelper(	byte command,	///< The comman
 	}
 	
 	return STATUS_OK;
-} // End MIFARE_TwoStepHelper()
+} // End MIFARE_TwoSteputility()
 
 /**
  * MIFARE Transfer writes the value stored in the volatile memory into one MIFARE Classic block.
@@ -1118,7 +1118,7 @@ MFRC522::StatusCode MFRC522::MIFARE_Transfer(	byte blockAddr ///< The block (0-0
 } // End MIFARE_Transfer()
 
 /**
- * Helper routine to read the current value from a Value Block.
+ * utility routine to read the current value from a Value Block.
  * 
  * Only for MIFARE Classic and only for blocks in "value block" mode, that
  * is: with access bits [C1 C2 C3] = [110] or [001]. The sector containing
@@ -1143,7 +1143,7 @@ MFRC522::StatusCode MFRC522::MIFARE_GetValue(byte blockAddr, int32_t *value) {
 } // End MIFARE_GetValue()
 
 /**
- * Helper routine to write a specific value into a Value Block.
+ * utility routine to write a specific value into a Value Block.
  * 
  * Only for MIFARE Classic and only for blocks in "value block" mode, that
  * is: with access bits [C1 C2 C3] = [110] or [001]. The sector containing
@@ -1272,11 +1272,11 @@ MFRC522::StatusCode MFRC522::PCD_MIFARE_Transceive(	byte *sendData,		///< Pointe
 } // End PCD_MIFARE_Transceive()
 
 /**
- * Returns a __FlashStringHelper pointer to a status code name.
+ * Returns a __FlashStringutility pointer to a status code name.
  * 
- * @return const __FlashStringHelper *
+ * @return const __FlashStringutility *
  */
-const __FlashStringHelper *MFRC522::GetStatusCodeName(MFRC522::StatusCode code	///< One of the StatusCode enums.
+const __FlashStringutility *MFRC522::GetStatusCodeName(MFRC522::StatusCode code	///< One of the StatusCode enums.
 										) {
 	switch (code) {
 		case STATUS_OK:				return F("Success.");
@@ -1320,11 +1320,11 @@ MFRC522::PICC_Type MFRC522::PICC_GetType(byte sak		///< The SAK byte returned fr
 } // End PICC_GetType()
 
 /**
- * Returns a __FlashStringHelper pointer to the PICC type name.
+ * Returns a __FlashStringutility pointer to the PICC type name.
  * 
- * @return const __FlashStringHelper *
+ * @return const __FlashStringutility *
  */
-const __FlashStringHelper *MFRC522::PICC_GetTypeName(PICC_Type piccType	///< One of the PICC_Type enums.
+const __FlashStringutility *MFRC522::PICC_GetTypeName(PICC_Type piccType	///< One of the PICC_Type enums.
 													) {
 	switch (piccType) {
 		case PICC_TYPE_ISO_14443_4:		return F("PICC compliant with ISO/IEC 14443-4");

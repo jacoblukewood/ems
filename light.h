@@ -1,20 +1,23 @@
-// Copyright 2020 Jacob Wood
+// light.h
+// github.com/jacoblukewood/ems
+// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
 
 #ifndef LIGHT_H_
 #define LIGHT_H_
 
-#include "accessory.h"
-
-class Light : public Accessory {
+class Light {
  public:
-    Light(unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh, unsigned int const kPinOutput);
-    explicit Light(unsigned int const kPinOutput);
+    Light(unsigned int const kPinOutput);
 
-    void SetState(bool const state);
+    virtual void On(void);
+
+    virtual void Off(void);
+
+ protected:
+   unsigned int const kPinOutput;
 
  private:
-    unsigned int const kBrightnessLow;
-    unsigned int const kBrightnessHigh;
+   bool state_;
 };
 
 #endif  // LIGHT_H_

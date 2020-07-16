@@ -1,18 +1,22 @@
-// Copyright 2020 Jacob Wood
+// light.cpp
+// github.com/jacoblukewood/ems
+// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
 
 #include "light.h"
 
 #include <Arduino.h>
 
-Light::Light(unsigned int const kBrightnessLow, unsigned int const kBrightnessHigh, unsigned int const kPinOutput) : kBrightnessLow(kBrightnessLow), kBrightnessHigh(kBrightnessHigh), Accessory(kPinOutput) {
+Light::Light(unsigned int const pin_output)
+: kPinOutput(pin_output) {
+    state_ = false
 }
 
-Light::Light(unsigned int const kPinOutput) : Accessory(kPinOutput), kBrightnessLow(0), kBrightnessHigh(255) {
+void Light::On(void) {
+    digitalWrite(kPinOutput, HIGH);
+    state_ = true
 }
 
-void Light::SetState(bool const state) {
-    if (!GetLock()) {
-        analogWrite(GetPinOutput(), state ? kBrightnessHigh : kBrightnessLow);
-        SetTimestampModified(millis());
-    }
+void Light::Off(void) {
+    digitalWrite(kPinOutput, LOW);
+    state_ = false;
 }

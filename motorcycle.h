@@ -12,6 +12,7 @@
 #include "rfid.h"
 #include "sensor.h"
 #include "gauge.h"
+#include "stand.h"
 
 class Motorcycle {
  public:
@@ -21,14 +22,14 @@ class Motorcycle {
     void EmergencyBrakeStrobe(void);
     unsigned int GetOdometer(void) const;
     unsigned int GetSpeed(void) const;
-    bool GetStatePower(void) const;
-    bool GetStateSafety(void) const;
-    bool GetStateSensorSideStand(void) const;
-    unsigned int GetTimeEnterAccessory(void) const;
+    bool IsPoweredOn(void) const;
+    bool IsSafeToRide(void) const;
+    bool IsSideStandLowered(void) const;
+    unsigned int GetPowerOnTime(void) const;
     void PowerOn(void);
     void PowerOff(void);
     unsigned int SpeedComparison(void) const;
-    void UpdateTimeEnterAccessory(void);
+    void SetPowerOnTime(int new_time_value);
 
     Accessory horn_;
 
@@ -54,9 +55,10 @@ class Motorcycle {
     RFID rfid_seat_;
 
     Sensor sensor_neutral_;
-    Sensor sensor_side_stand_;
     Sensor sensor_speed_;
     Sensor sensor_tachometer_;
+    
+   Stand side_stand;
 
  private:
     // Accessory
@@ -97,7 +99,8 @@ class Motorcycle {
     // Motorcycle
     float const kAutoBrakeDecelerationRate = 0.04;  // Decelleration rate in m/s2 that auto brake is activated at/above.
     float const kEmergencyBrakeDecelerationRate = 6.0;  // Deceleration rate in m/s2 that the emergency brake lights are activated at/above. (5.2.23.1. The signal shall not be activated when the vehicle deceleration is below 6 m/s² but it may be generated at any deceleration at or above this value, the actual value being defined by the vehicle manufacturer. - Vehicle Standard (Australian Design Rule 31/04 – Brake Systems for Passenger Cars) 2017).
-    unsigned int const kPinOutputPower = 10;
+    unsigned int const kPinElectronicsPower = 10;
+    unsigned int const kAccessoryModeTimeout = 10000;  // Timeeout in milliseconds to leave accessory mode and power off.
 
     // Odometer
     unsigned int const kEEPROMOdometerAddress = 0;
@@ -118,7 +121,17 @@ class Motorcycle {
     unsigned int const kPinOutputTailLight = A6;
     unsigned int const kTailLightStrobeInterval = 100;  // Time in milliseconds between on/off strobe.
 
-    unsigned int time_enter_accessory_;
+    unsigned int power_on_time_;
+
+
+
+    byte const kRFIDKeyList[][4] = {  // List of RFID key UIDs in hex.
+      {0xF9, 0xAC, 0x41, 0xC2},
+      {0xF9, 0xAC, 0x41, 0xC2}
+   };
+
+
+static unsigned int const kOffHoldTime = 5000;  // Time in milliseconds to hold the power button to trigger it. // TODO: Should this be in the button class?
 };
 
 #endif  // MOTORCYCLE_H_

@@ -1,15 +1,17 @@
+// utility.h
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
-#ifndef HELPER_H_
-#define HELPER_H_
+#ifndef utility_H_
+#define utility_H_
 
 #include <Arduino.h>
 
-namespace helper {
-bool GetInputState(uint8_t pin);
+namespace utility {
+bool GetPinInputState(uint8_t pin);
 bool IntervalPassed(unsigned long const start_time, unsigned int const interval);
 int PinMode(uint8_t pin);
 unsigned long TimePassed(unsigned long const start_time);
-}  // namespace helper
+}  // namespace utility
 
-#endif  // HELPER_H_
+#endif  // utility_H_

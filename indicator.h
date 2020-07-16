@@ -5,29 +5,19 @@
 
 #define MILLISECONDS_PER_MINUTE 60000
 
-#include "accessory.h"
+#include "light.h"
 
-class Indicator : public Accessory {
+class Indicator : public Light {
  public:
-    Indicator(unsigned int const kFlashRate, unsigned int const kPinOutput, Indicator* siblingIndicator_);
+   Indicator(unsigned int const flash_rate, unsigned int const pin_output, Indicator* sibling_indicator);
 
-   enum State {
-      ON,
-      OFF
-   };
-
-    unsigned long GetTimestampCycled(void) const;
-    void SetState(State const state);
-    void RefreshState(void);
-    void SetTimestampCycled(unsigned long const timestamp_cycled);
+   void On(void);
 
  private:
-   int const kFlashCycle_;
-
+   int const kFlashCycle;
    Indicator* siblingIndicator_;
-   State state;
-   unsigned long timestamp_cycled_;
 
+   bool state_;
 };
 
 #endif  // INDICATOR_H_

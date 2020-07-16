@@ -1,3 +1,5 @@
+// gauge.h
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
 #ifndef GAUGE_H

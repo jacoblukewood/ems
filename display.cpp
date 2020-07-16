@@ -9,7 +9,7 @@
 
 #include "SSD1306Ascii.h"
 
-#include "helper.h"
+#include "utility.h"
 
 Display::Display(void) {
 }

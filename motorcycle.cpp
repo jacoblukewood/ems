@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-#include "helper.h"
+#include "utility.h"
 
 Motorcycle::Motorcycle() : button_brake_(kPinInputButtonBrake, Button::ButtonTypes::kMomentary, &light_tail_),
                            button_highbeam_(kPinInputButtonHighBeam, Button::ButtonTypes::kToggle, &light_headlight_),
@@ -30,46 +30,41 @@ Motorcycle::Motorcycle() : button_brake_(kPinInputButtonBrake, Button::ButtonTyp
                            sensor_neutral_(kPinInputSensorNeutral),
                            sensor_side_stand_(kPinInputSensorSideStand),
                            sensor_tachometer_(kPinInputSensorTachometer),
-                           sensor_speed_(kPinInputSensorSpeed) {
+                           sensor_speed_(kPinInputSensorSpeed) 
+                           side_stand(kPinInputSensorSideStand)
+                           {
     display_dash_.Setup();
 }
 
 // Switches on permenant power and records start time.
 // Equivalent to entering the accessory power mode in a car from off.
 void Motorcycle::PowerOn(void) {
-    digitalWrite(Motorcycle::kPinOutputPower, HIGH);
-    UpdateTimeEnterAccessory();
+    digitalWrite(kPinElectronicsPower, HIGH);
+    SetPowerOnTime(millis());
 }
 
 // Switches off permenant power, resets components, and saves the odometer.
 // Equivalent to entering the off power mode in a car.
 void Motorcycle::PowerOff(void) {
     odometer_.SaveOdometer();
-    digitalWrite(Motorcycle::kPinOutputPower, LOW);
+    digitalWrite(kPinElectronicsPower, LOW);
 }
 
-bool Motorcycle::GetStatePower(void) const {
-    return digitalRead(Motorcycle::kPinOutputPower);
-}
-
-// Returns the state (boolean) of the side stand.
-// true: stand is engaged.
-// false: stand is disengaged.
-bool Motorcycle::GetStateSensorSideStand(void) const {
-    return Motorcycle::sensor_side_stand_.GetState();
+bool Motorcycle::IsPoweredOn(void) const {
+    return digitalRead(kPinElectronicsPower);
 }
 
 // Returns the state of the motorcycles safety sensors.
 // true: safety sensor is active, motorcycle is unsafe.
 // false: safety sensors are not active, motorcycle is safe.
-bool Motorcycle::GetStateSafety(void) const {
-    return GetStateSensorSideStand();
+bool Motorcycle::IsSafeToRide(void) const {
+    return side_stand.IsLowered();
 }
 
 // Returns the current speed of the motorcycle in km/h.
 unsigned int Motorcycle::GetSpeed(void) const {
     // TODO: Add adjustment settings.
-    return helper::GetInputState(Motorcycle::kPinInputSensorSpeed);
+    return utility::GetPinInputState(kPinInputSensorSpeed);
 }
 
 // Returns the current distance of the motorcycles odometer in km.
@@ -78,53 +73,53 @@ unsigned int Motorcycle::GetOdometer(void) const {
     return 0;
 }
 
-unsigned int Motorcycle::GetTimeEnterAccessory(void) const {
-    return time_enter_accessory_;
+unsigned int Motorcycle::GetPowerOnTime(void) const {
+    return power_on_time_;
 }
 
-void Motorcycle::UpdateTimeEnterAccessory(void) {
-    time_enter_accessory_ = millis();
+void Motorcycle::SetPowerOnTime(int new_time_value) {
+    power_on_time_ = new_time_value;
 }
 
-// Returns the difference that the motorcycle has changed in speed in a period > 1 second.
-static unsigned int Motorcycle::SpeedComparison(void) const {
-    static unsigned int speed_last_recorded_;
-    static unsigned int time_last_recorded_;
-    double difference;
+// // Returns the difference that the motorcycle has changed in speed in a period > 1 second.
+// static unsigned int Motorcycle::SpeedComparison(void) const {
+//     static unsigned int speed_last_recorded_;
+//     static unsigned int time_last_recorded_;
+//     double difference;
 
-    if (helper::IntervalPassed(time_last_recorded_, 1000)) {
-        difference = Motorcycle::GetSpeed() * ((millis() - time_last_recorded_) / 1000);
+//     if (utility::IntervalPassed(time_last_recorded_, 1000)) {
+//         difference = Motorcycle::GetSpeed() * ((millis() - time_last_recorded_) / 1000);
 
-        speed_last_recorded_ = Motorcycle::GetSpeed();
-        time_last_recorded_ = millis();
-    }
+//         speed_last_recorded_ = Motorcycle::GetSpeed();
+//         time_last_recorded_ = millis();
+//     }
 
-    return difference;
-}
+//     return difference;
+// }
 
-// Checks if the motorcycle is slowing and activates the brake lights accordingly.
-void Motorcycle::AutoBrakeLight(void) {
-    if ((Motorcycle::GetSpeed() < 2) || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationRate) {
-        Motorcycle::light_tail_.SetLock(false);  // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
-        Motorcycle::light_tail_.SetState(HIGH);
-        Motorcycle::light_tail_.SetLock(true);
-    } else {
-        Motorcycle::light_tail_.SetLock(false);
-    }
-}
+// // Checks if the motorcycle is slowing and activates the brake lights accordingly.
+// void Motorcycle::AutoBrakeLight(void) {
+//     if ((Motorcycle::GetSpeed() < 2) || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationRate) {
+//         Motorcycle::light_tail_.SetLock(false);  // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
+//         Motorcycle::light_tail_.SetState(HIGH);
+//         Motorcycle::light_tail_.SetLock(true);
+//     } else {
+//         Motorcycle::light_tail_.SetLock(false);
+//     }
+// }
 
-// Checks if the motorcycle is slowing rapidly and strobes the brake lights to warn of danger.
-void Motorcycle::EmergencyBrakeStrobe(void) {
-    // more than 15/km drop in 1 second
-    static unsigned int time_last_cycled_;
+// // Checks if the motorcycle is slowing rapidly and strobes the brake lights to warn of danger.
+// void Motorcycle::EmergencyBrakeStrobe(void) {
+//     // more than 15/km drop in 1 second
+//     static unsigned int time_last_cycled_;
 
-    if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate) {
-        if (helper::IntervalPassed(time_last_cycled_, kTailLightStrobeInterval)) {
-            Motorcycle::light_tail_.SetLock(false);
-            Motorcycle::light_tail_.SetState(!light_tail_.GetState());
-            Motorcycle::light_tail_.SetLock(true);  // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
-        }
-    } else {
-        Motorcycle::light_tail_.SetLock(false);
-    }
-}
+//     if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate) {
+//         if (utility::IntervalPassed(time_last_cycled_, kTailLightStrobeInterval)) {
+//             Motorcycle::light_tail_.SetLock(false);
+//             Motorcycle::light_tail_.SetState(!light_tail_.GetState());
+//             Motorcycle::light_tail_.SetLock(true);  // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
+//         }
+//     } else {
+//         Motorcycle::light_tail_.SetLock(false);
+//     }
+// }

@@ -1,3 +1,5 @@
+// engine.h
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
 #ifndef ENGINE_H_
@@ -5,12 +7,12 @@
 
 class Engine  {
  public:
-    Engine(unsigned int const kTachometerRedline, unsigned int const kTachometerRunningMinimum, unsigned int const kTimeoutCranking, unsigned int const kPinInputSensorTachometer, unsigned int const kPinOutputPoints, unsigned int const kPinOutputStarterMotor);
+    Engine(unsigned int const tachometer_redline, unsigned int const tachometer_running_minimum_rpm, unsigned int const timeout_cranking, unsigned int const pin_input_sensor_tachometer, unsigned int const pin_output_points, unsigned int const pin_output_starter_motor);
 
-    bool GetRedlineState(void) const;
-    bool GetState(void) const;
+    bool IsRedlining(void) const;
+    bool IsRunning(void) const;
     unsigned int GetTachometer(void) const;
-    bool Start(void);
+    void Start(void);
     void Stop(void) const;
 
  private:
@@ -18,7 +20,7 @@ class Engine  {
     unsigned int const kPinOutputPoints;
     unsigned int const kPinOutputStarterMotor;
     unsigned int const kTachometerRedline;
-    unsigned int const kTachometerRunningMinimum;
+    unsigned int const kTachometerRunningMinimumRPM;
     unsigned int const kTimeoutCranking;
 
     unsigned long start_attempt_time_;

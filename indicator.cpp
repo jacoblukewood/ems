@@ -4,41 +4,35 @@
 
 #include <Arduino.h>
 
-#include "helper.h"
+#include "utility.h"
 
-Indicator::Indicator(unsigned int const kFlashRate, unsigned int const kPinOutput, Indicator* siblingIndicator) : kFlashCycle_(MILLISECONDS_PER_MINUTE / (kFlashRate * 2)), Accessory(kPinOutput), siblingIndicator_(siblingIndicator) {
+Indicator::Indicator(unsigned int const flash_rate, unsigned int const pin_output, Indicator* sibling_indicator)
+: kFlashCycle(MILLISECONDS_PER_MINUTE / (flash_rate * 2))
+, Light(pin_output)
+, siblingIndicator_(sibling_indicator)
+{ }
+
+void Indicator::On(void) {
+  siblingIndicator_->Light::Off();
+  Light::On();
+  state_ = true;
+  // TODO: Add something to start cycling the lights.
 }
 
-void Indicator::SetState(State const state) {
-  switch(state) {
-    case ON:
-      siblingIndicator_->state = OFF;
-      this->state = ON;
-      break;
-
-    case OFF:
-      this->state = OFF;
-      break;
-  }
+void Indicator::Off(void) {
+  siblingIndicator_->Light::Off();
+  digitalWrite(kPinOutput, LOW);  // Not using the Light::Off() method as it will change the state property.
 }
 
 void Indicator::RefreshState(void) {
-  if (motorcycle_.GetSpeed() > kIndicatorAutoOffSpeed && helper::IntervalPassed(Accessory::GetTimestampModified(), 10000))
-  {
-    Accessory::SetState(state);
-    // TODO: this whole if needs fixing beause this check wont run unless the button has been pushed making it useless
-  }
-  else if (helper::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))
-  {
-    digitalWrite(Indicator::GetPinOutput(), helper::GetInputState(Indicator::GetPinOutput()));
-    Indicator::SetTimestampCycled(millis());
-  }
-}
-
-unsigned long Indicator::GetTimestampCycled(void) const {
-  return timestamp_cycled_;
-}
-
-void Indicator::SetTimestampCycled(unsigned long const timestamp_cycled) {
-  timestamp_cycled_ = timestamp_cycled;
+  // if (motorcycle_.GetSpeed() > kIndicatorAutoOffSpeed && utility::IntervalPassed(Accessory::GetTimestampModified(), 10000))
+  // {
+  //   Accessory::SetState(state);
+  //   // TODO: this whole if needs fixing beause this check wont run unless the button has been pushed making it useless
+  // }
+  // else if (utility::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))
+  // {
+  //   digitalWrite(Indicator::GetPinOutput(), utility::GetInputState(Indicator::GetPinOutput()));
+  //   Indicator::SetTimestampCycled(millis());
+  // }
 }

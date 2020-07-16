@@ -1,8 +1,10 @@
+// utility.h
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
-#include "helper.h"
+#include "utility.h"
 
-namespace helper {
+namespace utility {
 bool IntervalPassed(unsigned long const start_time, unsigned int const interval) {
     return (((unsigned long)(millis() - start_time)) >= interval);  // TODO: Probably could be cleaned up. Need to test to clean.
 }
@@ -25,11 +27,11 @@ int PinMode(uint8_t pin) {
     return ((*out & bit) ? INPUT_PULLUP : INPUT);
 }
 
-bool GetInputState(uint8_t pin) {
+bool GetPinInputState(uint8_t pin) const {
     if (PinMode(pin) == INPUT_PULLUP) {
         return !digitalRead(pin);
     } else {
         return digitalRead(pin);
     }
 }
-}  // namespace helper
+}  // namespace utility

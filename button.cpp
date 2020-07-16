@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-#include "helper.h"
+#include "utility.h"
 
 Button::Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, const Accessory *output) : kPinInput(kPinInput), type_(kButtonType), output_(output) {
   pinMode(Button::kPinInput, INPUT_PULLUP);
@@ -15,13 +15,13 @@ Button::Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, 
 }
 
 bool Button::GetState(void) const {
-  helper::GetInputState(kPinInput);
+  utility::GetInputState(kPinInput);
 }
 
 void Button::RefreshState(void) {
   switch (type_) {
   case Button::ButtonTypes::kToggle:
-    if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce)) {
+    if (Button::GetState() && utility::IntervalPassed(timestamp_last_pressed_, kDebounce)) {
       output_->SetState(!output_->GetState());
     }
     break;
@@ -31,7 +31,7 @@ void Button::RefreshState(void) {
     break;
 
   case Button::ButtonTypes::kPower:
-    if (Button::GetState() && helper::IntervalPassed(timestamp_last_pressed_, kDebounce)) {
+    if (Button::GetState() && utility::IntervalPassed(timestamp_last_pressed_, kDebounce)) {
       if (!engine_->GetState()) {
         engine_->Start();
       } else {

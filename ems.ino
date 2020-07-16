@@ -4,17 +4,9 @@
 #include <Arduino.h>
 
 #include "motorcycle.h"
-#include "helper.h"
+#include "utility.h"
 
 Motorcycle motorcycle;
-
-static unsigned int const kTimeAutoOff = 10000;  // Timeeout in milliseconds to leave accessory mode and power off.
-static unsigned int const kOffHoldTime = 5000;  // Time in milliseconds to hold the power button to trigger it. // TODO: Should this be in the button class?
-
-byte const kRFIDKeyList[][4] = {  // List of RFID key UIDs in hex.
-    {0xF9, 0xAC, 0x41, 0xC2},
-    {0xF9, 0xAC, 0x41, 0xC2}};
-
 
 void setup() {
   // Wait for valid key. The reed switch will keep the power on for this time, turning off if a key is removed.
@@ -44,12 +36,12 @@ void loop() {
     // If power button is pressed.
     if (motorcycle.button_power_.GetState()) {
       motorcycle.engine_.Stop();
-      motorcycle.UpdateTimeEnterAccessory();
+      motorcycle.SetOnTime();
     }
     // If it is unsafe.
     if (motorcycle.GetStateSafety()) {
       motorcycle.engine_.Stop();
-      motorcycle.UpdateTimeEnterAccessory();
+      motorcycle.SetOnTime();
       motorcycle.display_dash_.PrintLine(Display::Symbol::WARNING, "Stand Engaged", Display::Alignment::CENTER, Display::Alignment::CENTER);  // there is a bug here if 2 processes try to override the screen at once. conside adding a priority system.
     }
   } else {
@@ -58,7 +50,7 @@ void loop() {
       // If motorcycle is safe.
       if (!motorcycle.GetStateSafety()) {
         if (!motorcycle.engine_.Start()) {
-          motorcycle.UpdateTimeEnterAccessory();
+          motorcycle.SetOnTime();
           motorcycle.display_dash_.PrintLine(Display::Symbol::ERROR, "Failed to Start", Display::Alignment::CENTER, Display::Alignment::CENTER);
         }
       } else {
@@ -67,7 +59,7 @@ void loop() {
     }
 
     // If in accessory mode for longer than the auto-off period.
-    if (helper::IntervalPassed(motorcycle.GetTimeEnterAccessory(), kTimeAutoOff)) {
+    if (utility::IntervalPassed(motorcycle.GetTimeEnterAccessory(), kAccessoryModeTimeout)) {
       motorcycle.PowerOff();
     }
   }
