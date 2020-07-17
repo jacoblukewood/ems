@@ -8,20 +8,20 @@
 #include <Arduino.h>
 #include <Stepper.h>
 
-class Gauge  {
+class Gauge {
  public:
-    Gauge(unsigned int kMotorSteps, unsigned int kMinAngle, unsigned int kMaxAngle, int kPin1, int kPin2, int kPin3, int kPin4);
+    Gauge(unsigned int const motor_steps, unsigned int const stepper_rpm, unsigned int const min_angle, unsigned int const max_angle, unsigned int const pin_1, unsigned int const pin_2, unsigned int const pin_3, unsigned int const pin_4);
 
-    void Initialize(unsigned int motorRPM);
     void SetPercentage(unsigned int percentage);
     void SetAngle(unsigned int angle);
 
  private:
     Stepper stepper;
-    unsigned int const kMinAngle = 0;
-    unsigned int const kMaxAngle = 315;
-    unsigned int const kMotorSteps = 600;
-    int position = 0;
+    unsigned int const kStepperRPM;
+    unsigned int const kMinAngle;
+    unsigned int const kMaxAngle;
+    unsigned int const kMotorSteps;
+    int current_position_ = 0;
 };
 
 #endif  // GAUGE_H

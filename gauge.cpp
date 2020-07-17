@@ -4,18 +4,14 @@
 
 #include "gauge.h"
 
-
-Gauge::Gauge(unsigned int motor_steps, unsigned int min_angle, unsigned int max_angle, int pin_1, int pin_2, int pin_3, int pin_4)
+Gauge::Gauge(unsigned int const motor_steps, unsigned int const stepper_rpm, unsigned int const min_angle, unsigned int const max_angle, unsigned int const pin_1, unsigned int const pin_2, unsigned int const pin_3, unsigned int const pin_4)
 : kMotorSteps(motor_steps)
+, kStepperRPM(stepper_rpm)
 , kMinAngle(min_angle)
 , kMaxAngle(max_angle)
-, stepper(motor_steps, pin_1, pin_2, pin_3 ,pin_4)
-{ }
-
-
-void Gauge::Initialize(unsigned int motorRPM) {
+, stepper(motor_steps, pin_1, pin_2, pin_3 ,pin_4) {
   // Set motor speed - Speed is RPM * 2
-  stepper.setSpeed(motorRPM * 2);
+  stepper.setSpeed(kStepperRPM * 2);
   
   // Return motor to home position.
   stepper.step(-kMotorSteps);
@@ -28,11 +24,11 @@ void Gauge::SetPercentage(unsigned int percentage) {
     percentage = 100;
   }
   
-  unsigned int currentPercentage = (position * 100) / kMotorSteps;
+  unsigned int currentPercentage = (current_position_ * 100) / kMotorSteps;
   int percentageDifference = percentage - currentPercentage;
   int stepsDifference = (percentageDifference / 100 ) * kMotorSteps;
   stepper.step(stepsDifference);
-  position = position + stepsDifference;
+  current_position_ += stepsDifference;
 }
 
 
@@ -49,9 +45,9 @@ void Gauge::SetAngle(unsigned int angle) {
 
   int totalAngles = kMaxAngle - kMinAngle;
   
-  unsigned int currentAngle = (position * totalAngles) / kMotorSteps;
+  unsigned int currentAngle = (current_position_ * totalAngles) / kMotorSteps;
   int angleDifference = angle - currentAngle;
   int stepsDifference = (angleDifference / kMaxAngle) * kMotorSteps;
   stepper.step(stepsDifference);
-  position = position + stepsDifference;
+  current_position_ += stepsDifference;
 }

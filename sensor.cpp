@@ -14,5 +14,5 @@ Sensor::Sensor(int const kPinSensorInput)
 
 
 bool Sensor::GetState(void) const {
-    return utility::GetPinInputState(kPinSensorInput);
+    return utility::IsDigitalInputHigh(kPinSensorInput);
 }

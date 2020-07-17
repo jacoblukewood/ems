@@ -27,7 +27,7 @@ int PinMode(uint8_t pin) {
     return ((*out & bit) ? INPUT_PULLUP : INPUT);
 }
 
-bool GetPinInputState(uint8_t pin) const {
+bool IsDigitalInputHigh(uint8_t pin) const {
     if (PinMode(pin) == INPUT_PULLUP) {
         return !digitalRead(pin);
     } else {

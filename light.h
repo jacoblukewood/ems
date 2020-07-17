@@ -5,16 +5,15 @@
 #ifndef LIGHT_H_
 #define LIGHT_H_
 
-class Light {
+#include "accessory.h"
+
+class Light : public Accessory {
  public:
     Light(unsigned int const kPinOutput);
 
     virtual void On(void);
 
     virtual void Off(void);
-
- protected:
-   unsigned int const kPinOutput;
 
  private:
    bool state_;

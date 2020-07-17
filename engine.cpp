@@ -8,7 +8,6 @@
 
 #include "utility.h"
 
-
 Engine::Engine(unsigned int const tachometer_redline, unsigned int const tachometer_running_minimum_rpm, unsigned int const timeout_cranking, unsigned int const pin_input_sensor_tachometer, unsigned int const pin_output_points, unsigned int const pin_output_starter_motor)
     : kTachometerRedline(tachometer_redline)
     , kTachometerRunningMinimumRPM(tachometer_running_minimum_rpm)

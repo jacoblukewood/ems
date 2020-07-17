@@ -5,21 +5,16 @@
 
 class Accessory {
  public:
-    Accessory(unsigned int const kPinOutput);
+    Accessory(unsigned int const pin_output);
 
-    bool GetLock(void) const;
     int GetPinOutput(void) const;
-    bool GetState(void) const;
-    unsigned long GetTimestampModified(void) const;
-    void SetLock(bool const state);
-    virtual void SetState(bool const state);
-    void SetTimestampModified(unsigned long const timestamp_modified);
 
- private:
+    bool IsOn(void) const;
+    void On(void);
+    void Off(void);
+
+ protected:
     unsigned int const kPinOutput;
-
-    bool lock_;
-    unsigned long timestamp_modified_;
 };
 
 #endif  // ACCESSORY_H_

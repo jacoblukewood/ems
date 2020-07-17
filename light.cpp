@@ -7,13 +7,13 @@
 #include <Arduino.h>
 
 Light::Light(unsigned int const pin_output)
-: kPinOutput(pin_output) {
-    state_ = false
+: Accessory(pin_output) {
+    state_ = false;
 }
 
 void Light::On(void) {
     digitalWrite(kPinOutput, HIGH);
-    state_ = true
+    state_ = true;
 }
 
 void Light::Off(void) {

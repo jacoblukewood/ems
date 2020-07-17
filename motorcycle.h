@@ -9,7 +9,7 @@
 #include "indicator.h"
 #include "light.h"
 #include "odometer.h"
-#include "rfid.h"
+#include "rfid_reader.h"
 #include "sensor.h"
 #include "gauge.h"
 #include "stand.h"
@@ -52,7 +52,7 @@ class Motorcycle {
 
     Odometer odometer_;
 
-    RFID rfid_seat_;
+    RFIDReader rfid_seat_;
 
     Sensor sensor_neutral_;
     Sensor sensor_speed_;

@@ -64,7 +64,7 @@ bool Motorcycle::IsSafeToRide(void) const {
 // Returns the current speed of the motorcycle in km/h.
 unsigned int Motorcycle::GetSpeed(void) const {
     // TODO: Add adjustment settings.
-    return utility::GetPinInputState(kPinInputSensorSpeed);
+    return utility::IsDigitalInputHigh(kPinInputSensorSpeed);
 }
 
 // Returns the current distance of the motorcycles odometer in km.

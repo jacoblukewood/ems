@@ -1,3 +1,5 @@
+// display.h
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
 #ifndef DISPLAY_H_
@@ -11,7 +13,7 @@
 // Define proper RST_PIN if required.
 #define RST_PIN -1
 
-class Display : public SSD1306AsciiWire {
+class Display : private SSD1306AsciiWire {
  public:
     enum Symbol {
         WARNING,
@@ -27,15 +29,13 @@ class Display : public SSD1306AsciiWire {
         CENTER
     };
 
-    Display(void);
+    Display(unsigned int const i2c_address, DevType display_type);
 
-    bool GetLock(void) const;
     void PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal);
-    void Setup(void);
-    void SetLock(bool state);
 
  private:
-    bool lock_;
+    DevType kDisplayType = Adafruit128x32;
+    unsigned int const kI2C_Address = 0x3C;
 };
 
 #endif  // DISPLAY_H_

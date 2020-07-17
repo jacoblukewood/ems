@@ -6,41 +6,35 @@
 
 #include "utility.h"
 
-Button::Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, const Accessory *output) : kPinInput(kPinInput), type_(kButtonType), output_(output) {
+Button::Button(int const pin_input, int const debounce, Accessory* const output)
+: kPinInput(pin_input)
+, kDebounce(debounce)
+, output_(output) {
   pinMode(Button::kPinInput, INPUT_PULLUP);
+  last_state_ = false;
 }
 
-Button::Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, const Engine *engine) : kPinInput(kPinInput), type_(kButtonType), engine_(engine) {
-  pinMode(Button::kPinInput, INPUT_PULLUP);
-}
+Button::Button(int const pin_input, Accessory* const output)
+: Button(pin_input, 300, output)
+{ }
 
-bool Button::GetState(void) const {
-  utility::GetInputState(kPinInput);
-}
 
-void Button::RefreshState(void) {
-  switch (type_) {
-  case Button::ButtonTypes::kToggle:
-    if (Button::GetState() && utility::IntervalPassed(timestamp_last_pressed_, kDebounce)) {
-      output_->SetState(!output_->GetState());
-    }
-    break;
+void Button::Refresh(void) {
+  // Base class Button action is momentary
+  
+  bool const is_active = utility::IsDigitalInputHigh(kPinInput);
 
-  case Button::ButtonTypes::kMomentary:
-    output_->SetState(Button::GetState());
-    break;
-
-  case Button::ButtonTypes::kPower:
-    if (Button::GetState() && utility::IntervalPassed(timestamp_last_pressed_, kDebounce)) {
-      if (!engine_->GetState()) {
-        engine_->Start();
+  if(is_active != was_pressed_last_refresh_) {
+    if(utility::IntervalPassed(time_last_pressed_, kDebounce)) {}
+      if(output_->IsOn()) {
+          output_->Off();
+          was_pressed_last_refresh_ = false;
       } else {
-        if (true) {
-          // Check if held for 2 seconds. Keep in mind that the debounce is also a factor.
-          engine_->Stop();
-        }
+          output_->On();
+          was_pressed_last_refresh_ = true;
       }
+
+      time_last_pressed_ = millis();
     }
-    break;
   }
 }

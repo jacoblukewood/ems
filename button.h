@@ -8,27 +8,20 @@
 
 class Button {
  public:
-    enum ButtonTypes {
-        kToggle,
-        kMomentary,
-        kPower
-    };
+    Button(int const pin_input, int const debounce, Accessory* const output);
+    Button(int const pin_input, Accessory* const output);
 
-    Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, const Accessory* const output);
-    Button(int const kPinInput, enum Button::ButtonTypes const kButtonType, const Engine* const engine);
+    virtual void Refresh(void);
 
-    bool GetState(void) const;
-    void RefreshState(void);
+ protected:
+    Accessory* const output_;
 
- private:
-    static unsigned int const kDebounce = 300;  // * CONFIGURABLE * Time between button presses being recorded and being treated as new (the lower the better - increase if flickering occurs or if stop button ceases to work).
+    unsigned int const kDebounce;  // * CONFIGURABLE * Time between button presses being recorded and being treated as new (the lower the better - increase if flickering occurs or if stop button ceases to work).
     unsigned int const kPinInput;
 
-    Accessory* output_;
-    Engine* engine_;
-    ButtonTypes type_;
+    unsigned long time_last_pressed_;
 
-    unsigned long timestamp_last_pressed_;
+    bool was_pressed_last_refresh_;
 };
 
 #endif  // BUTTON_H_
