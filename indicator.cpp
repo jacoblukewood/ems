@@ -8,28 +8,33 @@
 
 #include "utility.h"
 
-IndicatorSet::IndicatorSet(unsigned int const flash_rate, unsigned int const pin_output, Indicator* sibling_indicator)
+Indicator::Indicator(unsigned int const flash_rate, unsigned int const pin_output)
 : kFlashCycle(MILLISECONDS_PER_MINUTE / (flash_rate * 2))
 , Light(pin_output)
-, siblingIndicator_(sibling_indicator)
 { }
 
 
-void IndicatorSet::On(void) {
-  siblingIndicator_->Light::Off();
-  Light::On();
+void Indicator::On(void) {
   state_ = true;
+  Refresh();
   // TODO: Add something to start cycling the lights.
 }
 
 
-void IndicatorSet::Off(void) {
-  siblingIndicator_->Light::Off();
-  digitalWrite(kPinOutput, LOW);  // Not using the Light::Off() method as it will change the state property.
+void Indicator::Off(void) {
+  state_ = false;
+  Refresh();
 }
 
 
-// void Indicator::RefreshState(void) {
+void Indicator::Refresh(void) {
+  if(IsOn()) {
+    if(millis() > (lastChanged + kFlashCycle)) {
+      Light::On();
+    }
+  } else {
+    Light::Off();
+  }
   // if (motorcycle_.GetSpeed() > kIndicatorAutoOffSpeed && utility::IntervalPassed(Accessory::GetTimestampModified(), 10000))
   // {
   //   Accessory::SetState(state);
@@ -40,4 +45,4 @@ void IndicatorSet::Off(void) {
   //   digitalWrite(Indicator::GetPinOutput(), utility::GetInputState(Indicator::GetPinOutput()));
   //   Indicator::SetTimestampCycled(millis());
   // }
-// }
+}

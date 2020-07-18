@@ -1,34 +1,21 @@
-// // Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
-// #ifndef BUTTONIMDICATOR_H_
-// #define BUTTONIMDICATOR_H_
+#ifndef BUTTONIMDICATOR_H_
+#define BUTTONIMDICATOR_H_
 
-// #include "accessory.h"
-// #include "engine.h"
-// #include "button.h"
+#include "accessory.h"
+#include "engine.h"
+#include "button.h"
+#include "indicator.h"
 
-// class ButtonIndicator : public Button {
-//  public:
-//     enum ButtonIndicatorTypes {
-//         kTwoButton,
-//         kThreeButton
-//     };
+class ButtonIndicator : public Button {
+ public:
+    ButtonIndicator(int const pin_input, int const debounce, Indicator* indicator_for_button, Indicator* contrasting_indicator);
+    void Refresh(void);
 
-//     ButtonIndicator(int const kPinInput, enum ButtonIndicator::ButtonIndicatorTypes const kButtonType, const Accessory* const output);
-//     ButtonIndicator(int const kPinInput, enum ButtonIndicator::ButtonIndicatorTypes const kButtonType, const Engine* const engine);
+ private:
+    Indicator* indicator_;
+    Indicator* contrasting_indicator_;
+};
 
-//     bool GetState(void) const;
-//     void RefreshState(void);
-
-//  private:
-//     static unsigned int const kDebounce = 300;  // * CONFIGURABLE * Time between button presses being recorded and being treated as new (the lower the better - increase if flickering occurs or if stop button ceases to work).
-//     unsigned int const kPinInput;
-
-//     Accessory* output_;
-//     Engine* engine_;
-//     ButtonIndicatorTypes type_;
-
-//     unsigned long timestamp_last_pressed_;
-// };
-
-// #endif  // BUTTONIMDICATOR_H_
+#endif  // BUTTONIMDICATOR_H_

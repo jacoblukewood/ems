@@ -9,14 +9,7 @@
 
 class Light : public Accessory {
  public:
-    Light(unsigned int const kPinOutput);
-
-    virtual void On(void);
-
-    virtual void Off(void);
-
- private:
-   bool state_;
+    Light(unsigned int const pin_output);
 };
 
 #endif  // LIGHT_H_

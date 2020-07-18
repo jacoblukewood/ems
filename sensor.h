@@ -7,7 +7,7 @@
 
 class Sensor {
  public:
-    explicit Sensor(int const kPinSensorInput);
+    explicit Sensor(int const pin_input);
 
     bool GetState(void) const;
 

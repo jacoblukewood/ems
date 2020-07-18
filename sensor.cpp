@@ -8,8 +8,8 @@
 
 #include "utility.h"
 
-Sensor::Sensor(int const kPinSensorInput)
-: kPinSensorInput(kPinSensorInput)
+Sensor::Sensor(int const pin_input)
+: kPinSensorInput(pin_input)
 { }
 
 

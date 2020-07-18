@@ -4,22 +4,23 @@
 
 #include <Arduino.h>
 
-Accessory::Accessory(unsigned int const pin_output) : kPinOutput(kPinOutput) {
+Accessory::Accessory(unsigned int const pin_output)
+: kPinOutput(pin_output)
+, state_(false)
+{
     pinMode(kPinOutput, OUTPUT);
 }
 
 bool Accessory::IsOn(void) const {
-    digitalRead(GetPinOutput());
-}
-
-int Accessory::GetPinOutput(void) const {
-    return kPinOutput;
+    return state_;
 }
 
 void Accessory::On(void) {
-
+    digitalWrite(kPinOutput, HIGH);
+    lastChanged = millis();
 }
 
 void Accessory::Off(void) {
-    
+    digitalWrite(kPinOutput, LOW);
+    lastChanged = millis();
 }

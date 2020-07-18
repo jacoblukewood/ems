@@ -12,9 +12,11 @@ class Accessory {
     bool IsOn(void) const;
     void On(void);
     void Off(void);
+    unsigned int const kPinOutput;  // TODO: Make getter
+    unsigned int lastChanged;
 
  protected:
-    unsigned int const kPinOutput;
+   bool state_;
 };
 
 #endif  // ACCESSORY_H_

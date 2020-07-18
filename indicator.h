@@ -9,18 +9,16 @@
 
 #include "light.h"
 
-class IndicatorSet : public Accessory {
+class Indicator : public Light {
  public:
-   IndicatorSet(unsigned int const flash_rate, unsigned int const pin_output, Indicator* sibling_indicator);
+   Indicator(unsigned int const flash_rate, unsigned int const pin_output);
 
    void On(void);
    void Off(void);
+   void Refresh(void);
 
  private:
    unsigned int const kFlashCycle;
-   IndicatorSet* siblingIndicator_;
-
-   bool state_;
 };
 
 #endif  // INDICATOR_H_
