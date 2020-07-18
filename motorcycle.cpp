@@ -72,6 +72,14 @@ unsigned int Motorcycle::GetAccessoryModeTimeout(void) const {
     return kAccessoryModeTimeout;
 }
 
+unsigned int Motorcycle::GetTimeAccessoryModeStarted(void) const {
+ return time_accessory_mode_started_;
+}
+
+unsigned int Motorcycle::SetTimeAccessoryModeStarted(unsigned int time) {
+    time_accessory_mode_started_ = time;
+}
+
 void Motorcycle::SetPowerOnTime(int new_time_value) {
     power_on_time_ = new_time_value;
 }

@@ -31,6 +31,8 @@ class Motorcycle {
     unsigned int GetOdometer(void) const;
     unsigned int GetPowerOnTime(void) const;
     unsigned int GetAccessoryModeTimeout(void) const;
+    unsigned int GetTimeAccessoryModeStarted(void) const;
+    unsigned int SetTimeAccessoryModeStarted(unsigned int time);
     void SetPowerOnTime(int new_time_value);
 
     void RefreshButtons(void);
@@ -77,6 +79,7 @@ class Motorcycle {
 
  private:
    unsigned int power_on_time_;
+   unsigned int time_accessory_mode_started_;
 
 
    // Pins
