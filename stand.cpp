@@ -8,10 +8,10 @@
 #include "stand.h"
 
 Stand::Stand(int const pin_sensor_input)
-: kPinSensorInput(pin_sensor_input)
+: Sensor(pin_sensor_input)
 { }
 
 
 bool Stand::IsLowered(void) const {
-  return GetState()
+  return GetState();
 }

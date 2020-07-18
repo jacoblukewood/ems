@@ -11,6 +11,9 @@ class ButtonToggle : public Button {
     ButtonToggle(int const pin_input, Accessory* const output);
 
     void Refresh(void);
+
+ private:
+    bool last_state_;
 };
 
 #endif  // BUTTONTOGGLE_H_

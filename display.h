@@ -29,13 +29,17 @@ class Display : private SSD1306AsciiWire {
         CENTER
     };
 
-    Display(unsigned int const i2c_address, DevType display_type);
+    Display(byte const i2c_address, DevType display_type);
 
     void PrintLine(Display::Symbol const symbol, String const text, Display::Alignment const position_vertical, Display::Alignment const position_horizontal);
 
+    void Lock();
+
+    void Unlock();
+
  private:
     DevType kDisplayType = Adafruit128x32;
-    unsigned int const kI2C_Address = 0x3C;
+    byte const kI2C_Address = 0x3C;
 };
 
 #endif  // DISPLAY_H_

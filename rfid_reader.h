@@ -16,7 +16,11 @@ class RFIDReader {
  private:
     MFRC522 rfid_protocol;
 
-    byte keys[][4];
+   byte keys_ [2] [4] =  // List of RFID key UIDs in hex.
+   {
+      {0xF9, 0xAC, 0x41, 0xC2},
+      {0xF9, 0xAC, 0x41, 0xC2}
+   };
 };
 
 #endif  // RFIDREADER_H_

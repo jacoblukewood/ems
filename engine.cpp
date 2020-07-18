@@ -35,10 +35,10 @@ void Engine::Start(void) {
             // Craking timeout exceeded, give up.
             digitalWrite(kPinOutputPoints, LOW);
             digitalWrite(kPinOutputStarterMotor, LOW);
-            throw("CRANKING_TIMEOUT_EXCEEDED"); // TODO: Create exception class
-        } 
+            // throw("CRANKING_TIMEOUT_EXCEEDED"); // TODO: Create exception class
+        }
     } else {
-        throw("ENGINE_ALREADY_RUNNING"); // TODO: Create exception class
+        // throw("ENGINE_ALREADY_RUNNING"); // TODO: Create exception class
     }
 }
 

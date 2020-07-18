@@ -8,11 +8,15 @@
 
 ButtonToggle::ButtonToggle(int const pin_input, int const debounce, Accessory* const output)
 : Button(pin_input, debounce, output)
-{ }
+{
+  last_state_ = false;
+}
 
 ButtonToggle::ButtonToggle(int const pin_input, Accessory* const output)
 : Button(pin_input, output)
-{ }
+{
+  last_state_ = false;
+}
 
 
 void ButtonToggle::Refresh(void) {

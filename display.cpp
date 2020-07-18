@@ -11,7 +11,7 @@
 
 #include "utility.h"
 
-Display::Display(unsigned int const i2c_address, DevType display_type)
+Display::Display(byte const i2c_address, DevType display_type)
 : kI2C_Address(i2c_address)
 , kDisplayType(display_type) {
   Wire.begin();
@@ -61,4 +61,12 @@ void Display::PrintLine(Display::Symbol const symbol, String const text, Display
   case NONE:
     break;
   }
+}
+
+void Lock(void) {
+
+}
+
+void Unlock(void) {
+  
 }

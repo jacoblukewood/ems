@@ -11,7 +11,6 @@ Button::Button(int const pin_input, int const debounce, Accessory* const output)
 , kDebounce(debounce)
 , output_(output) {
   pinMode(Button::kPinInput, INPUT_PULLUP);
-  last_state_ = false;
 }
 
 Button::Button(int const pin_input, Accessory* const output)
@@ -24,17 +23,16 @@ void Button::Refresh(void) {
   
   bool const is_active = utility::IsDigitalInputHigh(kPinInput);
 
-  if(is_active != was_pressed_last_refresh_) {
-    if(utility::IntervalPassed(time_last_pressed_, kDebounce)) {}
-      if(output_->IsOn()) {
-          output_->Off();
-          was_pressed_last_refresh_ = false;
+if(is_active != was_pressed_last_refresh_) {
+  if(utility::IntervalPassed(time_last_pressed_, kDebounce)) {}
+    if(output_->IsOn()) {
+        output_->Off();
+        was_pressed_last_refresh_ = false;
       } else {
-          output_->On();
-          was_pressed_last_refresh_ = true;
-      }
-
-      time_last_pressed_ = millis();
+        output_->On();
+        was_pressed_last_refresh_ = true;
     }
+
+    time_last_pressed_ = millis();
   }
 }

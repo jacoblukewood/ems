@@ -20,11 +20,11 @@ bool RFIDReader::IsValidKeyPresent() {
 
     // Verify if the NUID has been read
     if (rfid_protocol.PICC_ReadCardSerial()) {
-        for (int i = 0; i < (sizeof &keys / sizeof keys[0]); i++) {
-            if (rfid_protocol.uid.uidByte[0] == keys[i][0] &&
-                rfid_protocol.uid.uidByte[1] == keys[i][1] &&
-                rfid_protocol.uid.uidByte[2] == keys[i][3] &&
-                rfid_protocol.uid.uidByte[3] == keys[i][4]) {
+        for (int i = 0; i < (sizeof &keys_ / sizeof keys_[0]); i++) {
+            if (rfid_protocol.uid.uidByte[0] == keys_[i][0] &&
+                rfid_protocol.uid.uidByte[1] == keys_[i][1] &&
+                rfid_protocol.uid.uidByte[2] == keys_[i][3] &&
+                rfid_protocol.uid.uidByte[3] == keys_[i][4]) {
                 return true;
             }
         }
