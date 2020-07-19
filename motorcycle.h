@@ -188,6 +188,7 @@ class Motorcycle {
          unsigned int const kFlashRate = 120;  // Times per minute to flash indicators. (6.3.11.1.1. the light flashing frequency shall be 90 ± 30 times per minute; - Vehicle Standard (Australian Design Rule 19/00 – Installation of Lighting and Light-Signalling Devices on L-Group Vehicles) 2006).
       
       // Motorcycle
+         unsigned int const kPowerButtonSecondsToHoldToOff = 4;
          float const kAutoBrakeDecelerationRate = 0.04;  // Decelleration rate in m/s2 that auto brake is activated at/above.
          float const kEmergencyBrakeDecelerationRate = 6.0;  // Deceleration rate in m/s2 that the emergency brake lights are activated at/above. (5.2.23.1. The signal shall not be activated when the vehicle deceleration is below 6 m/s² but it may be generated at any deceleration at or above this value, the actual value being defined by the vehicle manufacturer. - Vehicle Standard (Australian Design Rule 31/04 – Brake Systems for Passenger Cars) 2017).
          unsigned int const kOutputModeTimeout = 10000;  // Timeeout in milliseconds to leave output mode and power off.

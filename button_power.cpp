@@ -6,31 +6,26 @@
 
 #include "utility.h"
 
-ButtonPower::ButtonPower(int const pin_input, int const debounce, Engine* const output)
+ButtonPower::ButtonPower(int const pin_input, int const debounce, Engine* const output, int const seconds_to_hold_to_off)
 : Button(pin_input, debounce, output)
+, kSecondsToHoldToOff(seconds_to_hold_to_off)
 {
   last_state_ = false;
 }
 
 
 void ButtonPower::Refresh(void) {
-    bool const is_pressed = utility::IsDigitalInputHigh(kPinInput);
-
-    if (utility::IntervalPassed(time_last_pressed_, kDebounce)) {
-        if(is_pressed) {
+    if (utility::IsDigitalInputHigh(kPinInput)) {
+        if (!was_pressed_last_refresh_) {
             time_last_pressed_ = millis();
-
-            if(!was_pressed_last_refresh_) {
-                if(output_->IsOn()) {
-                    output_->Off();
-                } else {
-                    output_->On();
-                }
-            }
-
-            was_pressed_last_refresh_ = true;
-        } else {
-            was_pressed_last_refresh_ = false;
         }
+
+        if (utility::IntervalPassed(time_last_pressed_, kSecondsToHoldToOff)) {
+            output_->Off();
+        }
+
+        was_pressed_last_refresh_ = true;
+    } else {
+        was_pressed_last_refresh_ = false;
     }
 }
