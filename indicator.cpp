@@ -29,7 +29,7 @@ void Indicator::Off(void) {
 
 void Indicator::Refresh(void) {
   if(IsOn()) {
-    if(millis() > (lastChanged + kFlashCycle)) {
+    if(millis() > (timeLastChanged_ + kFlashCycle)) {
       Light::On();
     }
   } else {

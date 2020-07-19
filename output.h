@@ -13,11 +13,16 @@ class Output {
     void On(void);
     void Off(void);
     unsigned int const kPinOutput;  // TODO: Make getter
-    unsigned int lastChanged;
+    unsigned int timeLastChanged_ = 0;
     int Output::GetPinOutput(void);
+    bool IsLocked(void);
+    
+    void Lock(void);
+    void Unlock(void);
 
  protected:
    bool state_;
+   bool allow_state_modification_ = false;
 };
 
 #endif  // ACCESSORY_H_

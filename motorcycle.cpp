@@ -59,6 +59,10 @@ unsigned int Motorcycle::GetSpeed(void) const {
     return utility::IsDigitalInputHigh(kPinInputSensorSpeed);
 }
 
+unsigned int Motorcycle::GetEmergencyStrobeCyclesPerSecond(void) const {
+    return kEmergencyStrobeCyclesPerSecond;
+}
+
 // Returns the current distance of the motorcycles odometer in km.
 unsigned int Motorcycle::GetOdometer(void) const {
     // TODO: Implement
@@ -94,45 +98,36 @@ void Motorcycle::RefreshButtons(void) {
   button_power_.Refresh();
 }
 
-// // Returns the difference that the motorcycle has changed in speed in a period > 1 second.
-// static unsigned int Motorcycle::SpeedComparison(void) const {
-//     static unsigned int speed_last_recorded_;
-//     static unsigned int time_last_recorded_;
-//     double difference;
+// Returns the difference that the motorcycle has changed in speed in a period ~ 1 second.
+double Motorcycle::SpeedDifferenceIn1Second(void) const {
+    static unsigned int last_speed_sample;
+    static unsigned int time_last_speed_sample_taken = 0; // will this reset to 0 each function call? if so move to class as property.
+    double difference;
 
-//     if (utility::IntervalPassed(time_last_recorded_, 1000)) {
-//         difference = Motorcycle::GetSpeed() * ((millis() - time_last_recorded_) / 1000);
+    if (utility::IntervalPassed(time_last_speed_sample_taken, 1000)) {
+        difference = Motorcycle::GetSpeed() * ((millis() - time_last_speed_sample_taken) / 1000);    // Multiply by actual time to account for delay and slighly going over 1 second.
 
-//         speed_last_recorded_ = Motorcycle::GetSpeed();
-//         time_last_recorded_ = millis();
-//     }
+        last_speed_sample = Motorcycle::GetSpeed();
+        time_last_speed_sample_taken = millis();
+    }
 
-//     return difference;
-// }
+    return difference;
+}
 
-// // Checks if the motorcycle is slowing and activates the brake lights accordingly.
-// void Motorcycle::AutoBrakeLight(void) {
-//     if ((Motorcycle::GetSpeed() < 2) || Motorcycle::SpeedComparison() > kAutoBrakeDecelerationRate) {
-//         Motorcycle::light_tail_.SetLock(false);  // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
-//         Motorcycle::light_tail_.SetState(HIGH);
-//         Motorcycle::light_tail_.SetLock(true);
-//     } else {
-//         Motorcycle::light_tail_.SetLock(false);
-//     }
-// }
 
-// // Checks if the motorcycle is slowing rapidly and strobes the brake lights to warn of danger.
-// void Motorcycle::EmergencyBrakeStrobe(void) {
-//     // more than 15/km drop in 1 second
-//     static unsigned int time_last_cycled_;
+bool Motorcycle::IsSlowingDownOrStopped(void) const {
+    if(SpeedDifferenceIn1Second() > (-kAutoBrakeDecelerationRate)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-//     if (Motorcycle::SpeedComparison() > kEmergencyBrakeDecelerationRate) {
-//         if (utility::IntervalPassed(time_last_cycled_, kTailLightStrobeInterval)) {
-//             Motorcycle::light_tail_.SetLock(false);
-//             Motorcycle::light_tail_.SetState(!light_tail_.GetState());
-//             Motorcycle::light_tail_.SetLock(true);  // Stop recording the state of the motorcycle brakes. TODO: Modify the button check function to only run if this is false.
-//         }
-//     } else {
-//         Motorcycle::light_tail_.SetLock(false);
-//     }
-// }
+
+bool Motorcycle::IsBrakingRapidly(void) const {
+    if(SpeedDifferenceIn1Second() > (-kEmergencyBrakeDecelerationRate)) {
+        return true;
+    } else {
+        return false;
+    }
+}

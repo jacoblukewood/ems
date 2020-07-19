@@ -30,11 +30,6 @@ void loop() {
     // Display odometer.
     motorcycle.display_dash_.PrintLine(Display::Symbol::NONE, String(motorcycle.odometer_.GetOdometer()), Display::Alignment::CENTER, Display::Alignment::CENTER);
 
-    // if (motorcycle.button_power_.GetState()) {
-    //   motorcycle.engine_.Stop();
-    //   motorcycle.SetOnTime();
-    // }
-
     if (!motorcycle.IsSafeToRide()) {
       motorcycle.display_dash_.PrintLine(Display::Symbol::WARNING, "Stand Engaged", Display::Alignment::CENTER, Display::Alignment::CENTER);
       motorcycle.engine_.Stop();
@@ -53,8 +48,24 @@ void loop() {
   }
 
   // Regardless of running state
-  // motorcycle.AutoBrakeLight();
-  // motorcycle.EmergencyBrakeStrobe();
+  if(motorcycle.IsSlowingDownOrStopped()) {
+    if(motorcycle.IsBrakingRapidly()) {
+      if(motorcycle.light_tail_.timeLastChanged_ + ((60 / motorcycle.GetEmergencyStrobeCyclesPerSecond()) * 1000) < millis()) {
+        if(motorcycle.light_tail_.IsOn()) {
+          motorcycle.light_tail_.Off();
+        } else {
+          motorcycle.light_tail_.On();
+        }
+
+        motorcycle.light_tail_.timeLastChanged_ = millis();
+      }
+    } else {
+      motorcycle.light_tail_.On();
+    }
+      motorcycle.light_tail_.Lock();
+  } else {
+    motorcycle.light_tail_.Unlock();
+  }
 
   motorcycle.RefreshButtons();
 }

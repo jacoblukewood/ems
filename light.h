@@ -10,6 +10,8 @@
 class Light : public Output {
  public:
     Light(unsigned int const pin_output);
+
+    unsigned int current_priority_;
 };
 
 #endif  // LIGHT_H_

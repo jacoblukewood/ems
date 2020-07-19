@@ -16,13 +16,30 @@ bool Output::IsOn(void) const {
 }
 
 void Output::On(void) {
-    digitalWrite(kPinOutput, HIGH);
-    lastChanged = millis();
+    if(!IsLocked()) {
+        digitalWrite(kPinOutput, HIGH);
+        timeLastChanged_ = millis();
+    }
 }
 
 void Output::Off(void) {
-    digitalWrite(kPinOutput, LOW);
-    lastChanged = millis();
+    if(!IsLocked()) {
+        digitalWrite(kPinOutput, LOW);
+        timeLastChanged_ = millis();
+    }
+}
+
+void Output::Lock(void) {
+    allow_state_modification_ = false;
+}
+
+
+void Output::Unlock(void) {
+    allow_state_modification_ = true;
+}
+
+bool Output::IsLocked(void) {
+    return allow_state_modification_;
 }
 
 int Output::GetPinOutput(void) {

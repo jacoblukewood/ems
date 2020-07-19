@@ -33,17 +33,16 @@ class Motorcycle {
     unsigned int GetPowerOnTime(void) const;
     unsigned int GetOutputModeTimeout(void) const;
     unsigned int GetTimeOutputModeStarted(void) const;
+    unsigned int GetEmergencyStrobeCyclesPerSecond(void) const;
     unsigned int SetTimeOutputModeStarted(unsigned int time);
     void SetPowerOnTime(int new_time_value);
 
     void RefreshButtons(void);
 
+    double SpeedDifferenceIn1Second(void) const;
 
-
-
-   //  void AutoBrakeLight(void);
-   //  void EmergencyBrakeStrobe(void);
-   //  unsigned int SpeedComparison(void) const;
+    bool IsSlowingDownOrStopped(void) const;
+    bool IsBrakingRapidly(void) const;
 
 
    // Objects
@@ -164,6 +163,7 @@ class Motorcycle {
       // Buttons
          // Power
             static unsigned int const kOffHoldTime = 5000;  // Time in milliseconds to hold the power button to trigger it. // TODO: Should this be in the button class?
+
       // Engine
          unsigned int const kTachometerRedline = 8000;  // RPM value at which the motorcycle meets redline.
          float const kTachometerRunningMinimum = 700.0;  // RPM value at which the engine is determined to have started.
@@ -188,6 +188,8 @@ class Motorcycle {
          float const kAutoBrakeDecelerationRate = 0.04;  // Decelleration rate in m/s2 that auto brake is activated at/above.
          float const kEmergencyBrakeDecelerationRate = 6.0;  // Deceleration rate in m/s2 that the emergency brake lights are activated at/above. (5.2.23.1. The signal shall not be activated when the vehicle deceleration is below 6 m/s² but it may be generated at any deceleration at or above this value, the actual value being defined by the vehicle manufacturer. - Vehicle Standard (Australian Design Rule 31/04 – Brake Systems for Passenger Cars) 2017).
          unsigned int const kOutputModeTimeout = 10000;  // Timeeout in milliseconds to leave output mode and power off.
+         // Safety
+            unsigned int const kEmergencyStrobeCyclesPerSecond = 120;
 
       // Tail Light
          unsigned int const kBrightnessTailLight = 20;  // Tail light (when not activated as a brake light) brightness. Value between 0 (off) - 255 (high, avoid as this is the break light brightness).
