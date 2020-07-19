@@ -8,7 +8,7 @@
 #include "stand.h"
 
 Stand::Stand(int const pin_sensor_input)
-: Sensor(pin_sensor_input)
+: SensorDigital(pin_sensor_input)
 { }
 
 

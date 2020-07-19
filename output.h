@@ -5,7 +5,7 @@
 
 class Output {
  public:
-    Output(unsigned int const pin_output);
+    explicit Output(unsigned int const pin_output);
 
     int GetPinOutput(void) const;
 

@@ -9,7 +9,7 @@
 
 class Light : public Output {
  public:
-    Light(unsigned int const pin_output);
+    explicit Light(unsigned int const pin_output);
 
     unsigned int current_priority_;
 };

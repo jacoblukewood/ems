@@ -5,11 +5,11 @@
 #ifndef STAND_H_
 #define STAND_H_
 
-#include "sensor.h"
+#include "sensor_digital.h"
 
-class Stand : public Sensor {
+class Stand : public SensorDigital {
  public:
-    Stand(int const pin_sensor_input);
+    explicit Stand(int const pin_sensor_input);
 
     bool IsLowered(void) const;
 };

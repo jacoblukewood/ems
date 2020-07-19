@@ -1,18 +1,18 @@
-// sensor.cpp
+// sensor_digital.cpp
 // github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
-#include "sensor.h"
+#include "sensor_digital.h"
 
 #include <Arduino.h>
 
 #include "utility.h"
 
-Sensor::Sensor(int const pin_input)
-: kPinSensorInput(pin_input)
+SensorDigital::SensorDigital(int const pin_input)
+: Sensor(pin_input)
 { }
 
 
-bool Sensor::GetState(void) const {
+bool SensorDigital::GetState(void) const {
     return utility::IsDigitalInputHigh(kPinSensorInput);
 }

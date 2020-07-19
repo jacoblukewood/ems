@@ -17,6 +17,8 @@
 #include "odometer.h"
 #include "rfid_reader.h"
 #include "sensor.h"
+#include "sensor_analog.h"
+#include "sensor_digital.h"
 #include "stand.h"
 
 #include "utility.h"
@@ -72,8 +74,8 @@ class Motorcycle {
 
       RFIDReader rfid_reader_;
 
-      Sensor sensor_neutral_;
-      Sensor sensor_speed_;
+      SensorDigital sensor_neutral_;
+      SensorAnalog sensor_speed_;
 
       Stand side_stand_;
 
