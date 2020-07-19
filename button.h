@@ -3,18 +3,18 @@
 #ifndef BUTTON_H_
 #define BUTTON_H_
 
-#include "accessory.h"
+#include "output.h"
 #include "engine.h"
 
 class Button {
  public:
-    Button(int const pin_input, int const debounce, Accessory* const output);
-    Button(int const pin_input, Accessory* const output);
+    Button(int const pin_input, int const debounce, Output* const output);
+    Button(int const pin_input, Output* const output);
 
     virtual void Refresh(void);
 
  protected:
-    Accessory* const output_;
+    Output* const output_;
 
     unsigned int const kDebounce;  // * CONFIGURABLE * Time between button presses being recorded and being treated as new (the lower the better - increase if flickering occurs or if stop button ceases to work).
     unsigned int const kPinInput;

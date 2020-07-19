@@ -3,9 +3,9 @@
 #ifndef ACCESSORY_H_
 #define ACCESSORY_H_
 
-class Accessory {
+class Output {
  public:
-    Accessory(unsigned int const pin_output);
+    Output(unsigned int const pin_output);
 
     int GetPinOutput(void) const;
 
@@ -14,6 +14,7 @@ class Accessory {
     void Off(void);
     unsigned int const kPinOutput;  // TODO: Make getter
     unsigned int lastChanged;
+    int Output::GetPinOutput(void);
 
  protected:
    bool state_;

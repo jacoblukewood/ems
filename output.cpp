@@ -1,26 +1,30 @@
 // Copyright 2020 Jacob Wood
 
-#include "accessory.h"
+#include "output.h"
 
 #include <Arduino.h>
 
-Accessory::Accessory(unsigned int const pin_output)
+Output::Output(unsigned int const pin_output)
 : kPinOutput(pin_output)
 , state_(false)
 {
     pinMode(kPinOutput, OUTPUT);
 }
 
-bool Accessory::IsOn(void) const {
+bool Output::IsOn(void) const {
     return state_;
 }
 
-void Accessory::On(void) {
+void Output::On(void) {
     digitalWrite(kPinOutput, HIGH);
     lastChanged = millis();
 }
 
-void Accessory::Off(void) {
+void Output::Off(void) {
     digitalWrite(kPinOutput, LOW);
     lastChanged = millis();
+}
+
+int Output::GetPinOutput(void) {
+    return kPinOutput;
 }

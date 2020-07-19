@@ -11,8 +11,9 @@ Motorcycle::Motorcycle(void)
 , button_brake_(kPinInputButtonRearBrake, &light_tail_)
 , button_highbeam_(kPinInputButtonHighBeam, &light_headlight_)
 , button_horn_(kPinOutputHorn, &horn_)
-, button_indicator_left_(kPinInputButtonIndicatorLeft, 300, &indicator_left_, &indicator_right_)
-, button_indicator_right_(kPinInputButtonIndicatorLeft, 300, &indicator_right_, &indicator_left_)
+, button_indicator_left_(kPinInputButtonIndicatorLeft, &indicator_left_, &indicator_right_)
+, button_indicator_right_(kPinInputButtonIndicatorLeft, &indicator_right_, &indicator_left_)
+, button_power_(kPinInputButtonPower, &engine_)
 , display_dash_(0x3C, Adafruit128x64)
 , engine_(kTachometerRedline, kTachometerRunningMinimum, kTimeoutCranking, kPinInputSensorTachometer, kPinOutputPoints, kPinOutputStarterMotor)
 , gauge_dash_(kGaugeDashStepperMotorSteps, kGaugeDashStepperMotorRPM, kGaugeDashMinAngle, kGaugeDashMaxAngle, kPinGaugeDash1, kPinGaugeDash2, kPinGaugeDash3, kPinGaugeDash4)
@@ -28,7 +29,7 @@ Motorcycle::Motorcycle(void)
 { }
 
 // Switches on permenant power and records start time.
-// Equivalent to entering the accessory power mode in a car from off.
+// Equivalent to entering the output power mode in a car from off.
 void Motorcycle::PowerOn(void) {
     digitalWrite(kPinElectronicsPower, HIGH);
     SetPowerOnTime(millis());
@@ -68,16 +69,16 @@ unsigned int Motorcycle::GetPowerOnTime(void) const {
     return power_on_time_;
 }
 
-unsigned int Motorcycle::GetAccessoryModeTimeout(void) const {
-    return kAccessoryModeTimeout;
+unsigned int Motorcycle::GetOutputModeTimeout(void) const {
+    return kOutputModeTimeout;
 }
 
-unsigned int Motorcycle::GetTimeAccessoryModeStarted(void) const {
- return time_accessory_mode_started_;
+unsigned int Motorcycle::GetTimeOutputModeStarted(void) const {
+ return time_output_mode_started_;
 }
 
-unsigned int Motorcycle::SetTimeAccessoryModeStarted(unsigned int time) {
-    time_accessory_mode_started_ = time;
+unsigned int Motorcycle::SetTimeOutputModeStarted(unsigned int time) {
+    time_output_mode_started_ = time;
 }
 
 void Motorcycle::SetPowerOnTime(int new_time_value) {
@@ -90,6 +91,7 @@ void Motorcycle::RefreshButtons(void) {
   button_horn_.Refresh();
   button_indicator_left_.Refresh();
   button_indicator_right_.Refresh();
+  button_power_.Refresh();
 }
 
 // // Returns the difference that the motorcycle has changed in speed in a period > 1 second.

@@ -15,6 +15,7 @@ Engine::Engine(unsigned int const tachometer_redline, unsigned int const tachome
     , kPinInputSensorTachometer(pin_input_sensor_tachometer)
     , kPinOutputPoints(pin_output_points)
     , kPinOutputStarterMotor(pin_output_starter_motor)
+    , Output(pin_output_points)
     { }
 
 

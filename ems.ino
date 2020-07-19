@@ -14,7 +14,7 @@ void setup() {
     motorcycle.display_dash_.PrintLine(Display::Symbol::ERROR, "Invalid Key", Display::Alignment::CENTER, Display::Alignment::CENTER);
   }
 
-  // Permanently Power on EMU. Accessory mode.
+  // Permanently Power on EMU. Output mode.
   motorcycle.PowerOn();
 }
 
@@ -38,16 +38,16 @@ void loop() {
     if (!motorcycle.IsSafeToRide()) {
       motorcycle.display_dash_.PrintLine(Display::Symbol::WARNING, "Stand Engaged", Display::Alignment::CENTER, Display::Alignment::CENTER);
       motorcycle.engine_.Stop();
-      motorcycle.SetTimeAccessoryModeStarted(millis());
+      motorcycle.SetTimeOutputModeStarted(millis());
     }
   } else {
     const char* auto_off_message;
-    const int time_until_auto_off = (motorcycle.GetTimeAccessoryModeStarted() + motorcycle.GetAccessoryModeTimeout()) - millis();
+    const int time_until_auto_off = (motorcycle.GetTimeOutputModeStarted() + motorcycle.GetOutputModeTimeout()) - millis();
     sprintf("Ready to Start - Auto Off in %i", auto_off_message, time_until_auto_off);
 
     motorcycle.display_dash_.PrintLine(Display::Symbol::SUCCESS, auto_off_message, Display::Alignment::CENTER, Display::Alignment::CENTER);
 
-    if (utility::IntervalPassed(motorcycle.GetTimeAccessoryModeStarted(), motorcycle.GetAccessoryModeTimeout())) {
+    if (utility::IntervalPassed(motorcycle.GetTimeOutputModeStarted(), motorcycle.GetOutputModeTimeout())) {
       motorcycle.PowerOff();
     }
   }

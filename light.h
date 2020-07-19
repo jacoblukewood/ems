@@ -5,9 +5,9 @@
 #ifndef LIGHT_H_
 #define LIGHT_H_
 
-#include "accessory.h"
+#include "output.h"
 
-class Light : public Accessory {
+class Light : public Output {
  public:
     Light(unsigned int const pin_output);
 };

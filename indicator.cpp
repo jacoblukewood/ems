@@ -35,9 +35,9 @@ void Indicator::Refresh(void) {
   } else {
     Light::Off();
   }
-  // if (motorcycle_.GetSpeed() > kIndicatorAutoOffSpeed && utility::IntervalPassed(Accessory::GetTimestampModified(), 10000))
+  // if (motorcycle_.GetSpeed() > kIndicatorAutoOffSpeed && utility::IntervalPassed(Output::GetTimestampModified(), 10000))
   // {
-  //   Accessory::SetState(state);
+  //   Output::SetState(state);
   //   // TODO: this whole if needs fixing beause this check wont run unless the button has been pushed making it useless
   // }
   // else if (utility::IntervalPassed(Indicator::GetTimestampCycled(), kFlashCycle_))

@@ -7,5 +7,5 @@
 #include <Arduino.h>
 
 Light::Light(unsigned int const pin_output)
-: Accessory(pin_output)
+: Output(pin_output)
 { }

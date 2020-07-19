@@ -8,6 +8,8 @@
 #include <Arduino.h>
 
 namespace utility {
+    unsigned int const kDefaultDebounce = 300;
+
     bool IsDigitalInputHigh(uint8_t pin);
     bool IntervalPassed (unsigned long const start_time, unsigned int const interval);
     int PinMode(uint8_t pin);

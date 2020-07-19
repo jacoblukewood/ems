@@ -6,15 +6,15 @@
 
 #include "utility.h"
 
-Button::Button(int const pin_input, int const debounce, Accessory* const output)
+Button::Button(int const pin_input, int const debounce, Output* const output)
 : kPinInput(pin_input)
 , kDebounce(debounce)
 , output_(output) {
   pinMode(Button::kPinInput, INPUT_PULLUP);
 }
 
-Button::Button(int const pin_input, Accessory* const output)
-: Button(pin_input, 300, output)
+Button::Button(int const pin_input, Output* const output)
+: Button(pin_input, utility::kDefaultDebounce, output)
 { }
 
 

@@ -3,9 +3,10 @@
 #ifndef MOTORCYCLE_H_
 #define MOTORCYCLE_H_
 
-#include "accessory.h"
+#include "output.h"
 #include "button.h"
 #include "button_indicator.h"
+#include "button_power.h"
 #include "button_toggle.h"
 #include "display.h"
 #include "engine.h"
@@ -30,9 +31,9 @@ class Motorcycle {
     unsigned int GetSpeed(void) const;
     unsigned int GetOdometer(void) const;
     unsigned int GetPowerOnTime(void) const;
-    unsigned int GetAccessoryModeTimeout(void) const;
-    unsigned int GetTimeAccessoryModeStarted(void) const;
-    unsigned int SetTimeAccessoryModeStarted(unsigned int time);
+    unsigned int GetOutputModeTimeout(void) const;
+    unsigned int GetTimeOutputModeStarted(void) const;
+    unsigned int SetTimeOutputModeStarted(unsigned int time);
     void SetPowerOnTime(int new_time_value);
 
     void RefreshButtons(void);
@@ -46,14 +47,14 @@ class Motorcycle {
 
 
    // Objects
-      Accessory horn_;
+      Output horn_;
 
       Button button_brake_;
-      ButtonToggle button_highbeam_;
       Button button_horn_;
       ButtonIndicator button_indicator_left_;
       ButtonIndicator button_indicator_right_;
-      // Button button_power_;
+      ButtonPower button_power_;
+      ButtonToggle button_highbeam_;
 
       Display display_dash_;
 
@@ -79,7 +80,7 @@ class Motorcycle {
 
  private:
    unsigned int power_on_time_;
-   unsigned int time_accessory_mode_started_;
+   unsigned int time_output_mode_started_;
 
 
    // Pins
@@ -186,7 +187,7 @@ class Motorcycle {
       // Motorcycle
          float const kAutoBrakeDecelerationRate = 0.04;  // Decelleration rate in m/s2 that auto brake is activated at/above.
          float const kEmergencyBrakeDecelerationRate = 6.0;  // Deceleration rate in m/s2 that the emergency brake lights are activated at/above. (5.2.23.1. The signal shall not be activated when the vehicle deceleration is below 6 m/s² but it may be generated at any deceleration at or above this value, the actual value being defined by the vehicle manufacturer. - Vehicle Standard (Australian Design Rule 31/04 – Brake Systems for Passenger Cars) 2017).
-         unsigned int const kAccessoryModeTimeout = 10000;  // Timeeout in milliseconds to leave accessory mode and power off.
+         unsigned int const kOutputModeTimeout = 10000;  // Timeeout in milliseconds to leave output mode and power off.
 
       // Tail Light
          unsigned int const kBrightnessTailLight = 20;  // Tail light (when not activated as a brake light) brightness. Value between 0 (off) - 255 (high, avoid as this is the break light brightness).

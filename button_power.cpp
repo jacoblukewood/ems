@@ -1,23 +1,23 @@
 // Copyright 2020 Jacob Wood
 
-#include "button_toggle.h"
+#include "button_power.h"
 
 #include <Arduino.h>
 
 #include "utility.h"
 
-ButtonToggle::ButtonToggle(int const pin_input, int const debounce, Output* const output)
+ButtonPower::ButtonPower(int const pin_input, int const debounce, Engine* const output)
 : Button(pin_input, debounce, output)
 {
   last_state_ = false;
 }
 
-ButtonToggle::ButtonToggle(int const pin_input, Output* const output)
-: ButtonToggle(pin_input, utility::kDefaultDebounce, output)
+ButtonPower::ButtonPower(int const pin_input, Engine* const output)
+: ButtonPower(pin_input, utility::kDefaultDebounce, output)
 { }
 
 
-void ButtonToggle::Refresh(void) {
+void ButtonPower::Refresh(void) {
     bool const is_pressed = utility::IsDigitalInputHigh(kPinInput);
 
     if (utility::IntervalPassed(time_last_pressed_, kDebounce)) {
