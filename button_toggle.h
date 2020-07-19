@@ -8,7 +8,6 @@
 class ButtonToggle : public Button {
  public:
     ButtonToggle(int const pin_input, int const debounce, Output* const output);
-    ButtonToggle(int const pin_input, Output* const output);
 
     void Refresh(void);
 

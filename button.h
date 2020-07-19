@@ -8,10 +8,13 @@
 
 class Button {
  public:
-    Button(int const pin_input, int const debounce, Output* const output);
-    Button(int const pin_input, Output* const output);
+    Button(int const pin_input, int const debounce, Output* const output)
+    : kPinInput(pin_input)
+    , kDebounce(debounce)
+    , output_(output)
+    { }
 
-    virtual void Refresh(void);
+    virtual void Refresh(void) = 0;
 
  protected:
     Output* const output_;

@@ -11,7 +11,6 @@
 class ButtonIndicator : public Button {
  public:
     ButtonIndicator(int const pin_input, int const debounce, Indicator* indicator_for_button, Indicator* contrasting_indicator);
-    ButtonIndicator(int const pin_input, Indicator* indicator_for_button, Indicator* contrasting_indicator);
     void Refresh(void);
 
  private:

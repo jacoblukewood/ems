@@ -1,24 +1,18 @@
 // Copyright 2020 Jacob Wood
 
-#include "button.h"
+#include "button_momentary.h"
 
 #include <Arduino.h>
 
 #include "utility.h"
 
-Button::Button(int const pin_input, int const debounce, Output* const output)
-: kPinInput(pin_input)
-, kDebounce(debounce)
-, output_(output) {
+ButtonMomentary::ButtonMomentary(int const pin_input, int const debounce, Output* const output)
+: Button(pin_input, debounce, output) {
   pinMode(Button::kPinInput, INPUT_PULLUP);
 }
 
-Button::Button(int const pin_input, Output* const output)
-: Button(pin_input, utility::kDefaultDebounce, output)
-{ }
 
-
-void Button::Refresh(void) {
+void ButtonMomentary::Refresh(void) {
   // Base class Button action is momentary
   
   bool const is_active = utility::IsDigitalInputHigh(kPinInput);

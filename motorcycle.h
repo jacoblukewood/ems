@@ -6,6 +6,7 @@
 #include "output.h"
 #include "button.h"
 #include "button_indicator.h"
+#include "button_momentary.h"
 #include "button_power.h"
 #include "button_toggle.h"
 #include "display.h"
@@ -48,8 +49,8 @@ class Motorcycle {
    // Objects
       Output horn_;
 
-      Button button_brake_;
-      Button button_horn_;
+      ButtonMomentary button_brake_;
+      ButtonMomentary button_horn_;
       ButtonIndicator button_indicator_left_;
       ButtonIndicator button_indicator_right_;
       ButtonPower button_power_;
@@ -171,7 +172,7 @@ class Motorcycle {
 
       // Gauges
          unsigned int const kGaugeDashStepperMotorSteps = 300;
-         unsigned int const kGaugeDashStepperMotorRPM;
+         unsigned int const kGaugeDashStepperMotorRPM = 60;
          unsigned int const kGaugeDashMinAngle = 60;
          unsigned int const kGaugeDashMaxAngle = 300;
 

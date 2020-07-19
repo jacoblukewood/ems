@@ -12,10 +12,6 @@ ButtonToggle::ButtonToggle(int const pin_input, int const debounce, Output* cons
   last_state_ = false;
 }
 
-ButtonToggle::ButtonToggle(int const pin_input, Output* const output)
-: ButtonToggle(pin_input, utility::kDefaultDebounce, output)
-{ }
-
 
 void ButtonToggle::Refresh(void) {
     bool const is_pressed = utility::IsDigitalInputHigh(kPinInput);

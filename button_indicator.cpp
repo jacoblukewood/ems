@@ -12,10 +12,6 @@ ButtonIndicator::ButtonIndicator(int const pin_input, int const debounce, Indica
 , Button(pin_input, debounce, indicator_for_button)
 { }
 
-ButtonIndicator::ButtonIndicator(int const pin_input, Indicator* indicator_for_button, Indicator* contrasting_indicator)
-: ButtonIndicator(pin_input, utility::kDefaultDebounce, indicator_for_button, contrasting_indicator)
-{ }
-
 void ButtonIndicator::Refresh(void) {
     bool const is_pressed = utility::IsDigitalInputHigh(kPinInput);
 

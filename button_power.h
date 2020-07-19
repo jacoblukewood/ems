@@ -8,7 +8,6 @@
 class ButtonPower : public Button {
  public:
     ButtonPower(int const pin_input, int const debounce, Engine* const output);
-    ButtonPower(int const pin_input, Engine* const output);
 
     void Refresh(void);
 

@@ -12,10 +12,6 @@ ButtonPower::ButtonPower(int const pin_input, int const debounce, Engine* const 
   last_state_ = false;
 }
 
-ButtonPower::ButtonPower(int const pin_input, Engine* const output)
-: ButtonPower(pin_input, utility::kDefaultDebounce, output)
-{ }
-
 
 void ButtonPower::Refresh(void) {
     bool const is_pressed = utility::IsDigitalInputHigh(kPinInput);
