@@ -1,4 +1,5 @@
-// ems - BMW Airhead & K Bike electronics management system.
+// ems.ino
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
 #include <Arduino.h>

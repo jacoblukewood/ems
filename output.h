@@ -1,3 +1,5 @@
+// output.h
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
 #ifndef ACCESSORY_H_

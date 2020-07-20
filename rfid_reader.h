@@ -1,6 +1,6 @@
 // rfid_reader.h
 // github.com/jacoblukewood/ems
-// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
 #ifndef RFIDREADER_H_
 #define RFIDREADER_H_

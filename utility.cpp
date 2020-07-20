@@ -1,4 +1,4 @@
-// utility.h
+// utility.cpp
 // github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 

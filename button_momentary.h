@@ -1,3 +1,5 @@
+// button_momentary.h
+// github.com/jacoblukewood/ems
 // Copyright 2020 Jacob Wood
 
 #ifndef BUTTONMOMENTARY_H_

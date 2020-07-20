@@ -1,6 +1,6 @@
 // light.cpp
 // github.com/jacoblukewood/ems
-// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
 #include "light.h"
 

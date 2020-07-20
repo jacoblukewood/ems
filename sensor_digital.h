@@ -1,6 +1,6 @@
 // sensor_digital.h
 // github.com/jacoblukewood/ems
-// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
 #ifndef SENSORDIGITAL_H_
 #define SENSORDIGITAL_H_

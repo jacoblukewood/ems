@@ -1,6 +1,6 @@
 // sensor.h
 // github.com/jacoblukewood/ems
-// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
 #ifndef SENSOR_H_
 #define SENSOR_H_

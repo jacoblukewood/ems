@@ -1,6 +1,6 @@
 // rfid_reader.cpp
 // github.com/jacoblukewood/ems
-// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
 #include "rfid_reader.h"
 

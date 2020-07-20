@@ -1,6 +1,6 @@
 // odometer.h
 // github.com/jacoblukewood/ems
-// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
 #ifndef ODOMETER_H_
 #define ODOMETER_H_

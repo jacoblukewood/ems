@@ -1,6 +1,6 @@
 // sensor_analog.h
 // github.com/jacoblukewood/ems
-// Copyright 2020 Jacob Wood// Copyright 2020 Jacob Wood
+// Copyright 2020 Jacob Wood
 
 #ifndef SENSORANALOG_H_
 #define SENSORANALOG_H_
