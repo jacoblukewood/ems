@@ -5,7 +5,7 @@
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
-#include "SSD1306AsciiWire.h"
+#include "vendor/SSD1306Ascii/SSD1306AsciiWire.h"
 
 // 0X3C+SA0 - 0x3C or 0x3D
 #define I2C_ADDRESS 0x3C

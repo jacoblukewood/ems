@@ -401,11 +401,11 @@ public:
 	StatusCode PCD_MIFARE_Transceive(byte *sendData, byte sendLen, bool acceptTimeout = false);
 	// old function used too much memory, now name moved to flash; if you need char, copy from flash to memory
 	//const char *GetStatusCodeName(byte code);
-	static const __FlashStringutility *GetStatusCodeName(StatusCode code);
+	static const __FlashStringHelper *GetStatusCodeName(StatusCode code);
 	static PICC_Type PICC_GetType(byte sak);
 	// old function used too much memory, now name moved to flash; if you need char, copy from flash to memory
 	//const char *PICC_GetTypeName(byte type);
-	static const __FlashStringutility *PICC_GetTypeName(PICC_Type type);
+	static const __FlashStringHelper *PICC_GetTypeName(PICC_Type type);
 	
 	// Support functions for debuging
 	void PCD_DumpVersionToSerial();

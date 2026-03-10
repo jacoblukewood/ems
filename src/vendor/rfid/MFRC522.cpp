@@ -1272,11 +1272,11 @@ MFRC522::StatusCode MFRC522::PCD_MIFARE_Transceive(	byte *sendData,		///< Pointe
 } // End PCD_MIFARE_Transceive()
 
 /**
- * Returns a __FlashStringutility pointer to a status code name.
+ * Returns a __FlashStringHelper pointer to a status code name.
  * 
- * @return const __FlashStringutility *
+ * @return const __FlashStringHelper *
  */
-const __FlashStringutility *MFRC522::GetStatusCodeName(MFRC522::StatusCode code	///< One of the StatusCode enums.
+const __FlashStringHelper *MFRC522::GetStatusCodeName(MFRC522::StatusCode code	///< One of the StatusCode enums.
 										) {
 	switch (code) {
 		case STATUS_OK:				return F("Success.");
@@ -1320,11 +1320,11 @@ MFRC522::PICC_Type MFRC522::PICC_GetType(byte sak		///< The SAK byte returned fr
 } // End PICC_GetType()
 
 /**
- * Returns a __FlashStringutility pointer to the PICC type name.
+ * Returns a __FlashStringHelper pointer to the PICC type name.
  * 
- * @return const __FlashStringutility *
+ * @return const __FlashStringHelper *
  */
-const __FlashStringutility *MFRC522::PICC_GetTypeName(PICC_Type piccType	///< One of the PICC_Type enums.
+const __FlashStringHelper *MFRC522::PICC_GetTypeName(PICC_Type piccType	///< One of the PICC_Type enums.
 													) {
 	switch (piccType) {
 		case PICC_TYPE_ISO_14443_4:		return F("PICC compliant with ISO/IEC 14443-4");

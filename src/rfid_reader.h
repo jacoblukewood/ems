@@ -5,7 +5,7 @@
 #ifndef RFIDREADER_H_
 #define RFIDREADER_H_
 
-#include "MFRC522.h"
+#include "vendor/rfid/MFRC522.h"
 
 class RFIDReader {
  public:

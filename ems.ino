@@ -4,8 +4,8 @@
 
 #include <Arduino.h>
 
-#include "motorcycle.h"
-#include "utility.h"
+#include "src/motorcycle.h"
+#include "src/utility.h"
 
 Motorcycle motorcycle;
 

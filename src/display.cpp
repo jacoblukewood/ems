@@ -7,7 +7,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#include "SSD1306Ascii.h"
+#include "vendor/SSD1306Ascii/SSD1306Ascii.h"
 
 #include "utility.h"
 
