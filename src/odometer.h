@@ -10,7 +10,7 @@ class Odometer {
     explicit Odometer(unsigned int kEEPROMOdometerAddress);
 
     void AddMetersToOdometer(float meters_to_add);
-    float GetOdometer(void);
+    float GetOdometer(void) const;
     void SaveOdometerToEEPROM(void);
 
  private:

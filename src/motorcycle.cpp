@@ -67,8 +67,7 @@ unsigned int Motorcycle::GetEmergencyStrobeCyclesPerSecond(void) const {
 
 // Returns the current distance of the motorcycles odometer in km.
 unsigned int Motorcycle::GetOdometer(void) const {
-    // TODO: Implement
-    return 0;
+    return static_cast<unsigned int>(odometer_.GetOdometer());
 }
 
 unsigned int Motorcycle::GetPowerOnTime(void) const {

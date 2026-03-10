@@ -25,6 +25,6 @@ void Odometer::AddMetersToOdometer(float meters_to_add) {
 }
 
 
-float Odometer::GetOdometer(void) {
+float Odometer::GetOdometer(void) const {
     return (kOdometerStart + meters_traveled_since_last_save_) / 1000;  // Returns the odometer in km   // TODO: Fix magic number
 }
